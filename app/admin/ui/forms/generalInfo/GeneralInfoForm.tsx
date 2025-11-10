@@ -13,6 +13,8 @@ import { useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
 import styles from "./GeneralInfoForm.module.scss";
 
+export const GeneralInfoFormId = "general_data";
+
 export default function GeneralInfoForm() {
 	const { status, error, checkboxes, ...data } = useAppSelector(
 		(state: RootState) => state.generalData,
@@ -34,11 +36,15 @@ export default function GeneralInfoForm() {
 		instagram: instagramCheckbox,
 	} = checkboxes;
 
-	const { handleCheckbox, handleInputChange, modalCloseHandler } =
+	const { handleCheckbox, handleInputChange, modalCloseHandler, handleSubmit } =
 		useGeneralInfoForm();
 
 	return (
-		<form id={"general_data"} className={`container df fdc gap_48`}>
+		<form
+			id={GeneralInfoFormId}
+			onSubmit={handleSubmit}
+			className={`container df fdc gap_48`}
+		>
 			<Title
 				title={"Контактна інформація"}
 				description={

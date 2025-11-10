@@ -6,7 +6,6 @@ import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import ResultModal from "@/app/common_ui/modals/ResultModal";
 import ListCardsContainer from "@/app/common_ui/wrappers/ListCardsContainer/ListCardsContainer";
 import { fulfilled } from "@/app/services/admin/response.service";
-import { useFaqForm } from "@/app/utils/hooks/admin/general_info/faq/useFaqForm";
 import {
 	deleteFaq,
 	getFaq,

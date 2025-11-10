@@ -18,7 +18,13 @@ import {
 } from "@/app/utils/redux/general_data/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+import React, {
+	ChangeEvent,
+	FormEvent,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 
 export function useGeneralInfoForm() {
 	const [defaultValues, setDefaultValues] = useState<
@@ -102,7 +108,7 @@ export function useGeneralInfoForm() {
 		);
 	};
 	const handleSubmit = useCallback(
-		async (e: React.MouseEvent<HTMLButtonElement>) => {
+		async (e: FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 
 			const { errorsData, scrollToError } = useFormValidate();
@@ -150,8 +156,6 @@ export function useGeneralInfoForm() {
 				facebook: facebookCheckbox ? facebook : undefined,
 				instagram: instagramCheckbox ? instagram : undefined,
 			};
-
-			console.log("requestData", requestData);
 
 			const response = await dispatch(updateDataAction(requestData));
 			const isFulfilled = fulfilled(response.meta.requestStatus);
