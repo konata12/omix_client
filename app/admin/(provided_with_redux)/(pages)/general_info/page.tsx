@@ -26,7 +26,7 @@ export default function GrainDryersPage() {
 			>
 				<div className={`hero_buttons ${styles.hero_buttons}`}>
 					<SafeLink
-						href="/admin/products"
+						href="/admin"
 						className={"link btn grey t4"}
 						confirmMessage={generalPageLeaveMessage}
 					>
