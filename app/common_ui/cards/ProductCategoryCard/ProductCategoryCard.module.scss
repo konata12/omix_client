@@ -1,0 +1,100 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+@use "../../../styles/functions" as *;
+
+.card {
+	min-width: 0;
+	height: 100%;
+	padding: 26px;
+	background-color: $card-fill-color;
+	border: 1px solid $card-stroke-color;
+	box-shadow: $card-shadow;
+	transition: $anim;
+
+	color: $text-body-unactive-primary-color;
+	white-space: pre-line;
+
+	&:hover {
+		box-shadow: $card-big-shadow;
+
+		h4 {
+			color: $text-primary-color;
+		}
+
+		.arrow {
+			background-color: $btn-hover-primary-color;
+			box-shadow: $btn-hover-shadow;
+		}
+
+		p {
+			color: $text-body-active-primary-color;
+		}
+
+		.imageContainer {
+			&:after {
+				opacity: 0;
+			}
+		}
+	}
+
+	.topBar {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+
+		h4 {
+			width: fit-content;
+			transition: $anim;
+		}
+	}
+
+	.description {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-top: 8px;
+		transition: $anim;
+
+		.series {
+			display: inline-flex;
+			align-items: center;
+
+			&.logo {
+				pointer-events: none;
+				color: transparent;
+			}
+		}
+
+		@include respond-to(l) {
+			margin-top: 12px;
+		}
+	}
+
+	.imageContainer {
+		position: relative;
+		width: 100%;
+		margin-top: 18px;
+
+		&:after {
+			content: "";
+			z-index: 1;
+			position: absolute;
+			inset: 0;
+			background: $card-image-cover-gradient;
+			transition: $anim;
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+
+		@include respond-to(l) {
+			margin-top: 24px;
+		}
+	}
+
+	@include respond-to(l) {
+		padding: 36px;
+	}
+}

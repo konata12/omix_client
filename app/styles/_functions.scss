@@ -1,0 +1,17 @@
+@use "sass:color";
+
+@function rgba-color($color, $opacity) {
+	@return rgba(color.channel($color, "red", $space: rgb),
+			color.channel($color, "green", $space: rgb),
+			color.channel($color, "blue", $space: rgb),
+			$opacity);
+}
+
+// BACKGROUND
+@function background-gradient-center($color) {
+	@return linear-gradient(180deg, $color 10%, rgba(235, 240, 241, 0.00) 50%, $color 100%)
+}
+
+@function background-gradient-down($color) {
+	@return linear-gradient(180deg, $color 0%, $color 29.69%, rgba(235, 240, 241, 0.00) 100%)
+}

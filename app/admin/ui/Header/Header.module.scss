@@ -1,0 +1,45 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+@use "../../../styles/functions" as *;
+
+.header {
+	z-index: 100;
+	position: fixed;
+	height: 72px;
+	width: 100%;
+
+	&:before {
+		content: "";
+		z-index: -1;
+		position: absolute;
+		inset: 0;
+		background-color: $header-white-color;
+		backdrop-filter: blur(3px);
+	}
+
+	.container {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+
+		.logo {
+			display: contents;
+
+			&:hover {
+				path {
+					fill: $btn-hover-primary-color;
+				}
+			}
+
+			path {
+				fill: $primary-color;
+			}
+		}
+
+		h5 {
+			color: $text-body-unactive-primary-color;
+		}
+	}
+}

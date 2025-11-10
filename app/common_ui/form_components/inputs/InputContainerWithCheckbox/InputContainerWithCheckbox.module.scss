@@ -1,0 +1,13 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+@use "../../../../styles/functions" as *;
+
+.inputContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	@include respond-to(l) {
+		gap: 12px;
+	}
+}

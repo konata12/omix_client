@@ -1,0 +1,127 @@
+@use './variables' as *;
+@use './functions' as *;
+@use "sass:color";
+
+@mixin respond-to($breakpoint) {
+	@if $breakpoint ==s {
+		@media (min-width: $breakpoint-s) and (max-width: $container-max-width-s) {
+			@content;
+		}
+	} @else if $breakpoint ==m {
+		@media (min-width: $breakpoint-m) and (max-width: $container-max-width-m) {
+			@content;
+		}
+	} @else if $breakpoint ==l {
+		@media (min-width: $breakpoint-l) {
+			@content;
+		}
+	}
+}
+
+// HEADINGS
+@mixin h1 {
+	font-size: 40px;
+	line-height: 120%;
+
+	@include respond-to(l) {
+		font-size: 60px;
+	}
+}
+
+@mixin h2 {
+	font-size: 36px;
+	line-height: 120%;
+
+	@include respond-to(l) {
+		font-size: 56px;
+	}
+}
+
+@mixin h3 {
+	font-size: 28px;
+	line-height: 120%;
+
+	@include respond-to(l) {
+		font-size: 48px;
+	}
+}
+
+@mixin h4 {
+	font-size: 24px;
+	line-height: 130%;
+
+	@include respond-to(l) {
+		font-size: 32px;
+		line-height: 140%;
+	}
+}
+
+@mixin h5 {
+	font-size: 18px;
+	line-height: 140%;
+
+	@include respond-to(l) {
+		font-size: 24px;
+	}
+}
+
+// TEXT
+@mixin t1 {
+	font-size: 16px;
+	line-height: 150%;
+
+	@include respond-to(l) {
+		font-size: 18px;
+	}
+}
+
+@mixin t2 {
+	font-size: 16px;
+	line-height: 140%;
+
+	@include respond-to(l) {
+		font-size: 18px;
+	}
+}
+
+@mixin t5 {
+	font-size: 16px;
+	line-height: 150%;
+}
+
+// static buttons text
+@mixin t3 {
+	font-size: 18px;
+	line-height: 150%;
+}
+
+@mixin t4 {
+	font-size: 16px;
+	line-height: 150%;
+}
+
+@mixin t6 {
+	font-size: 14px;
+	line-height: 150%;
+}
+
+// static copyright text
+@mixin t7 {
+	font-size: 14px;
+	line-height: 150%;
+}
+
+@mixin rgba-text($color, $opacity) {
+	color: rgba(color.channel($color, "red", $space: rgb),
+			color.channel($color, "green", $space: rgb),
+			color.channel($color, "blue", $space: rgb),
+			$opacity);
+}
+
+// COMPONENTS
+@mixin straight-dashed-line { 
+	height: 2px;
+	width: calc(100% + 8px);
+	margin-left: -4px;
+	background-image: repeating-linear-gradient(to right, #b2c7cf 0, #b2c7cf 8px, transparent 8px, transparent 16px);
+}

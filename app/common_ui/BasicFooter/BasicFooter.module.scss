@@ -1,0 +1,48 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/functions" as *;
+
+.container {
+	&.grid {
+		background:
+			background-gradient-down($background-section-color),
+			$background-grid-white;
+	}
+
+	&.mt {
+		margin-top: $section-vert-padding;
+	}
+
+	p {
+		padding: 0 22px;
+
+		color: $text-body-active-primary-color;
+		text-align: right;
+		@include t7();
+		@include respond-to(l) {
+			padding: 0 58px;
+		}
+	}
+
+	.lineContainer {
+		padding: 0 12px;
+
+		.line {
+			display: block;
+			margin-top: 36px;
+			margin-bottom: 36px;
+
+			@include straight-dashed-line();
+			@include respond-to(l) {
+				margin-top: 48px;
+				margin-bottom: 48px;
+			}
+		}
+	}
+
+	.logo {
+		height: auto !important;
+		width: 100%;
+		margin-bottom: -4px;
+	}
+}

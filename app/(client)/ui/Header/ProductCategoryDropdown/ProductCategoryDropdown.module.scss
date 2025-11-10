@@ -1,0 +1,68 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.btn {
+	position: relative;
+	top: 1px;
+	background-color: transparent;
+	outline: none;
+	border: none;
+
+	.header {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+
+		&.active {
+			color: $text-primary-color;
+
+			svg {
+				transform: rotate(180deg);
+
+				path {
+					fill: $text-primary-color;
+				}
+			}
+		}
+
+		svg {
+			transition: $anim;
+			transform-origin: center;
+		}
+	}
+
+	.modal {
+		display: none;
+
+		@include respond-to(l) {
+			&.active {
+				position: absolute;
+				top: calc(100% + 16px);
+				left: -48px;
+				width: 305px;
+				padding: 24px;
+				display: flex;
+				flex-direction: column;
+				gap: 18px;
+
+				background-color: $card-fill-color;
+				border: 1px solid $card-stroke-color;
+				box-shadow: $card-big-shadow;
+
+				a {
+					display: inline-flex;
+					flex-direction: column;
+					gap: 18px;
+					overflow: hidden;
+
+					text-align: left;
+
+					&:after {
+						content: "";
+						@include straight-dashed-line();
+					}
+				}
+			}
+		}
+	}
+}

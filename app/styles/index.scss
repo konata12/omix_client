@@ -1,0 +1,391 @@
+@use './variables' as *;
+@use './mixins' as *;
+@use './functions' as *;
+
+* {
+	margin: 0;
+	padding: 0;
+
+	box-sizing: border-box;
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: $background-section-color;
+
+	font-family: $text-font;
+}
+
+main {
+	padding-top: 72px;
+	flex-grow: 1;
+}
+
+.section {
+	padding: $section-vert-padding-mob 0;
+
+	&.admin {
+		padding-top: 0;
+	}
+
+	&.hero {
+		p {
+			margin-top: 16px;
+		}
+
+		.buttons {
+			margin-top: 52px;
+		}
+
+		@include respond-to(l) {
+			p {
+				margin-top: 24px;
+			}
+
+			.buttons {
+				margin-top: 64px;
+			}
+		}
+	}
+
+	@include respond-to(l) {
+		padding: $section-vert-padding 0;
+	}
+}
+
+.container {
+	width: 100%;
+	max-width: $container-max-width-l;
+	padding-left: 22px;
+	padding-right: 22px;
+	margin: 0 auto;
+
+	&.admin_form {
+		padding-left: 46px;
+		padding-right: 46px;
+	}
+}
+
+// HEADERS
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: $title-font;
+	font-weight: $title-weight;
+}
+
+h1,
+.h1 {
+	@include h1;
+}
+
+h2,
+.h2 {
+	@include h2;
+}
+
+h3,
+.h3 {
+	@include h3;
+}
+
+h4,
+.h4 {
+	@include h4;
+}
+
+h5,
+.h5 {
+	@include h5;
+}
+
+// TEXT
+// responsive text
+.errorNum {
+	font-size: 124px;
+	line-height: 120%;
+	color: $primary-color;
+
+	@include respond-to(l) {
+		font-size: 164px;
+		line-height: 120%;
+	}
+}
+
+.t1 {
+	@include t1;
+}
+
+.t2 {
+	@include t2;
+}
+
+// static text
+.t5 {
+	@include t5;
+}
+
+// static buttons text
+.t3 {
+	@include t3;
+}
+
+.t4 {
+	@include t4;
+}
+
+.t6 {
+	@include t6;
+}
+
+// static copyright text
+.t7 {
+	@include t7;
+}
+
+// weight
+.semibold {
+	font-weight: $text-weight-semibold;
+}
+
+.bold {
+	font-weight: $text-weight-bold;
+}
+
+.btn {
+	padding: 12px 32px;
+	outline: none;
+	box-shadow: $btn-shadow;
+	transition: $anim;
+
+	color: $text-contrast-color;
+	font-weight: $text-weight-bold;
+	text-decoration: none;
+	font-style: normal;
+
+	&:hover {
+		box-shadow: $btn-hover-shadow;
+		cursor: pointer;
+	}
+
+	path {
+		fill: $text-contrast-color;
+	}
+
+	&.orange {
+		background-color: $contrast-color;
+		border: 1px solid $btn-stroke-contrast-color;
+
+		&:hover {
+			background-color: $btn-hover-contrast-color;
+		}
+	}
+
+	&.blue {
+		background-color: $primary-color;
+		border: 1px solid $btn-stroke-primary-color;
+
+		&:hover {
+			background-color: $btn-hover-primary-color;
+		}
+	}
+
+	&.grey {
+		background-color: $secondary-color;
+		border: 1px solid $btn-stroke-secondary-color;
+
+		&:hover {
+			background-color: $btn-hover-secondary-color;
+		}
+	}
+
+	&.unactive {
+		cursor: unset;
+		pointer-events: none;
+		background-color: $primary-unable-color;
+		border: 1px solid $primary-unable-color;
+		box-shadow: $card-shadow;
+
+		&:hover {
+			background-color: $primary-unable-color;
+		}
+
+		path {
+			fill: $text-body-active-contrast-color;
+		}
+	}
+}
+
+.link {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	background-color: transparent;
+	outline: none;
+	border: none;
+
+	color: $text-body-unactive-primary-color;
+	text-decoration: none;
+	font-style: normal;
+
+	&:hover {
+		color: $text-primary-color;
+		cursor: pointer;
+
+		path {
+			fill: $text-primary-color;
+		}
+	}
+
+	path {
+		fill: $text-body-unactive-primary-color;
+	}
+
+	&.contrast {
+		color: $text-body-unactive-contrast-color;
+
+		&:hover {
+			color: $text-contrast-color;
+
+			path {
+				fill: $text-contrast-color;
+			}
+		}
+
+		path {
+			fill: $text-body-unactive-contrast-color;
+		}
+	}
+
+	&.btn {
+		color: $text-contrast-color;
+	}
+}
+
+.input {
+	width: 100%;
+	padding: 12px 16px;
+	background-color: $card-fill-color;
+	border: 1px solid $card-stroke-color;
+	outline: none;
+	box-shadow: $card-shadow;
+	font-family: $text-font;
+	@include t5;
+
+	&::placeholder {
+		color: $text-body-unactive-primary-color;
+	}
+
+	&.err {
+		border: 1px solid $accent-color;
+	}
+
+	@include respond-to(l) {
+		padding: 16px 24px;
+	}
+}
+
+.error {
+	color: $accent-color;
+}
+
+// OTHER
+.df {
+	display: flex;
+}
+
+.dc {
+	display: contents;
+}
+
+.ovf_hid {
+	overflow: hidden;
+}
+
+// responsive
+.not_show_m {
+	@include respond-to(s) {
+		display: none;
+	}
+
+	@include respond-to(m) {
+		display: none;
+	}
+}
+
+.not_show_s {
+	@include respond-to(s) {
+		display: none;
+	}
+}
+
+// components
+.straight_dashed_line {
+	@include straight-dashed-line();
+}
+
+.admin_fallback_main {
+	display: flex;
+	flex-direction: column;
+}
+
+.hero_buttons {
+	margin-top: 52px;
+
+	@include respond-to(l) {
+		margin-top: 64px;
+	}
+}
+
+// flex
+.df {
+	display: flex;
+
+	&.fdc {
+		flex-direction: column;
+	}
+
+	&.gap {
+		&_24 {
+			gap: 24px;
+		}
+
+		&_36 {
+			gap: 36px;
+		}
+
+		&_48 {
+			gap: 48px;
+		}
+
+		&_80 {
+			gap: 80px;
+		}
+
+		&_160 {
+			gap: 160px;
+		}
+	}
+}
+
+.flex_half {
+	flex: 0 1 50%;
+}
+
+.flex_third {
+	flex: 0 1 33%;
+}
+
+.flex_quarter {
+	flex: 0 1 25%;
+}
+
+// ADMIN
+.admin_cont {
+	padding: 0 24px;
+}

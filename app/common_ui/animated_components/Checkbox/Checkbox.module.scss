@@ -1,0 +1,45 @@
+@use "../../../styles/variables" as *;
+
+.checkbox {
+	cursor: pointer;
+	display: inline-block;
+
+	input {
+		position: relative;
+		z-index: 1;
+		appearance: none;
+
+		&:checked ~ span {
+			background: $primary-color;
+
+			& > span {
+				background: $text-contrast-color;
+				color: $primary-color;
+				transform: translateX(23px);
+			}
+		}
+	}
+
+	span {
+		display: block;
+		width: 72px;
+		height: 28px;
+		padding: 4px;
+
+		background: $primary-unable-color;
+		transition: $anim;
+
+		& > span {
+			user-select: none;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 41px;
+			height: 100%;
+
+			background: $text-body-active-contrast-color;
+			color: $primary-unable-color;
+			transition: $anim;
+		}
+	}
+}

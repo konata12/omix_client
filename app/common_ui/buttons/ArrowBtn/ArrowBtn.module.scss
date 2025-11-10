@@ -1,0 +1,23 @@
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	width: 60px;
+	padding: 0;
+
+	svg {
+		transform-origin: center;
+
+		&.left {
+			transform: rotate(180deg);
+		}
+	}
+}
+
+.block {
+	flex: 0 0 60px;
+	&:hover {
+		cursor: unset;
+	}
+}

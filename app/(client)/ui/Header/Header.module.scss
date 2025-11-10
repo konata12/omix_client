@@ -1,0 +1,172 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+@use "../../../styles/functions" as *;
+
+.header {
+	z-index: 100;
+	position: fixed;
+	height: 72px;
+	width: 100%;
+	padding: 16px 0;
+
+	&:before {
+		content: "";
+		z-index: -1;
+		position: absolute;
+		inset: 0;
+		background-color: $header-white-color;
+		backdrop-filter: blur(3px);
+	}
+
+	.container {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		gap: 24px;
+
+		.burger {
+			cursor: pointer;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			padding: 3px 0;
+
+			background-color: transparent;
+			border: none;
+			outline: none;
+
+			&.active {
+				.reqt {
+					&:nth-child(1) {
+						transform: rotate(135deg) translate(-18px, -17px)
+							scaleX(181.25%);
+					}
+
+					&:nth-child(2) {
+						transform: translateX(-60px);
+					}
+
+					&:nth-child(3) {
+						transform: rotate(-135deg) translate(-18px, 17px)
+							scaleX(131.218%);
+					}
+				}
+			}
+
+			.reqt {
+				height: 3px;
+				background-color: $text-body-unactive-primary-color;
+				transition: $anim;
+
+				&:nth-child(1) {
+					transform-origin: left;
+					width: 16px;
+				}
+
+				&:nth-child(2) {
+					width: 29px;
+				}
+
+				&:nth-child(3) {
+					width: 22px;
+					transform-origin: left;
+				}
+			}
+
+			@include respond-to(l) {
+				display: none;
+			}
+		}
+
+		.logo {
+			display: contents;
+
+			&:hover {
+				path {
+					fill: $btn-hover-primary-color;
+				}
+			}
+
+			&.error {
+				display: unset;
+
+				&:hover {
+					path {
+						fill: $primary-color;
+					}
+				}
+			}
+
+			path {
+				fill: $primary-color;
+			}
+		}
+
+		.navbar {
+			flex-grow: 1;
+			display: flex;
+			justify-content: right;
+			align-items: center;
+			gap: 36px;
+
+			.calculator {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+
+				& > div {
+					display: flex;
+					align-items: center;
+				}
+			}
+
+			.contact {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				padding: 8px 20px;
+			}
+		}
+
+		.burgerMenu {
+			z-index: -2;
+			position: absolute;
+			top: 0;
+			left: 0;
+			padding-top: 96px;
+			padding-bottom: 32px;
+			display: flex;
+			gap: 7px;
+			background:
+				background-gradient-center($primary-color), $background-grid-blue;
+			box-shadow: $btn-hover-shadow;
+
+			.column {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 18px;
+
+				.title {
+					margin-bottom: 8px;
+					color: $text-contrast-color;
+				}
+
+				.icons {
+					display: flex;
+					align-items: center;
+					gap: 36px;
+				}
+			}
+
+			@include respond-to(s) {
+				flex-direction: column;
+				gap: 36px;
+				padding: 96px 38px 32px;
+			}
+			@include respond-to(l) {
+				display: none;
+			}
+		}
+	}
+}

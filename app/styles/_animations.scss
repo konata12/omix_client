@@ -1,0 +1,18 @@
+$anim-style: cubic-bezier(0, 0, 0.58, 1);
+$anim-time: 0.706s;
+$anim: all $anim-time $anim-style;
+
+//loading animation variables
+.loading {
+	animation: l1 1s linear infinite alternate;
+
+	&:before {
+		content: "Loading..."
+	}
+}
+
+@keyframes l1 {
+	to {
+		opacity: 0
+	}
+}

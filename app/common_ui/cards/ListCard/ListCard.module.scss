@@ -1,0 +1,21 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+@use "../../../styles/functions" as *;
+
+.card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 48px;
+
+	width: 100%;
+	padding: 36px;
+	border: 1px solid $card-stroke-color;
+	background-color: $card-fill-color;
+	box-shadow: $card-shadow;
+
+	.error {
+		width: 100%;
+		text-align: center;
+	}
+}

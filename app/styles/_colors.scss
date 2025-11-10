@@ -1,0 +1,55 @@
+// GENERAL COLORS
+$primary-color: #1C566C;
+$primary-unable-color: #B2C7CF;
+$secondary-color: #41474D;
+$contrast-color: #F48222;
+$accent-color: #CF4C4C;
+$success-color: #00B13B;
+
+// BACKGROUND COLORS
+$background-section-color: #EBF0F1;
+// grid
+//todo change grid image
+$background-grid-blue: url("/grid_white.png") center / 1300px repeat, $primary-color;
+$background-grid-white: url("/grid_blue.png") center / 1300px repeat, $background-section-color;
+$background-grid-blue-white: url("/grid_blue.png") center / 1300px repeat, $background-section-color;
+
+// TEXT COLORS
+$text-primary-color: #151515;
+$text-contrast-color: #F3F8F9;
+$hyperlink-color: #2C7591;
+
+$text-body-active-primary-color: #343638;
+$text-body-active-contrast-color: #E0EFF4;
+
+$text-body-unactive-primary-color: #706E69;
+$text-body-unactive-contrast-color: #A5C1CB;
+
+// CARDS COLORS
+$card-fill-color: #F3F8F9;
+$card-stroke-color: #CCD3D8;
+
+// linear
+$card-image-cover-gradient: linear-gradient(180deg, rgba(243, 248, 249, 0.50) 0%, $card-fill-color 88%);
+$card-image-cover-primary-gradient: linear-gradient(180deg, rgba(28, 86, 108, 0.00) 0%, $primary-color 88%);
+$card-image-cover-admin-gradient: linear-gradient(180deg, rgba(235, 240, 241, 0.50) 0%, $background-section-color 88%);
+
+// circle
+$card-circle-contrast-gradient: radial-gradient(50% 50% at 50% 50%, rgba(235, 240, 241, 0.80) 80.29%, rgba(235, 240, 241, 0.00) 100%);
+
+// todo add figma col 4
+
+// BUTTONS COLORS
+//strokes
+$btn-stroke-primary-color: #0B4B63;
+$btn-stroke-secondary-color: #323436;
+$btn-stroke-contrast-color: #ED7612;
+
+//hovers
+$btn-hover-primary-color: #2D7591;
+$btn-hover-secondary-color: #575E66;
+$btn-hover-contrast-color: #FBA257;
+
+//SPECIAL (LOW OPACITY)
+$header-white-color: rgba(235, 240, 241, 0.94);
+$glass-fill-color: rgba(132, 141, 142, 0.99);

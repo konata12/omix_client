@@ -1,0 +1,41 @@
+@use "../../../styles/mixins" as *;
+
+.container {
+	position: relative;
+	padding: 36px 26px;
+
+	.corner {
+		position: absolute;
+		height: 84px;
+		width: 84px;
+
+		&.top {
+			top: 0;
+			left: 0;
+			background: url("/svg/top_corner_sm.svg");
+
+			@include respond-to(l) {
+				background: url("/svg/top_corner_big.svg");
+			}
+		}
+
+		&.bottom {
+			bottom: 0;
+			right: 0;
+			background: url("/svg/bottom_corner_sm.svg");
+
+			@include respond-to(l) {
+				background: url("/svg/bottom_corner_big.svg");
+			}
+		}
+
+		@include respond-to(l) {
+			height: 116px;
+			width: 116px;
+		}
+	}
+
+	@include respond-to(l) {
+		padding: 46px 36px;
+	}
+}

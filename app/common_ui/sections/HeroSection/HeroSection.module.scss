@@ -1,0 +1,33 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+@use "../../../styles/functions" as *;
+
+.heroSection {
+	background:
+		background-gradient-center($background-section-color), $background-grid-white;
+	text-align: center;
+
+	.flexContainer {
+		display: flex;
+		justify-content: center;
+
+		.container {
+			flex-shrink: 1;
+
+			h1 {
+				white-space: pre-line;
+			}
+
+			.description {
+				margin-top: 16px;
+				white-space: pre-line;
+				color: $text-body-active-primary-color;
+
+				@include t1;
+				@include respond-to(l) {
+					margin-top: 24px;
+				}
+			}
+		}
+	}
+}
