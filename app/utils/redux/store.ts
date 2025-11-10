@@ -3,6 +3,7 @@ import faqFormsSlice from "@/app/utils/redux/general_data/faq/faqFormsSlice";
 import faqSlice from "@/app/utils/redux/general_data/faq/faqSlice";
 import generalDataSlice from "@/app/utils/redux/general_data/generalSlice";
 import navigationSlice from "@/app/utils/redux/navigation/navigationSlice";
+import grainDryerFormsSlice from "@/app/utils/redux/products/grain_dryers/grainDryerFormsSlice";
 import grainDryerSlice from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
 
 	// FORM DATA
 	faqForms: faqFormsSlice,
+	grainDryerForms: grainDryerFormsSlice,
 
 	// FORM DATA AND API
 	generalData: generalDataSlice,

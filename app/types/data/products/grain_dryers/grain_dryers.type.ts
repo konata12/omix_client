@@ -16,7 +16,7 @@ export interface GrainDryer {
 	// POWER
 	[GrainDryerValuesEnum.NEEDED_HEAT_POWER]: number;
 	[GrainDryerValuesEnum.ELECTRIC_POWER]: number;
-	[GrainDryerValuesEnum.HEAT_POWER_CONSUMTION]: number;
+	[GrainDryerValuesEnum.HEAT_POWER_CONSUMPTION]: number;
 	// CONSTRUCTION SETTINGS
 	[GrainDryerValuesEnum.HEIGHT]: number;
 	[GrainDryerValuesEnum.WIDTH]: number;
@@ -72,7 +72,7 @@ export enum GrainDryerValuesEnum {
 	// POWER
 	NEEDED_HEAT_POWER = "needed_heat_power",
 	ELECTRIC_POWER = "electric_power",
-	HEAT_POWER_CONSUMTION = "heat_power_consumtion",
+	HEAT_POWER_CONSUMPTION = "heat_power_consumption",
 	// CONSTRUCTION SETTINGS
 	HEIGHT = "height",
 	WIDTH = "width",
@@ -107,7 +107,7 @@ export enum GrainDryerNumberValuesEnum {
 	// POWER
 	NEEDED_HEAT_POWER = "needed_heat_power",
 	ELECTRIC_POWER = "electric_power",
-	HEAT_POWER_CONSUMTION = "heat_power_consumtion",
+	HEAT_POWER_CONSUMPTION = "heat_power_consumption",
 	// CONSTRUCTION SETTINGS
 	HEIGHT = "height",
 	WIDTH = "width",
@@ -125,6 +125,11 @@ export enum GrainDryerNumberValuesEnum {
 	LOADING_TANK_ROTARY_LEVEL_SENSORS_COUNT = "loading_tank_rotary_level_sensors_count",
 	DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT = "dryer_top_section_rotary_level_sensors_count",
 	WARRANTY_YEARS_COUNT = "warranty_years_count",
+}
+export enum GrainDryerStringValuesEnum {
+	// GENERAL
+	TITLE = "title",
+	DRYING_METHOD = "drying_method",
 	// GRAPHIC INFO
 	YOUTUBE_REVIEW = "youtube_review",
 	CARD_IMAGE = "card_image",
@@ -133,3 +138,5 @@ export enum GrainDryerNumberValuesEnum {
 
 // ENUM TYPES
 export type GrainDryerValuesEnumType = `${GrainDryerValuesEnum}`;
+export type GrainDryerNumberValuesEnumType = `${GrainDryerNumberValuesEnum}`;
+export type GrainDryerStringValuesEnumType = `${GrainDryerStringValuesEnum}`;

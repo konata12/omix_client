@@ -1,4 +1,3 @@
-import { generalPageLeaveMessage } from "@/app/admin/(provided_with_redux)/(pages)/general_info/constants";
 import ListCard from "@/app/common_ui/cards/ListCard/ListCard";
 import ListCardError from "@/app/common_ui/cards/ListCard/ListCardError";
 import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
@@ -122,7 +121,7 @@ export default function GrainDryersList() {
 				<ListCardError error={error} status={status} />
 			)}
 			<Link
-				href="/admin/general_info/faq/create"
+				href="/admin/products/grain_dryers/create"
 				className={`link btn blue t4 ${styles.create_btn}`}
 			>
 				Створити новий товар

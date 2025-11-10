@@ -49,9 +49,7 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 				id={"submit_error"}
 			/>
 			<button className={`btn blue t4 ${styles.submit}`} type="submit">
-				{formType === "create"
-					? "Створити нове часто задаване питання"
-					: "Зберегти зміни"}
+				{formType === "create" ? "Створити " : "Зберегти зміни"}
 			</button>
 		</form>
 	);

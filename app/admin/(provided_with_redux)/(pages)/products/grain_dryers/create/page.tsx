@@ -1,4 +1,4 @@
-import FaqForm from "@/app/admin/ui/forms/faq/FaqForm";
+import GrainDryerForm from "@/app/admin/ui/forms/grainDryer/GrainDryerForm";
 import HeroSection from "@/app/common_ui/sections/HeroSection/HeroSection";
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ export default function FaqCreate() {
 					Повернутись до загальної інформації
 				</Link>
 			</HeroSection>
-			<FaqForm formType={"create"} />
+			<GrainDryerForm formType={"create"} />
 		</>
 	);
 }
