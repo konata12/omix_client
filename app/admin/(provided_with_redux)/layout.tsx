@@ -4,6 +4,7 @@ import LoginFallback from "@/app/admin/ui/fallbacks/LoginFallback/LoginFallback"
 import { Header } from "@/app/admin/ui/Header/Header";
 import BasicFooter from "@/app/common_ui/BasicFooter/BasicFooter";
 import { fulfilled } from "@/app/services/admin/response.service";
+import { useConnectionToIndexedDB } from "@/app/utils/hooks/admin/indexedDB/useConnectionToIndexedDb";
 import { refreshTokens } from "@/app/utils/redux/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
@@ -27,6 +28,9 @@ export default function Admin({
 		if (!isFulfilled) router.push("/admin/login");
 	};
 
+	// CREATE INDEXED DB IF NOT CREATED
+	useConnectionToIndexedDB();
+	// AUTH
 	useEffect(() => {
 		if (accessToken) return;
 		refreshTokensAndCheckIsLogin();
