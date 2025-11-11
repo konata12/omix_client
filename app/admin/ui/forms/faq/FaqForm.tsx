@@ -19,7 +19,6 @@ export default function FaqForm({ formType }: FaqFormProps) {
 		(state: RootState) => state.faqForms[formType],
 	);
 	const requestError = useAppSelector((state: RootState) => state.faq.error);
-	const { question, answer } = data;
 	const { handleInputChange, handleSubmit } = useFaqForm(formType);
 
 	return (
@@ -30,7 +29,7 @@ export default function FaqForm({ formType }: FaqFormProps) {
 			<InputContainer
 				label={"Заголовок (питання на яке потрібно розписати відповідь)"}
 				inputId={FaqValuesEnum.QUESTION}
-				value={question}
+				value={data[FaqValuesEnum.QUESTION]}
 				changeEvent={(e) => handleInputChange(e, FaqValuesEnum.QUESTION)}
 				error={error[FaqValuesEnum.QUESTION]}
 				placeholder={"Напишіть запитання на яке будете давати відповідь"}
@@ -38,7 +37,7 @@ export default function FaqForm({ formType }: FaqFormProps) {
 			<TextareaContainer
 				label={"Відповідь на запитання"}
 				inputId={FaqValuesEnum.ANSWER}
-				value={answer}
+				value={data[FaqValuesEnum.ANSWER]}
 				changeEvent={(e) => handleInputChange(e, FaqValuesEnum.ANSWER)}
 				error={error[FaqValuesEnum.ANSWER]}
 				placeholder={"Дайте відповідь на запитання (розгорнуто)"}

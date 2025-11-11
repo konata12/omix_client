@@ -21,16 +21,6 @@ export default function GeneralInfoForm() {
 	);
 
 	const {
-		phone_number,
-		email,
-		address,
-		google_maps_url,
-		// social
-		youtube,
-		facebook,
-		instagram,
-	} = data;
-	const {
 		youtube: youtubeCheckbox,
 		facebook: facebookCheckbox,
 		instagram: instagramCheckbox,
@@ -62,7 +52,7 @@ export default function GeneralInfoForm() {
 					<InputContainer
 						label={"Номер телефону"}
 						inputId={GeneralDataStringValuesEnum.PHONE_NUMBER}
-						value={phone_number}
+						value={data[GeneralDataStringValuesEnum.PHONE_NUMBER]}
 						changeEvent={(e) =>
 							handleInputChange(
 								e,
@@ -78,7 +68,7 @@ export default function GeneralInfoForm() {
 					<InputContainer
 						label={"Електронна пошта"}
 						inputId={GeneralDataStringValuesEnum.EMAIL}
-						value={email}
+						value={data[GeneralDataStringValuesEnum.EMAIL]}
 						changeEvent={(e) =>
 							handleInputChange(e, GeneralDataStringValuesEnum.EMAIL)
 						}
@@ -95,7 +85,7 @@ export default function GeneralInfoForm() {
 					<InputContainer
 						label={"Повна адреса"}
 						inputId={GeneralDataStringValuesEnum.ADDRESS}
-						value={address}
+						value={data[GeneralDataStringValuesEnum.ADDRESS]}
 						changeEvent={(e) =>
 							handleInputChange(e, GeneralDataStringValuesEnum.ADDRESS)
 						}
@@ -108,7 +98,7 @@ export default function GeneralInfoForm() {
 					<InputContainer
 						label={"Посилання на адресу в Google maps"}
 						inputId={GeneralDataStringValuesEnum.GOOGLE_MAPS_URL}
-						value={google_maps_url}
+						value={data[GeneralDataStringValuesEnum.GOOGLE_MAPS_URL]}
 						changeEvent={(e) =>
 							handleInputChange(
 								e,
@@ -126,10 +116,10 @@ export default function GeneralInfoForm() {
 			<InputBlock title={"Соц.мережі"}>
 				<div className={"df gap_24"}>
 					<InputContainerWithCheckbox
-						isChecked={youtubeCheckbox}
+						isChecked={checkboxes[GeneralDataOptionalValuesEnum.YOUTUBE]}
 						label={"YouTube"}
 						inputId={GeneralDataOptionalValuesEnum.YOUTUBE}
-						value={youtube}
+						value={data[GeneralDataOptionalValuesEnum.YOUTUBE]}
 						handleCheckbox={() =>
 							handleCheckbox(
 								GeneralDataOptionalValuesEnum.YOUTUBE,
@@ -149,10 +139,12 @@ export default function GeneralInfoForm() {
 						}}
 					/>
 					<InputContainerWithCheckbox
-						isChecked={facebookCheckbox}
+						isChecked={
+							checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]
+						}
 						label={"Facebook"}
 						inputId={GeneralDataOptionalValuesEnum.FACEBOOK}
-						value={facebook}
+						value={data[GeneralDataOptionalValuesEnum.FACEBOOK]}
 						handleCheckbox={() =>
 							handleCheckbox(
 								GeneralDataOptionalValuesEnum.FACEBOOK,
@@ -172,10 +164,12 @@ export default function GeneralInfoForm() {
 						}}
 					/>
 					<InputContainerWithCheckbox
-						isChecked={instagramCheckbox}
+						isChecked={
+							checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]
+						}
 						label={"Instagram"}
 						inputId={GeneralDataOptionalValuesEnum.INSTAGRAM}
-						value={instagram}
+						value={data[GeneralDataOptionalValuesEnum.INSTAGRAM]}
 						handleCheckbox={() =>
 							handleCheckbox(
 								GeneralDataOptionalValuesEnum.INSTAGRAM,
