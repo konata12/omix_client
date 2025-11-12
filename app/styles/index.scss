@@ -346,6 +346,10 @@ h5,
 .df {
 	display: flex;
 
+	&.wrap {
+		flex-wrap: wrap;
+	}
+
 	&.fdc {
 		flex-direction: column;
 	}
@@ -371,6 +375,10 @@ h5,
 			gap: 160px;
 		}
 	}
+}
+
+.flex_full {
+	flex: 0 0 100%;
 }
 
 .flex_half {
