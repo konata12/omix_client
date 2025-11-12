@@ -1,9 +1,7 @@
 "use client";
 
 import { generalPageLeaveMessage } from "@/app/admin/(provided_with_redux)/(pages)/general_info/constants";
-import GeneralInfoForm, {
-	GeneralInfoFormId,
-} from "@/app/admin/ui/forms/generalInfo/GeneralInfoForm";
+import GeneralInfoForm, { GeneralInfoFormId } from "@/app/admin/ui/forms/generalInfo/GeneralInfoForm";
 import SafeLink from "@/app/admin/ui/links/SafeLink/SafeLink";
 import FaqList from "@/app/admin/ui/lists/FaqList/FaqList";
 import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
@@ -20,9 +18,7 @@ export default function GrainDryersPage() {
 		<>
 			<HeroSection
 				heading={"Загальна інформація"}
-				description={
-					"Редагуйте контакти та керуйте розділом часто задаваних питань"
-				}
+				description={"Редагуйте контакти та керуйте розділом часто задаваних питань"}
 			>
 				<div className={`hero_buttons ${styles.hero_buttons}`}>
 					<SafeLink
@@ -32,11 +28,7 @@ export default function GrainDryersPage() {
 					>
 						Повернутись на головну
 					</SafeLink>
-					<button
-						className={`btn blue t4`}
-						type="submit"
-						form={GeneralInfoFormId}
-					>
+					<button className={`btn blue t4`} type="submit" form={GeneralInfoFormId}>
 						Зберегти зміни
 					</button>
 				</div>
@@ -47,14 +39,10 @@ export default function GrainDryersPage() {
 				/>
 			</HeroSection>
 			<GeneralInfoForm />
-			<section
-				className={`section admin container df fdc gap_48 ${styles.faq_section}`}
-			>
+			<section className={`section admin container df fdc gap_48 ${styles.faq_section}`}>
 				<Title
 					title={"Часто задавані питання"}
-					description={
-						"Створюйте або редагуйте відповіді на часто задавані питання"
-					}
+					description={"Створюйте або редагуйте відповіді на часто задавані питання"}
 					type={"h3"}
 				/>
 				<FaqList />

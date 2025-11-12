@@ -39,9 +39,7 @@ export default function Admin({
 	return (
 		<>
 			<Header />
-			<main
-				className={!accessToken && !isLoginPage ? "admin_fallback_main" : ""}
-			>
+			<main className={!accessToken && !isLoginPage ? "admin_fallback_main" : ""}>
 				{status.refresh === "loading" || status.refresh === null ? ( // when reloading page to not cause layout shift with <LoginFallback /> when authorized
 					children
 				) : !accessToken && !isLoginPage ? ( // if not authorized show fallback

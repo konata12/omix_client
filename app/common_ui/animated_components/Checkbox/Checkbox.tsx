@@ -34,9 +34,7 @@ export default function Checkbox({
 				{...props}
 			/>
 			<span className={className?.span || ""}>
-				<span className={`t6 semibold ${className?.i || ""}`}>
-					В{isChecked ? "" : "и"}кл
-				</span>
+				<span className={`t6 semibold ${className?.i || ""}`}>В{isChecked ? "" : "и"}кл</span>
 			</span>
 		</label>
 	);

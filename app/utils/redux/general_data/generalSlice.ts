@@ -55,17 +55,14 @@ export const updateGeneral = createAsyncThunk(
 	},
 );
 
-export const getGeneral = createAsyncThunk(
-	"generalData/getGeneral",
-	async (_, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.get("general/main");
-			return response.data;
-		} catch (error) {
-			return rejectWithValue(reduxSerializeError(error));
-		}
-	},
-);
+export const getGeneral = createAsyncThunk("generalData/getGeneral", async (_, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.get("general/main");
+		return response.data;
+	} catch (error) {
+		return rejectWithValue(reduxSerializeError(error));
+	}
+});
 
 export const generalDataSlice = createSlice({
 	name: "generalData",
@@ -140,33 +137,23 @@ export const generalDataSlice = createSlice({
 				state.status.get = "loading";
 				state.error.get = null;
 			})
-			.addCase(
-				getGeneral.fulfilled,
-				(state, action: PayloadAction<GeneralDataRequestValues>) => {
-					state.status.get = "succeeded";
-					const {
-						phone_number,
-						email,
-						address,
-						google_maps_url,
-						...social
-					} = action.payload;
+			.addCase(getGeneral.fulfilled, (state, action: PayloadAction<GeneralDataRequestValues>) => {
+				state.status.get = "succeeded";
+				const { phone_number, email, address, google_maps_url, ...social } = action.payload;
 
-					// SET NEW STRING DATA
-					state[GeneralDataStringValuesEnum.PHONE_NUMBER] = phone_number;
-					state[GeneralDataStringValuesEnum.EMAIL] = email;
-					state[GeneralDataStringValuesEnum.ADDRESS] = address;
-					state[GeneralDataStringValuesEnum.GOOGLE_MAPS_URL] =
-						google_maps_url;
+				// SET NEW STRING DATA
+				state[GeneralDataStringValuesEnum.PHONE_NUMBER] = phone_number;
+				state[GeneralDataStringValuesEnum.EMAIL] = email;
+				state[GeneralDataStringValuesEnum.ADDRESS] = address;
+				state[GeneralDataStringValuesEnum.GOOGLE_MAPS_URL] = google_maps_url;
 
-					// SET NEW OPTIONAL DATA
-					for (const key in social) {
-						const field = key as GeneralDataOptionalValuesEnumType;
-						state[field] = social[field] ? social[field] : "";
-						state.checkboxes[field] = !!social[field];
-					}
-				},
-			)
+				// SET NEW OPTIONAL DATA
+				for (const key in social) {
+					const field = key as GeneralDataOptionalValuesEnumType;
+					state[field] = social[field] ? social[field] : "";
+					state.checkboxes[field] = !!social[field];
+				}
+			})
 			.addCase(getGeneral.rejected, (state, action) => {
 				state.status.get = "failed";
 				state.error.get = action.payload as ErrorResponse;

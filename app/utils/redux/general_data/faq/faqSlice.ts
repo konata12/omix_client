@@ -22,17 +22,14 @@ const initialState: FaqData = {
 };
 const baseUrl = "general";
 
-export const getFaq = createAsyncThunk(
-	"faq/getFaq",
-	async (_, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.get(`${baseUrl}/faq`);
-			return response.data;
-		} catch (error) {
-			return rejectWithValue(reduxSerializeError(error));
-		}
-	},
-);
+export const getFaq = createAsyncThunk("faq/getFaq", async (_, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.get(`${baseUrl}/faq`);
+		return response.data;
+	} catch (error) {
+		return rejectWithValue(reduxSerializeError(error));
+	}
+});
 
 export const createFaq = createAsyncThunk(
 	"faq/createFaq",
@@ -59,18 +56,17 @@ export const updateFaq = createAsyncThunk<Faq, Faq, { rejectValue: ErrorResponse
 	},
 );
 
-export const deleteFaq = createAsyncThunk<
-	string,
-	string,
-	{ rejectValue: ErrorResponse }
->("faq/deleteFaq", async (id: string, { rejectWithValue }) => {
-	try {
-		await axiosInstance.delete(`${baseUrl}/faq/${id}`);
-		return id;
-	} catch (error) {
-		return rejectWithValue({ ...reduxSerializeError(error), id });
-	}
-});
+export const deleteFaq = createAsyncThunk<string, string, { rejectValue: ErrorResponse }>(
+	"faq/deleteFaq",
+	async (id: string, { rejectWithValue }) => {
+		try {
+			await axiosInstance.delete(`${baseUrl}/faq/${id}`);
+			return id;
+		} catch (error) {
+			return rejectWithValue({ ...reduxSerializeError(error), id });
+		}
+	},
+);
 
 export const faqSlice = createSlice({
 	name: "faq",
@@ -131,9 +127,7 @@ export const faqSlice = createSlice({
 			})
 			.addCase(updateFaq.fulfilled, (state, action: PayloadAction<Faq>) => {
 				state.status.update = "succeeded";
-				const index = state.faqs.findIndex(
-					(faq) => `${faq.id}` === action.payload.id,
-				);
+				const index = state.faqs.findIndex((faq) => `${faq.id}` === action.payload.id);
 				state.faqs[index] = action.payload;
 			})
 			.addCase(updateFaq.rejected, (state, action) => {
@@ -142,18 +136,13 @@ export const faqSlice = createSlice({
 			})
 
 			// DELETE
-			.addCase(
-				deleteFaq.pending,
-				(state, action: PayloadAction<string | undefined>) => {
-					state.status.delete = "loading";
-					const index = state.faqs.findIndex(
-						(faq) => faq.id === action.payload,
-					);
-					if (index !== -1) {
-						state.error.delete[index] = null;
-					}
-				},
-			)
+			.addCase(deleteFaq.pending, (state, action: PayloadAction<string | undefined>) => {
+				state.status.delete = "loading";
+				const index = state.faqs.findIndex((faq) => faq.id === action.payload);
+				if (index !== -1) {
+					state.error.delete[index] = null;
+				}
+			})
 			.addCase(deleteFaq.fulfilled, (state, action: PayloadAction<string>) => {
 				state.status.delete = "succeeded";
 				console.log("action.payload", action.payload);

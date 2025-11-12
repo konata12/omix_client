@@ -9,8 +9,7 @@
 	gap: 80px;
 	padding: $section-vert-padding 0;
 
-	background:
-		background-gradient-center($background-section-color), $background-grid-white;
+	background: background-gradient-center($background-section-color), $background-grid-white;
 
 	.form {
 		display: flex;

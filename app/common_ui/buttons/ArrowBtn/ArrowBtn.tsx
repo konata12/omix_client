@@ -6,11 +6,7 @@ interface ArrowBtnProps {
 	handleFunc: () => void;
 }
 
-export default function ArrowBtn({
-	unactive,
-	directionLeft,
-	handleFunc,
-}: ArrowBtnProps) {
+export default function ArrowBtn({ unactive, directionLeft, handleFunc }: ArrowBtnProps) {
 	return (
 		<button
 			className={`btn blue ${unactive ? "unactive" : ""} ${styles.btn}`}

@@ -1,26 +1,15 @@
 import { fulfilled } from "@/app/services/admin/response.service";
-import {
-	Faq,
-	FaqFormValuesEnumType,
-	FaqValuesEnum,
-} from "@/app/types/data/faq.type";
+import { Faq, FaqFormValuesEnumType, FaqValuesEnum } from "@/app/types/data/faq.type";
 import { FormTypes } from "@/app/types/data/form.type";
 import { useFormChangeCheck } from "@/app/utils/hooks/common/form/useFormChangeCheck";
-import {
-	formValidateErrorsData,
-	useFormValidate,
-} from "@/app/utils/hooks/common/form/useFormValidate";
+import { formValidateErrorsData, useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
 import {
 	clearForm,
 	setFormValues,
 	setInputErrorValue,
 	setStringValue,
 } from "@/app/utils/redux/general_data/faq/faqFormsSlice";
-import {
-	createFaq,
-	setUpdateError,
-	updateFaq,
-} from "@/app/utils/redux/general_data/faq/faqSlice";
+import { createFaq, setUpdateError, updateFaq } from "@/app/utils/redux/general_data/faq/faqSlice";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
 import _ from "lodash";
@@ -29,9 +18,7 @@ import { ChangeEvent, FormEvent, useCallback, useEffect } from "react";
 
 export function useFaqForm(form: FormTypes) {
 	const { faqs } = useAppSelector((state: RootState) => state.faq);
-	const { error, ...data } = useAppSelector(
-		(state: RootState) => state.faqForms[form],
-	);
+	const { error, ...data } = useAppSelector((state: RootState) => state.faqForms[form]);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const { id } = useParams<{ id: string }>();
@@ -95,9 +82,7 @@ export function useFaqForm(form: FormTypes) {
 				dispatch(clearForm(form));
 				router.push("/admin/general_info");
 			} else {
-				(
-					document.querySelector(`#submit_error`) as HTMLInputElement
-				).scrollIntoView({
+				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
 					behavior: "smooth",
 					block: "center",
 				});
@@ -112,9 +97,7 @@ export function useFaqForm(form: FormTypes) {
 			if (isFulfilled) {
 				router.push("/admin/general_info");
 			} else {
-				(
-					document.querySelector(`#submit_error`) as HTMLInputElement
-				).scrollIntoView({
+				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
 					behavior: "smooth",
 					block: "center",
 				});
@@ -129,9 +112,7 @@ export function useFaqForm(form: FormTypes) {
 				const { id: x, ...oldData } = faqs[index];
 
 				if (_.isEqual(oldData, data)) {
-					dispatch(
-						setUpdateError("Дані ті самі, спочатку змініть значення"),
-					);
+					dispatch(setUpdateError("Дані ті самі, спочатку змініть значення"));
 					errorsData.push({ id: "submit_error" });
 				}
 			}

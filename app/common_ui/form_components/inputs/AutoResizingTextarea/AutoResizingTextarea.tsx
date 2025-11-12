@@ -37,10 +37,7 @@ export default function AutoResizingTextarea({
 
 			const rows = Math.min(
 				maxRows,
-				Math.max(
-					minRows,
-					Math.floor((scrollHeight - vertPadding) / lineHeight),
-				),
+				Math.max(minRows, Math.floor((scrollHeight - vertPadding) / lineHeight)),
 			);
 			textarea.style.height = `${rows * lineHeight + vertPadding + vertBorder}px`;
 			textarea.style.minHeight = `${minRows * lineHeight + vertPadding + vertBorder}px`;

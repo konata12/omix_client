@@ -9,9 +9,7 @@ export function useFormValidate() {
 	const scrollToError = () => {
 		if (errorsData.length) {
 			console.log(`#${errorsData[0].id}`);
-			(
-				document.querySelector(`#${errorsData[0]?.id}`) as HTMLInputElement
-			)?.scrollIntoView({
+			(document.querySelector(`#${errorsData[0]?.id}`) as HTMLInputElement)?.scrollIntoView({
 				behavior: "smooth",
 				block: "center",
 			});

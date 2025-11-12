@@ -28,9 +28,7 @@ export default function ListCardError({
 	};
 	return (
 		<div className={`${styles.card}`}>
-			<h4 className={`${statusCondition ? "" : "error"} ${styles.error}`}>
-				{errorUIMessage()}
-			</h4>
+			<h4 className={`${statusCondition ? "" : "error"} ${styles.error}`}>{errorUIMessage()}</h4>
 		</div>
 	);
 }

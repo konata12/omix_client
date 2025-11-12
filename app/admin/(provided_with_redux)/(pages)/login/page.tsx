@@ -13,9 +13,7 @@ export default function Login() {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
 
-	const { accessToken, status, error } = useAppSelector(
-		(state: RootState) => state.auth,
-	);
+	const { accessToken, status, error } = useAppSelector((state: RootState) => state.auth);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 

@@ -10,9 +10,7 @@ interface BasicFooterProps {
 
 export default function BasicFooter({ grid, mt }: BasicFooterProps): JSX.Element {
 	return (
-		<div
-			className={`${styles.container} ${grid ? styles.grid : ""} ${mt ? styles.mt : ""}`}
-		>
+		<div className={`${styles.container} ${grid ? styles.grid : ""} ${mt ? styles.mt : ""}`}>
 			<p className={`container`}>© 2025 ОМІКС. Всі права захищені.</p>
 			<div className={`${styles.lineContainer}`}>
 				<div className="ovf_hid">

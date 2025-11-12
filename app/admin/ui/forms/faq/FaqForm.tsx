@@ -15,17 +15,12 @@ interface FaqFormProps {
 }
 
 export default function FaqForm({ formType }: FaqFormProps) {
-	const { error, ...data } = useAppSelector(
-		(state: RootState) => state.faqForms[formType],
-	);
+	const { error, ...data } = useAppSelector((state: RootState) => state.faqForms[formType]);
 	const requestError = useAppSelector((state: RootState) => state.faq.error);
 	const { handleInputChange, handleSubmit } = useFaqForm(formType);
 
 	return (
-		<form
-			className={`section admin container admin_form df fdc gap_24`}
-			onSubmit={handleSubmit}
-		>
+		<form className={`section admin container admin_form df fdc gap_24`} onSubmit={handleSubmit}>
 			<InputContainer
 				label={"Заголовок (питання на яке потрібно розписати відповідь)"}
 				inputId={FaqValuesEnum.QUESTION}
@@ -48,9 +43,7 @@ export default function FaqForm({ formType }: FaqFormProps) {
 				id={"submit_error"}
 			/>
 			<button className={`btn blue t4 ${styles.submit}`} type="submit">
-				{formType === "create"
-					? "Створити нове часто задаване питання"
-					: "Зберегти зміни"}
+				{formType === "create" ? "Створити нове часто задаване питання" : "Зберегти зміни"}
 			</button>
 		</form>
 	);

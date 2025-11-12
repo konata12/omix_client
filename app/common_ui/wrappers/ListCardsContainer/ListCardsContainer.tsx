@@ -7,11 +7,7 @@ interface ListCardsContainerProps {
 	className?: string;
 }
 
-export default function ListCardsContainer({
-	titles,
-	children,
-	className,
-}: ListCardsContainerProps) {
+export default function ListCardsContainer({ titles, children, className }: ListCardsContainerProps) {
 	return (
 		<div className={`container ${styles.container} ${className || ""}`}>
 			<div className={`t4 bold ${styles.titles}`}>

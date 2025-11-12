@@ -19,9 +19,7 @@ import { ChangeEvent, useCallback } from "react";
 
 export function useGrainDryersForm(form: FormTypes) {
 	const { grain_dryers } = useAppSelector((state: RootState) => state.grainDryer);
-	const { error, ...data } = useAppSelector(
-		(state: RootState) => state.grainDryerForms[form],
-	);
+	const { error, ...data } = useAppSelector((state: RootState) => state.grainDryerForms[form]);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const { id } = useParams<{ id: string }>();

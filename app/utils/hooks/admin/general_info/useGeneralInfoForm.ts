@@ -21,9 +21,7 @@ import { RootState } from "@/app/utils/redux/store";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
 
 export function useGeneralInfoForm() {
-	const [defaultValues, setDefaultValues] = useState<
-		GeneralDataValues | undefined
-	>(undefined);
+	const [defaultValues, setDefaultValues] = useState<GeneralDataValues | undefined>(undefined);
 	const { status, error, checkboxes, ...data } = useAppSelector(
 		(state: RootState) => state.generalData,
 	);
@@ -31,19 +29,13 @@ export function useGeneralInfoForm() {
 
 	const newFormDataToCheck = {
 		...data,
-		[GeneralDataOptionalValuesEnum.YOUTUBE]: checkboxes[
-			GeneralDataOptionalValuesEnum.YOUTUBE
-		]
+		[GeneralDataOptionalValuesEnum.YOUTUBE]: checkboxes[GeneralDataOptionalValuesEnum.YOUTUBE]
 			? data[GeneralDataOptionalValuesEnum.YOUTUBE]
 			: undefined,
-		[GeneralDataOptionalValuesEnum.FACEBOOK]: checkboxes[
-			GeneralDataOptionalValuesEnum.FACEBOOK
-		]
+		[GeneralDataOptionalValuesEnum.FACEBOOK]: checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]
 			? data[GeneralDataOptionalValuesEnum.FACEBOOK]
 			: undefined,
-		[GeneralDataOptionalValuesEnum.INSTAGRAM]: checkboxes[
-			GeneralDataOptionalValuesEnum.INSTAGRAM
-		]
+		[GeneralDataOptionalValuesEnum.INSTAGRAM]: checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]
 			? data[GeneralDataOptionalValuesEnum.INSTAGRAM]
 			: undefined,
 	};
@@ -58,24 +50,18 @@ export function useGeneralInfoForm() {
 				setDefaultValues({
 					...response.payload,
 					[GeneralDataOptionalValuesEnum.YOUTUBE]:
-						response.payload[GeneralDataOptionalValuesEnum.YOUTUBE] ||
-						undefined,
+						response.payload[GeneralDataOptionalValuesEnum.YOUTUBE] || undefined,
 					[GeneralDataOptionalValuesEnum.FACEBOOK]:
-						response.payload[GeneralDataOptionalValuesEnum.FACEBOOK] ||
-						undefined,
+						response.payload[GeneralDataOptionalValuesEnum.FACEBOOK] || undefined,
 					[GeneralDataOptionalValuesEnum.INSTAGRAM]:
-						response.payload[GeneralDataOptionalValuesEnum.INSTAGRAM] ||
-						undefined,
+						response.payload[GeneralDataOptionalValuesEnum.INSTAGRAM] || undefined,
 				});
 		})();
 	}, [dispatch, status.update]);
 	useFormChangeCheck(defaultValues, newFormDataToCheck);
 
 	// FORM
-	const handleCheckbox = (
-		field: GeneralDataOptionalValuesEnumType,
-		value: boolean,
-	) => {
+	const handleCheckbox = (field: GeneralDataOptionalValuesEnumType, value: boolean) => {
 		dispatch(
 			handleCheckboxAction({
 				value,
@@ -83,10 +69,7 @@ export function useGeneralInfoForm() {
 			}),
 		);
 	};
-	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement>,
-		field: GeneralDataValuesEnumType,
-	) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>, field: GeneralDataValuesEnumType) => {
 		dispatch(
 			setStringValue({
 				value: e.target.value,
@@ -160,9 +143,7 @@ export function useGeneralInfoForm() {
 			const response = await dispatch(updateDataAction(requestData));
 			const isFulfilled = fulfilled(response.meta.requestStatus);
 			if (!isFulfilled) {
-				(
-					document.querySelector(`#submit_error`) as HTMLInputElement
-				).scrollIntoView({
+				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
 					behavior: "smooth",
 					block: "center",
 				});

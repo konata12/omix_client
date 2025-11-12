@@ -13,9 +13,7 @@ export default function ProductCategoryDropdown() {
 				setModalOpen(!modalOpen);
 			}}
 		>
-			<div
-				className={`t5 link semibold ${styles.header} ${modalOpen ? styles.active : ""}`}
-			>
+			<div className={`t5 link semibold ${styles.header} ${modalOpen ? styles.active : ""}`}>
 				<span>Наша продукція</span>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

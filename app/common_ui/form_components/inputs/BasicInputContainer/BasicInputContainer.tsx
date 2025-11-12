@@ -19,22 +19,15 @@ export default function BasicInputContainer({
 	className,
 }: BasicInputContainerProps) {
 	return (
-		<div
-			className={`${styles.inputContainer} ${className?.inputContainer || ""}`}
-		>
-			<label
-				className={`t4 bold ${className?.inputLabel || ""}`}
-				htmlFor={inputId}
-			>
+		<div className={`${styles.inputContainer} ${className?.inputContainer || ""}`}>
+			<label className={`t4 bold ${className?.inputLabel || ""}`} htmlFor={inputId}>
 				{label}
 			</label>
 
 			{children}
 
 			{error && !!error.message.length && (
-				<p className={`t5 error ${className?.error || ""}`}>
-					{error.message as string}
-				</p>
+				<p className={`t5 error ${className?.error || ""}`}>{error.message as string}</p>
 			)}
 		</div>
 	);

@@ -23,9 +23,7 @@ export default function SafeLink({
 }: SafeLinkProps) {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
-	const formDefaultValues = useAppSelector(
-		(state) => state.navigation.formDefaultValues,
-	);
+	const formDefaultValues = useAppSelector((state) => state.navigation.formDefaultValues);
 
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
 		if (customHandleClick) customHandleClick(e);

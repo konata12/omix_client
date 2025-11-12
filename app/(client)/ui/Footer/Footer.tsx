@@ -4,8 +4,7 @@ import Link from "next/link";
 import styles from "./Footer.module.scss";
 
 export default async function Footer() {
-	const { phone_number, email, address, google_maps_url, ...social } =
-		await fetchGeneralData();
+	const { phone_number, email, address, google_maps_url, ...social } = await fetchGeneralData();
 	const { youtube, facebook, instagram } = social;
 
 	return (
@@ -14,26 +13,19 @@ export default async function Footer() {
 				<div className={`${styles.contact}`}>
 					<h3>Розпочни сушильний сезон із перевагою</h3>
 					<p>
-						Отримайте індивідуальну пропозицію на твердопаливні
-						теплогенератори та сушильні комплекси — рішення, що дійсно
-						працюють.
+						Отримайте індивідуальну пропозицію на твердопаливні теплогенератори та сушильні
+						комплекси — рішення, що дійсно працюють.
 					</p>
 					<address>
 						<div className={styles.call}>
 							<Link href="/contact_us" className={`dc`}>
-								<button
-									className={`t4 btn blue bold`}
-									type={"button"}
-								>
+								<button className={`t4 btn blue bold`} type={"button"}>
 									Залишити заявку
 								</button>
 							</Link>
 							<div className={styles.numberContainer}>
 								<span>або телефонуйте:</span>
-								<Link
-									href={`tel:${phone_number}`}
-									className={`t4 link bold`}
-								>
+								<Link href={`tel:${phone_number}`} className={`t4 link bold`}>
 									<span>{phone_number}</span>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -51,11 +43,7 @@ export default async function Footer() {
 							</div>
 						</div>
 						<div className={styles.bottomAddress}>
-							<Link
-								href={`${google_maps_url}`}
-								target="_blank"
-								className={`t4 link bold`}
-							>
+							<Link href={`${google_maps_url}`} target="_blank" className={`t4 link bold`}>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="18"
@@ -67,10 +55,7 @@ export default async function Footer() {
 								</svg>
 								<span>{address}</span>
 							</Link>
-							<Link
-								href={`mailto:${email}`}
-								className={`t4 link bold`}
-							>
+							<Link href={`mailto:${email}`} className={`t4 link bold`}>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="18"

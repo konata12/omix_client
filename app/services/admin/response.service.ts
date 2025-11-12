@@ -1,7 +1,4 @@
-import {
-	ErrorResponse,
-	ParsingResponseErrorsEnum,
-} from "@/app/types/data/response.type";
+import { ErrorResponse, ParsingResponseErrorsEnum } from "@/app/types/data/response.type";
 import { AxiosError } from "axios";
 import { set, UseStore } from "idb-keyval";
 
@@ -26,15 +23,10 @@ export const reduxSerializeError = (error: unknown): ErrorResponse => {
 };
 
 export function getFileNameFromSignedURL(str: string) {
-	return str.match(
-		/[^/]+\.(?:png|jpe?g|webp|gif|bmp|svg|pdf|txt|zip|tar|gz|mp4|mp3)(?=\?)/,
-	)?.[0];
+	return str.match(/[^/]+\.(?:png|jpe?g|webp|gif|bmp|svg|pdf|txt|zip|tar|gz|mp4|mp3)(?=\?)/)?.[0];
 }
 
-export async function getFileNameFromSignedURLAndSaveBlobInIndexedDB(
-	str: string,
-	store: UseStore,
-) {
+export async function getFileNameFromSignedURLAndSaveBlobInIndexedDB(str: string, store: UseStore) {
 	// GET FILENAME
 	let fileName = getFileNameFromSignedURL(str);
 

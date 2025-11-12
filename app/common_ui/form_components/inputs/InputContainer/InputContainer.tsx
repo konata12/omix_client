@@ -33,12 +33,7 @@ export default function InputContainer({
 	className,
 }: InputContainerProps) {
 	return (
-		<BasicInputContainer
-			label={label}
-			inputId={inputId}
-			error={error}
-			className={className}
-		>
+		<BasicInputContainer label={label} inputId={inputId} error={error} className={className}>
 			<input
 				className={`input ${error && !!error.message.length ? "err" : ""} ${className?.input || ""}`}
 				id={inputId}

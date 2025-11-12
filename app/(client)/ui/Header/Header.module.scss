@@ -38,8 +38,7 @@
 			&.active {
 				.reqt {
 					&:nth-child(1) {
-						transform: rotate(135deg) translate(-18px, -17px)
-							scaleX(181.25%);
+						transform: rotate(135deg) translate(-18px, -17px) scaleX(181.25%);
 					}
 
 					&:nth-child(2) {
@@ -47,8 +46,7 @@
 					}
 
 					&:nth-child(3) {
-						transform: rotate(-135deg) translate(-18px, 17px)
-							scaleX(131.218%);
+						transform: rotate(-135deg) translate(-18px, 17px) scaleX(131.218%);
 					}
 				}
 			}
@@ -137,8 +135,7 @@
 			padding-bottom: 32px;
 			display: flex;
 			gap: 7px;
-			background:
-				background-gradient-center($primary-color), $background-grid-blue;
+			background: background-gradient-center($primary-color), $background-grid-blue;
 			box-shadow: $btn-hover-shadow;
 
 			.column {

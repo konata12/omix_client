@@ -17,8 +17,9 @@ import { useEffect } from "react";
 import styles from "./GrainDryersList.module.scss";
 
 export default function GrainDryersList() {
-	const { status, error, grain_dryers, grain_dryers_modal_is_open } =
-		useAppSelector((state: RootState) => state.grainDryer);
+	const { status, error, grain_dryers, grain_dryers_modal_is_open } = useAppSelector(
+		(state: RootState) => state.grainDryer,
+	);
 	const requestError = useAppSelector((state: RootState) => state.faq.error);
 	const dispatch = useAppDispatch();
 
@@ -55,9 +56,7 @@ export default function GrainDryersList() {
 							<button
 								className={`btn grey t4`}
 								onClick={() => {
-									dispatch(
-										handleGrainDryerModal({ i, value: true }),
-									);
+									dispatch(handleGrainDryerModal({ i, value: true }));
 								}}
 							>
 								Видалити
@@ -77,8 +76,7 @@ export default function GrainDryersList() {
 							}}
 						>
 							<p className={"t3"}>
-								Ви дійсно бажаєте{" "}
-								<span className={"semibold"}>видалити</span> часто
+								Ви дійсно бажаєте <span className={"semibold"}>видалити</span> часто
 								задаване питання:{" "}
 								<span className={"semibold"}>
 									{grain_dryer[GrainDryerStringValuesEnum.TITLE]}

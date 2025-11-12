@@ -6,20 +6,14 @@ import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import ResultModal from "@/app/common_ui/modals/ResultModal";
 import ListCardsContainer from "@/app/common_ui/wrappers/ListCardsContainer/ListCardsContainer";
 import { fulfilled } from "@/app/services/admin/response.service";
-import {
-	deleteFaq,
-	getFaq,
-	handleFaqModal,
-} from "@/app/utils/redux/general_data/faq/faqSlice";
+import { deleteFaq, getFaq, handleFaqModal } from "@/app/utils/redux/general_data/faq/faqSlice";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
 import { useEffect } from "react";
 import styles from "./FaqList.module.scss";
 
 export default function FaqList() {
-	const { status, error, faqs, faqs_modal_is_open } = useAppSelector(
-		(state: RootState) => state.faq,
-	);
+	const { status, error, faqs, faqs_modal_is_open } = useAppSelector((state: RootState) => state.faq);
 	const requestError = useAppSelector((state: RootState) => state.faq.error);
 	const dispatch = useAppDispatch();
 
@@ -67,10 +61,8 @@ export default function FaqList() {
 							}}
 						>
 							<p className={"t3"}>
-								Ви дійсно бажаєте{" "}
-								<span className={"semibold"}>видалити</span> часто
-								задаване питання:{" "}
-								<span className={"semibold"}>{faq.question}</span>?
+								Ви дійсно бажаєте <span className={"semibold"}>видалити</span> часто
+								задаване питання: <span className={"semibold"}>{faq.question}</span>?
 							</p>
 							<ErrorBlock
 								title={`Виникла помилка при видаленні:`}
@@ -81,9 +73,7 @@ export default function FaqList() {
 									className={`btn grey t4`}
 									type={"button"}
 									onClick={() => {
-										dispatch(
-											handleFaqModal({ i, value: false }),
-										);
+										dispatch(handleFaqModal({ i, value: false }));
 									}}
 								>
 									Ні

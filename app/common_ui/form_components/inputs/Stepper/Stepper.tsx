@@ -1,13 +1,18 @@
 import ArrowBtn from "@/app/common_ui/buttons/ArrowBtn/ArrowBtn";
 import { InputContainerProps } from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
+import { InputContainerBasicStyles } from "@/app/types/ui/form_components/inputContainers.type";
 import { ChangeEvent, useCallback } from "react";
 import styles from "./Stepper.module.scss";
 
-interface StepperProps<F extends string>
-	extends Omit<InputContainerProps, "changeEvent"> {
+interface StepperStyles extends InputContainerBasicStyles {
+	container?: string;
+}
+
+interface StepperProps<F extends string> extends Omit<InputContainerProps, "changeEvent"> {
 	value: number;
 	changeEvent: (value: number, field: F) => void;
 	inputId: F;
+	className?: StepperStyles;
 }
 
 export default function Stepper<F extends string>({
@@ -32,16 +37,13 @@ export default function Stepper<F extends string>({
 	};
 
 	return (
-		<div className={styles.container}>
+		<div className={`${styles.container} ${className?.container || ""}`}>
 			<label className={`t1`} htmlFor={inputId}>
 				{label}
 			</label>
 
 			<div className={styles.input_container}>
-				<ArrowBtn
-					directionLeft={true}
-					handleFunc={() => handleClick(false)}
-				/>
+				<ArrowBtn directionLeft={true} handleFunc={() => handleClick(false)} />
 				<input
 					className={`input`}
 					id={inputId}
@@ -53,9 +55,7 @@ export default function Stepper<F extends string>({
 			</div>
 
 			{error && !!error.message.length && (
-				<p className={`t5 error ${className?.error || ""}`}>
-					{error.message as string}
-				</p>
+				<p className={`t5 error ${className?.error || ""}`}>{error.message as string}</p>
 			)}
 		</div>
 	);

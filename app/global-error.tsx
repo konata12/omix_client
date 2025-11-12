@@ -23,9 +23,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 export default function ClientLayout() {
 	return (
 		<html lang="en">
-			<body
-				className={`${geologica.variable} ${ibmPlexSans.variable} antialiased`}
-			>
+			<body className={`${geologica.variable} ${ibmPlexSans.variable} antialiased`}>
 				<Header500 />
 				<main>
 					<HeroSection

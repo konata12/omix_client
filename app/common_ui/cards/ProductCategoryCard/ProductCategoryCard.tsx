@@ -37,9 +37,7 @@ export default function ProductCategoryCard({
 									<Image src={dragon} alt={""} />
 								</span>
 							) : (
-								<span
-									className={`t5 ${styles.series} ${styles.logo}`}
-								>
+								<span className={`t5 ${styles.series} ${styles.logo}`}>
 									<Image src={logo} alt={""} />
 									ОМІКС
 								</span>

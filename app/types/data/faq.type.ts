@@ -1,9 +1,4 @@
-import {
-	ErrorResponse,
-	ErrorsResponses,
-	Status,
-	StatusType,
-} from "@/app/types/data/response.type";
+import { ErrorResponse, ErrorsResponses, Status, StatusType } from "@/app/types/data/response.type";
 import { AsFromInputError } from "@/app/types/generic.type";
 
 export interface Faq {

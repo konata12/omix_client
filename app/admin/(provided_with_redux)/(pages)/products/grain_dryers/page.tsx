@@ -17,10 +17,7 @@ export default function GrainDryersPage() {
 				heading={"Зерносушильні\n" + "комплекси"}
 				description={"Керуйте каталогом цієї категорії"}
 			>
-				<Link
-					href="/admin/products"
-					className={"link btn grey t4 hero_buttons"}
-				>
+				<Link href="/admin/products" className={"link btn grey t4 hero_buttons"}>
 					Повернутись до редактору продукції
 				</Link>
 			</HeroSection>

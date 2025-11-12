@@ -7,12 +7,7 @@ interface ErrorBlockProps {
 	id?: string;
 }
 
-export default function ErrorBlock({
-	title,
-	error,
-	id,
-	className,
-}: ErrorBlockProps) {
+export default function ErrorBlock({ title, error, id, className }: ErrorBlockProps) {
 	return (
 		<>
 			{error && (

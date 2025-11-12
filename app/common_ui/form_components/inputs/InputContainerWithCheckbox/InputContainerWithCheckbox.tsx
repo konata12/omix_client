@@ -22,15 +22,10 @@ export default function InputContainerWithCheckbox({
 	className,
 }: InputContainerWithCheckbox) {
 	return (
-		<div
-			className={`${styles.inputContainer} ${className?.inputContainer || ""}`}
-		>
+		<div className={`${styles.inputContainer} ${className?.inputContainer || ""}`}>
 			<Checkbox handleFunction={handleCheckbox} isChecked={isChecked} />
 
-			<label
-				className={`t4 bold ${className?.inputLabel || ""}`}
-				htmlFor={inputId}
-			>
+			<label className={`t4 bold ${className?.inputLabel || ""}`} htmlFor={inputId}>
 				{label}
 			</label>
 
@@ -46,9 +41,7 @@ export default function InputContainerWithCheckbox({
 				/>
 
 				{error && !!error.message.length && (
-					<p className={`t5 error ${className?.error || ""}`}>
-						{error.message as string}
-					</p>
+					<p className={`t5 error ${className?.error || ""}`}>{error.message as string}</p>
 				)}
 			</AnimatePresenceWithDynamicHeight>
 		</div>

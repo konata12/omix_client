@@ -48,9 +48,7 @@ export default function Admin() {
 		<>
 			<HeroSection
 				heading={"Вітаємо на головній сторінці!"}
-				description={
-					"Готові до роботи? Оберіть з чим працюватимемо сьогодні"
-				}
+				description={"Готові до роботи? Оберіть з чим працюватимемо сьогодні"}
 			>
 				<button
 					className={"btn grey t4 hero_buttons"}
@@ -77,14 +75,10 @@ export default function Admin() {
 				error={true}
 			>
 				<p>
-					Ви дійсно бажаєте <span className={"semibold"}>покинути</span>{" "}
-					адмін-панель?
+					Ви дійсно бажаєте <span className={"semibold"}>покинути</span> адмін-панель?
 				</p>
 				<div className={styles.modalButtons}>
-					<button
-						className={`btn grey`}
-						onClick={() => setLogoutModalOpen(false)}
-					>
+					<button className={`btn grey`} onClick={() => setLogoutModalOpen(false)}>
 						Ні
 					</button>
 					<button className={`btn blue`} onClick={logout}>

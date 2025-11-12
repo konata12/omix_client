@@ -26,12 +26,7 @@ export default function TextareaContainer({
 	className,
 }: TextareaContainerProps) {
 	return (
-		<BasicInputContainer
-			label={label}
-			inputId={inputId}
-			error={error}
-			className={className}
-		>
+		<BasicInputContainer label={label} inputId={inputId} error={error} className={className}>
 			<AutoResizingTextarea
 				className={`input ${error && !!error.message.length ? "err" : ""} ${className?.input || ""}`}
 				id={inputId}

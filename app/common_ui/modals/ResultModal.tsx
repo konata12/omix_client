@@ -19,9 +19,7 @@ export default function ResultModal({
 			{active && (
 				<div className={styles.bg}>
 					<div className={styles.container}>
-						<div
-							className={`${styles.header} ${styles[error ? "red" : "green"]}`}
-						>
+						<div className={`${styles.header} ${styles[error ? "red" : "green"]}`}>
 							<h4>{title || error ? "Увага!" : "Чудово!"}</h4>
 
 							<svg

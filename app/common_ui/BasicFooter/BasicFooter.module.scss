@@ -4,9 +4,7 @@
 
 .container {
 	&.grid {
-		background:
-			background-gradient-down($background-section-color),
-			$background-grid-white;
+		background: background-gradient-down($background-section-color), $background-grid-white;
 	}
 
 	&.mt {

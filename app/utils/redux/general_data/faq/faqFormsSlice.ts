@@ -82,6 +82,5 @@ export const faqFormsSlice = createSlice({
 	},
 });
 
-export const { setFormValues, setStringValue, setInputErrorValue, clearForm } =
-	faqFormsSlice.actions;
+export const { setFormValues, setStringValue, setInputErrorValue, clearForm } = faqFormsSlice.actions;
 export default faqFormsSlice.reducer;

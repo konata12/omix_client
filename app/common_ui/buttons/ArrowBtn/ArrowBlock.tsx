@@ -6,11 +6,7 @@ interface ArrowBlockProps {
 	unactive?: boolean;
 }
 
-export default function ArrowBlock({
-	className,
-	unactive,
-	directionLeft,
-}: ArrowBlockProps) {
+export default function ArrowBlock({ className, unactive, directionLeft }: ArrowBlockProps) {
 	return (
 		<span
 			className={`btn blue ${unactive ? "unactive" : ""} ${styles.btn} ${styles.block} ${className || ""}`}

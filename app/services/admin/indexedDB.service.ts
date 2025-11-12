@@ -1,10 +1,6 @@
 import { IDBPDatabase, openDB } from "idb";
 
-const tableGroups = [
-	"household_heat_generators",
-	"industrial_heat_generators",
-	"grain_dryers",
-] as const;
+const tableGroups = ["household_heat_generators", "industrial_heat_generators", "grain_dryers"] as const;
 const tableSuffixes = ["images", "create_images", "update_images"] as const;
 
 type AppDBSchema = {

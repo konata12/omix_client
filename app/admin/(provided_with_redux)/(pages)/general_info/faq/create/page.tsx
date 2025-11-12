@@ -9,10 +9,7 @@ export default function FaqCreate() {
 				heading={"Форма часто\n" + "задаваного питання"}
 				description={"Створюйте або редагуйте часто задаване питання"}
 			>
-				<Link
-					href="/admin/general_info"
-					className={"link btn grey t4 hero_buttons"}
-				>
+				<Link href="/admin/general_info" className={"link btn grey t4 hero_buttons"}>
 					Повернутись до загальної інформації
 				</Link>
 			</HeroSection>

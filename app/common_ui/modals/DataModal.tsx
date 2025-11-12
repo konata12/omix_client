@@ -8,12 +8,7 @@ export interface ModalProps {
 	children: React.ReactNode;
 }
 
-export default function DataModal({
-	active,
-	title,
-	closeHandler,
-	children,
-}: ModalProps): JSX.Element {
+export default function DataModal({ active, title, closeHandler, children }: ModalProps): JSX.Element {
 	return (
 		<>
 			{active && (
@@ -24,10 +19,7 @@ export default function DataModal({
 						</div>
 						<div className={styles.content}>
 							{children}
-							<button
-								className={`btn blue t4 ${styles.button}`}
-								onClick={closeHandler}
-							>
+							<button className={`btn blue t4 ${styles.button}`} onClick={closeHandler}>
 								Ок
 							</button>
 						</div>

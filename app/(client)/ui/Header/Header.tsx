@@ -99,38 +99,23 @@ export function Header() {
 						>
 							<div className={styles.column}>
 								<h5 className={styles.title}>Наша діяльність</h5>
-								<Link
-									href="/about_us"
-									className={`t5 link contrast semibold`}
-								>
+								<Link href="/about_us" className={`t5 link contrast semibold`}>
 									Про нас
 								</Link>
-								<Link
-									href="/news"
-									className={`t5 link contrast semibold`}
-								>
+								<Link href="/news" className={`t5 link contrast semibold`}>
 									Новини
 								</Link>
 							</div>
 							<div className={styles.column}>
 								<h5 className={styles.title}>Наша продукція</h5>
 								{/* todo change url path*/}
-								<Link
-									href="/about_us"
-									className={`t5 link contrast semibold`}
-								>
+								<Link href="/about_us" className={`t5 link contrast semibold`}>
 									Побутові теплогенератори
 								</Link>
-								<Link
-									href="/news"
-									className={`t5 link contrast semibold`}
-								>
+								<Link href="/news" className={`t5 link contrast semibold`}>
 									Промислові теплогенератори
 								</Link>
-								<Link
-									href="/news"
-									className={`t5 link contrast semibold`}
-								>
+								<Link href="/news" className={`t5 link contrast semibold`}>
 									Зерносушильні комплекси
 								</Link>
 							</div>
@@ -138,10 +123,7 @@ export function Header() {
 								<h5 className={styles.title}>Ми у соцмережах</h5>
 								{/* todo change url path*/}
 								<div className={styles.icons}>
-									<Link
-										href="/about_us"
-										className={`link contrast dc`}
-									>
+									<Link href="/about_us" className={`link contrast dc`}>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											width="40"
@@ -156,10 +138,7 @@ export function Header() {
 											/>
 										</svg>
 									</Link>
-									<Link
-										href="/news"
-										className={`link contrast dc`}
-									>
+									<Link href="/news" className={`link contrast dc`}>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											width="41"
@@ -180,10 +159,7 @@ export function Header() {
 											/>
 										</svg>
 									</Link>
-									<Link
-										href="/news"
-										className={`link contrast dc`}
-									>
+									<Link href="/news" className={`link contrast dc`}>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											width="44"

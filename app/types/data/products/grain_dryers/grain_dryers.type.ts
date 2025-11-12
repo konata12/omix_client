@@ -104,9 +104,7 @@ export enum GrainDryerStepperValuesEnum {
 }
 
 // ENUM TYPES
-export type GrainDryerValuesEnumType =
-	| GrainDryerNumberValuesEnumType
-	| GrainDryerStringValuesEnumType;
+export type GrainDryerValuesEnumType = GrainDryerNumberValuesEnumType | GrainDryerStringValuesEnumType;
 export type GrainDryerStringValuesEnumType = `${GrainDryerStringValuesEnum}`;
 
 export type GrainDryerNumberValuesEnumType =

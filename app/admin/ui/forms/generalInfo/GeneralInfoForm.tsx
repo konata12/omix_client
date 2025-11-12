@@ -26,15 +26,10 @@ export default function GeneralInfoForm() {
 		instagram: instagramCheckbox,
 	} = checkboxes;
 
-	const { handleCheckbox, handleInputChange, modalCloseHandler, handleSubmit } =
-		useGeneralInfoForm();
+	const { handleCheckbox, handleInputChange, modalCloseHandler, handleSubmit } = useGeneralInfoForm();
 
 	return (
-		<form
-			id={GeneralInfoFormId}
-			onSubmit={handleSubmit}
-			className={`container df fdc gap_48`}
-		>
+		<form id={GeneralInfoFormId} onSubmit={handleSubmit} className={`container df fdc gap_48`}>
 			<Title
 				title={"Контактна інформація"}
 				description={
@@ -54,10 +49,7 @@ export default function GeneralInfoForm() {
 						inputId={GeneralDataStringValuesEnum.PHONE_NUMBER}
 						value={data[GeneralDataStringValuesEnum.PHONE_NUMBER]}
 						changeEvent={(e) =>
-							handleInputChange(
-								e,
-								GeneralDataStringValuesEnum.PHONE_NUMBER,
-							)
+							handleInputChange(e, GeneralDataStringValuesEnum.PHONE_NUMBER)
 						}
 						error={error[GeneralDataStringValuesEnum.PHONE_NUMBER]}
 						placeholder={"+380 (__) ___-__-__"}
@@ -69,9 +61,7 @@ export default function GeneralInfoForm() {
 						label={"Електронна пошта"}
 						inputId={GeneralDataStringValuesEnum.EMAIL}
 						value={data[GeneralDataStringValuesEnum.EMAIL]}
-						changeEvent={(e) =>
-							handleInputChange(e, GeneralDataStringValuesEnum.EMAIL)
-						}
+						changeEvent={(e) => handleInputChange(e, GeneralDataStringValuesEnum.EMAIL)}
 						error={error[GeneralDataStringValuesEnum.EMAIL]}
 						placeholder={"зразок@gmail.com"}
 						className={{
@@ -86,9 +76,7 @@ export default function GeneralInfoForm() {
 						label={"Повна адреса"}
 						inputId={GeneralDataStringValuesEnum.ADDRESS}
 						value={data[GeneralDataStringValuesEnum.ADDRESS]}
-						changeEvent={(e) =>
-							handleInputChange(e, GeneralDataStringValuesEnum.ADDRESS)
-						}
+						changeEvent={(e) => handleInputChange(e, GeneralDataStringValuesEnum.ADDRESS)}
 						error={error[GeneralDataStringValuesEnum.ADDRESS]}
 						placeholder={"м. ___, вул. ___, №"}
 						className={{
@@ -100,10 +88,7 @@ export default function GeneralInfoForm() {
 						inputId={GeneralDataStringValuesEnum.GOOGLE_MAPS_URL}
 						value={data[GeneralDataStringValuesEnum.GOOGLE_MAPS_URL]}
 						changeEvent={(e) =>
-							handleInputChange(
-								e,
-								GeneralDataStringValuesEnum.GOOGLE_MAPS_URL,
-							)
+							handleInputChange(e, GeneralDataStringValuesEnum.GOOGLE_MAPS_URL)
 						}
 						error={error[GeneralDataStringValuesEnum.GOOGLE_MAPS_URL]}
 						placeholder={"https://maps.google.com/..."}
@@ -121,17 +106,9 @@ export default function GeneralInfoForm() {
 						inputId={GeneralDataOptionalValuesEnum.YOUTUBE}
 						value={data[GeneralDataOptionalValuesEnum.YOUTUBE]}
 						handleCheckbox={() =>
-							handleCheckbox(
-								GeneralDataOptionalValuesEnum.YOUTUBE,
-								!youtubeCheckbox,
-							)
+							handleCheckbox(GeneralDataOptionalValuesEnum.YOUTUBE, !youtubeCheckbox)
 						}
-						changeEvent={(e) =>
-							handleInputChange(
-								e,
-								GeneralDataOptionalValuesEnum.YOUTUBE,
-							)
-						}
+						changeEvent={(e) => handleInputChange(e, GeneralDataOptionalValuesEnum.YOUTUBE)}
 						error={error[GeneralDataOptionalValuesEnum.YOUTUBE]}
 						placeholder={"https://youtube.com/@назваканалу"}
 						className={{
@@ -139,24 +116,14 @@ export default function GeneralInfoForm() {
 						}}
 					/>
 					<InputContainerWithCheckbox
-						isChecked={
-							checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]
-						}
+						isChecked={checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]}
 						label={"Facebook"}
 						inputId={GeneralDataOptionalValuesEnum.FACEBOOK}
 						value={data[GeneralDataOptionalValuesEnum.FACEBOOK]}
 						handleCheckbox={() =>
-							handleCheckbox(
-								GeneralDataOptionalValuesEnum.FACEBOOK,
-								!facebookCheckbox,
-							)
+							handleCheckbox(GeneralDataOptionalValuesEnum.FACEBOOK, !facebookCheckbox)
 						}
-						changeEvent={(e) =>
-							handleInputChange(
-								e,
-								GeneralDataOptionalValuesEnum.FACEBOOK,
-							)
-						}
+						changeEvent={(e) => handleInputChange(e, GeneralDataOptionalValuesEnum.FACEBOOK)}
 						error={error[GeneralDataOptionalValuesEnum.FACEBOOK]}
 						placeholder={"https://facebook.com/нікнейм"}
 						className={{
@@ -164,23 +131,15 @@ export default function GeneralInfoForm() {
 						}}
 					/>
 					<InputContainerWithCheckbox
-						isChecked={
-							checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]
-						}
+						isChecked={checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]}
 						label={"Instagram"}
 						inputId={GeneralDataOptionalValuesEnum.INSTAGRAM}
 						value={data[GeneralDataOptionalValuesEnum.INSTAGRAM]}
 						handleCheckbox={() =>
-							handleCheckbox(
-								GeneralDataOptionalValuesEnum.INSTAGRAM,
-								!instagramCheckbox,
-							)
+							handleCheckbox(GeneralDataOptionalValuesEnum.INSTAGRAM, !instagramCheckbox)
 						}
 						changeEvent={(e) =>
-							handleInputChange(
-								e,
-								GeneralDataOptionalValuesEnum.INSTAGRAM,
-							)
+							handleInputChange(e, GeneralDataOptionalValuesEnum.INSTAGRAM)
 						}
 						error={error[GeneralDataOptionalValuesEnum.INSTAGRAM]}
 						placeholder={"https://instagram.com/нікнейм"}
@@ -196,13 +155,10 @@ export default function GeneralInfoForm() {
 				error={false}
 			>
 				<p className={"t3"}>
-					<span className={"semibold"}>Зміни збережено!</span> Незабаром
-					вони оновляться на сайті.
+					<span className={"semibold"}>Зміни збережено!</span> Незабаром вони оновляться на
+					сайті.
 				</p>
-				<button
-					className={`btn blue t4 ${styles.modal_btn}`}
-					onClick={modalCloseHandler}
-				>
+				<button className={`btn blue t4 ${styles.modal_btn}`} onClick={modalCloseHandler}>
 					Ок!
 				</button>
 			</ResultModal>

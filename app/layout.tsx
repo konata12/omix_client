@@ -27,9 +27,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body
-				className={`${geologica.variable} ${ibmPlexSans.variable} antialiased`}
-			>
+			<body className={`${geologica.variable} ${ibmPlexSans.variable} antialiased`}>
 				{children}
 			</body>
 		</html>

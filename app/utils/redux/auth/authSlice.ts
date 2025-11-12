@@ -29,8 +29,7 @@ export const login = createAsyncThunk(
 			if (error instanceof AxiosError) {
 				console.log(error);
 				const serializableError: ErrorResponse = {
-					message:
-						error.response?.data.message || "Unexpected client error",
+					message: error.response?.data.message || "Unexpected client error",
 					statusCode: error.status || 500,
 				};
 				return rejectWithValue(serializableError);
@@ -39,39 +38,32 @@ export const login = createAsyncThunk(
 	},
 );
 
-export const logout = createAsyncThunk(
-	"auth/logout",
-	async (_, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.patch("auth/logout");
-			console.log(response);
-			return response.data;
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				console.log(error);
-				const serializableError: ErrorResponse = {
-					message:
-						error.response?.data.message || "Unexpected client error",
-					statusCode: error.status || 500,
-				};
-				return rejectWithValue(serializableError);
-			}
-		}
-	},
-);
-
-export const refreshTokens = createAsyncThunk(
-	"auth/refreshTokens",
-	async (_, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.post("auth/refresh");
-			return response.data;
-		} catch (error) {
+export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.patch("auth/logout");
+		console.log(response);
+		return response.data;
+	} catch (error) {
+		if (error instanceof AxiosError) {
 			console.log(error);
-			return rejectWithValue(0);
+			const serializableError: ErrorResponse = {
+				message: error.response?.data.message || "Unexpected client error",
+				statusCode: error.status || 500,
+			};
+			return rejectWithValue(serializableError);
 		}
-	},
-);
+	}
+});
+
+export const refreshTokens = createAsyncThunk("auth/refreshTokens", async (_, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.post("auth/refresh");
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(0);
+	}
+});
 
 export const authSlice = createSlice({
 	name: "auth",
@@ -83,13 +75,10 @@ export const authSlice = createSlice({
 			.addCase(login.pending, (state) => {
 				state.status.login = "loading";
 			})
-			.addCase(
-				login.fulfilled,
-				(state, action: PayloadAction<AccessToken>) => {
-					state.status.login = "succeeded";
-					state.accessToken = action.payload.access_token;
-				},
-			)
+			.addCase(login.fulfilled, (state, action: PayloadAction<AccessToken>) => {
+				state.status.login = "succeeded";
+				state.accessToken = action.payload.access_token;
+			})
 			.addCase(login.rejected, (state, action) => {
 				state.status.login = "failed";
 				state.accessToken = null;
@@ -113,13 +102,10 @@ export const authSlice = createSlice({
 				state.status.refresh = "loading";
 				state.error.refresh = null;
 			})
-			.addCase(
-				refreshTokens.fulfilled,
-				(state, action: PayloadAction<AccessToken>) => {
-					state.status.refresh = "succeeded";
-					state.accessToken = action.payload.access_token;
-				},
-			)
+			.addCase(refreshTokens.fulfilled, (state, action: PayloadAction<AccessToken>) => {
+				state.status.refresh = "succeeded";
+				state.accessToken = action.payload.access_token;
+			})
 			.addCase(refreshTokens.rejected, (state, action) => {
 				state.status.refresh = "failed";
 				state.accessToken = null;
