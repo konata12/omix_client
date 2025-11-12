@@ -7,6 +7,14 @@
 	flex-direction: column;
 	gap: 8px;
 
+	input[type='number'] {
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+	}
+
 	@include respond-to(l) {
 		gap: 12px;
 	}

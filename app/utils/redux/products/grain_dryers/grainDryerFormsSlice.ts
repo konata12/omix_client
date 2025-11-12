@@ -1,10 +1,12 @@
-import { FormTypes } from "@/app/types/data/form.type";
+import { FormTypes, NotStepperValue } from "@/app/types/data/form.type";
 import {
 	GrainDryerFormErrors,
 	GrainDryerFormsState,
 	GrainDryerFormState,
-	GrainDryerNumberValuesEnum,
-	GrainDryerNumberValuesEnumType,
+	GrainDryerNotStepperValuesEnum,
+	GrainDryerNotStepperValuesType,
+	GrainDryerStepperValuesEnum,
+	GrainDryerStepperValuesType,
 	GrainDryerStringValuesEnum,
 	GrainDryerStringValuesEnumType,
 	GrainDryerValuesEnumType,
@@ -15,48 +17,48 @@ import _ from "lodash";
 const initError: GrainDryerFormErrors = {
 	// GENERAL
 	[GrainDryerStringValuesEnum.TITLE]: { message: "" },
-	[GrainDryerNumberValuesEnum.HEATING_SECTIONS]: { message: "" },
-	[GrainDryerNumberValuesEnum.COOLING_SECTIONS]: { message: "" },
-	[GrainDryerNumberValuesEnum.GRAIN_VOLUME]: { message: "" },
-	[GrainDryerNumberValuesEnum.GRAIN_WEIGHT]: { message: "" },
+	[GrainDryerStepperValuesEnum.HEATING_SECTIONS]: { message: "" },
+	[GrainDryerStepperValuesEnum.COOLING_SECTIONS]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.GRAIN_VOLUME]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.GRAIN_WEIGHT]: { message: "" },
 	[GrainDryerStringValuesEnum.DRYING_METHOD]: { message: "" },
-	[GrainDryerNumberValuesEnum.PRODUCTIVITY]: { message: "" },
-	[GrainDryerNumberValuesEnum.HEATED_AIR_VOLUME]: { message: "" },
-	[GrainDryerNumberValuesEnum.AIR_TEMPERATURE]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.PRODUCTIVITY]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.HEATED_AIR_VOLUME]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.AIR_TEMPERATURE]: { message: "" },
 
 	// POWER
-	[GrainDryerNumberValuesEnum.NEEDED_HEAT_POWER]: { message: "" },
-	[GrainDryerNumberValuesEnum.ELECTRIC_POWER]: { message: "" },
-	[GrainDryerNumberValuesEnum.HEAT_POWER_CONSUMPTION]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.NEEDED_HEAT_POWER]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.ELECTRIC_POWER]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.HEAT_POWER_CONSUMPTION]: { message: "" },
 
 	// CONSTRUCTION SETTINGS
-	[GrainDryerNumberValuesEnum.HEIGHT]: { message: "" },
-	[GrainDryerNumberValuesEnum.WIDTH]: { message: "" },
-	[GrainDryerNumberValuesEnum.LENGTH]: { message: "" },
-	[GrainDryerNumberValuesEnum.WEIGHT]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.HEIGHT]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.WIDTH]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.LENGTH]: { message: "" },
+	[GrainDryerNotStepperValuesEnum.WEIGHT]: { message: "" },
 
 	// CONFIGURATION
-	[GrainDryerNumberValuesEnum.HEAT_GENERATORS_COUNT]: { message: "" },
-	[GrainDryerNumberValuesEnum.GRAIN_DRYERS_COUNT]: { message: "" },
-	[GrainDryerNumberValuesEnum.LOADING_TANKS_TOP_COUNT]: { message: "" },
-	[GrainDryerNumberValuesEnum.ELECTRICAL_ENCLOSURES_COUNT]: { message: "" },
-	[GrainDryerNumberValuesEnum.HEATED_AIR_TEMPERATURE_SENSORS_COUNT]: {
+	[GrainDryerStepperValuesEnum.HEAT_GENERATORS_COUNT]: { message: "" },
+	[GrainDryerStepperValuesEnum.GRAIN_DRYERS_COUNT]: { message: "" },
+	[GrainDryerStepperValuesEnum.LOADING_TANKS_TOP_COUNT]: { message: "" },
+	[GrainDryerStepperValuesEnum.ELECTRICAL_ENCLOSURES_COUNT]: { message: "" },
+	[GrainDryerStepperValuesEnum.HEATED_AIR_TEMPERATURE_SENSORS_COUNT]: {
 		message: "",
 	},
-	[GrainDryerNumberValuesEnum.SMOKE_TEMPERATURE_SENSORS_COUNT]: { message: "" },
-	[GrainDryerNumberValuesEnum.HEATED_GRAIN_TEMPERATURE_SENSORS_COUNT]: {
+	[GrainDryerStepperValuesEnum.SMOKE_TEMPERATURE_SENSORS_COUNT]: { message: "" },
+	[GrainDryerStepperValuesEnum.HEATED_GRAIN_TEMPERATURE_SENSORS_COUNT]: {
 		message: "",
 	},
-	[GrainDryerNumberValuesEnum.COOLED_GRAIN_TEMPERATURE_SENSORS_COUNT]: {
+	[GrainDryerStepperValuesEnum.COOLED_GRAIN_TEMPERATURE_SENSORS_COUNT]: {
 		message: "",
 	},
-	[GrainDryerNumberValuesEnum.LOADING_TANK_ROTARY_LEVEL_SENSORS_COUNT]: {
+	[GrainDryerStepperValuesEnum.LOADING_TANK_ROTARY_LEVEL_SENSORS_COUNT]: {
 		message: "",
 	},
-	[GrainDryerNumberValuesEnum.DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT]: {
+	[GrainDryerStepperValuesEnum.DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT]: {
 		message: "",
 	},
-	[GrainDryerNumberValuesEnum.WARRANTY_YEARS_COUNT]: { message: "" },
+	[GrainDryerStepperValuesEnum.WARRANTY_YEARS_COUNT]: { message: "" },
 
 	// GRAPHIC INFO
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: { message: "" },
@@ -66,38 +68,38 @@ const initError: GrainDryerFormErrors = {
 const initFormData: GrainDryerFormState = {
 	// GENERAL
 	[GrainDryerStringValuesEnum.TITLE]: "",
-	[GrainDryerNumberValuesEnum.HEATING_SECTIONS]: 0,
-	[GrainDryerNumberValuesEnum.COOLING_SECTIONS]: 0,
-	[GrainDryerNumberValuesEnum.GRAIN_VOLUME]: 0,
-	[GrainDryerNumberValuesEnum.GRAIN_WEIGHT]: 0,
+	[GrainDryerStepperValuesEnum.HEATING_SECTIONS]: 0,
+	[GrainDryerStepperValuesEnum.COOLING_SECTIONS]: 0,
+	[GrainDryerNotStepperValuesEnum.GRAIN_VOLUME]: "",
+	[GrainDryerNotStepperValuesEnum.GRAIN_WEIGHT]: "",
 	[GrainDryerStringValuesEnum.DRYING_METHOD]: "",
-	[GrainDryerNumberValuesEnum.PRODUCTIVITY]: 0,
-	[GrainDryerNumberValuesEnum.HEATED_AIR_VOLUME]: 0,
-	[GrainDryerNumberValuesEnum.AIR_TEMPERATURE]: 0,
+	[GrainDryerNotStepperValuesEnum.PRODUCTIVITY]: "",
+	[GrainDryerNotStepperValuesEnum.HEATED_AIR_VOLUME]: "",
+	[GrainDryerNotStepperValuesEnum.AIR_TEMPERATURE]: "",
 
 	// POWER
-	[GrainDryerNumberValuesEnum.NEEDED_HEAT_POWER]: 0,
-	[GrainDryerNumberValuesEnum.ELECTRIC_POWER]: 0,
-	[GrainDryerNumberValuesEnum.HEAT_POWER_CONSUMPTION]: 0,
+	[GrainDryerNotStepperValuesEnum.NEEDED_HEAT_POWER]: "",
+	[GrainDryerNotStepperValuesEnum.ELECTRIC_POWER]: "",
+	[GrainDryerNotStepperValuesEnum.HEAT_POWER_CONSUMPTION]: "",
 
 	// CONSTRUCTION SETTINGS
-	[GrainDryerNumberValuesEnum.HEIGHT]: 0,
-	[GrainDryerNumberValuesEnum.WIDTH]: 0,
-	[GrainDryerNumberValuesEnum.LENGTH]: 0,
-	[GrainDryerNumberValuesEnum.WEIGHT]: 0,
+	[GrainDryerNotStepperValuesEnum.HEIGHT]: "",
+	[GrainDryerNotStepperValuesEnum.WIDTH]: "",
+	[GrainDryerNotStepperValuesEnum.LENGTH]: "",
+	[GrainDryerNotStepperValuesEnum.WEIGHT]: "",
 
 	// CONFIGURATION
-	[GrainDryerNumberValuesEnum.HEAT_GENERATORS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.GRAIN_DRYERS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.LOADING_TANKS_TOP_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.ELECTRICAL_ENCLOSURES_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.HEATED_AIR_TEMPERATURE_SENSORS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.SMOKE_TEMPERATURE_SENSORS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.HEATED_GRAIN_TEMPERATURE_SENSORS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.COOLED_GRAIN_TEMPERATURE_SENSORS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.LOADING_TANK_ROTARY_LEVEL_SENSORS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT]: 0,
-	[GrainDryerNumberValuesEnum.WARRANTY_YEARS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.HEAT_GENERATORS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.GRAIN_DRYERS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.LOADING_TANKS_TOP_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.ELECTRICAL_ENCLOSURES_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.HEATED_AIR_TEMPERATURE_SENSORS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.SMOKE_TEMPERATURE_SENSORS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.HEATED_GRAIN_TEMPERATURE_SENSORS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.COOLED_GRAIN_TEMPERATURE_SENSORS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.LOADING_TANK_ROTARY_LEVEL_SENSORS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT]: 0,
+	[GrainDryerStepperValuesEnum.WARRANTY_YEARS_COUNT]: 0,
 
 	// GRAPHIC INFO
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: "",
@@ -129,13 +131,26 @@ export const grainDryerFormsSlice = createSlice({
 			const { value, form, field } = action.payload;
 			state[form][field] = value;
 		},
-		setNumberValue(
+		setNotStepperValue(
+			state,
+			action: {
+				payload: {
+					value: NotStepperValue;
+					form: FormTypes;
+					field: GrainDryerNotStepperValuesType;
+				};
+			},
+		) {
+			const { value, form, field } = action.payload;
+			state[form][field] = value;
+		},
+		setStepperValue(
 			state,
 			action: {
 				payload: {
 					value: number;
 					form: FormTypes;
-					field: GrainDryerNumberValuesEnumType;
+					field: GrainDryerStepperValuesType;
 				};
 			},
 		) {
@@ -177,7 +192,8 @@ export const grainDryerFormsSlice = createSlice({
 export const {
 	setFormValues,
 	setStringValue,
-	setNumberValue,
+	setNotStepperValue,
+	setStepperValue,
 	setInputErrorValue,
 	clearForm,
 } = grainDryerFormsSlice.actions;
