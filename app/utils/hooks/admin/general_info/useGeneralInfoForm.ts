@@ -18,13 +18,7 @@ import {
 } from "@/app/utils/redux/general_data/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
-import React, {
-	ChangeEvent,
-	FormEvent,
-	useCallback,
-	useEffect,
-	useState,
-} from "react";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
 
 export function useGeneralInfoForm() {
 	const [defaultValues, setDefaultValues] = useState<
@@ -35,21 +29,21 @@ export function useGeneralInfoForm() {
 	);
 	const dispatch = useAppDispatch();
 
-	const { youtube, facebook, instagram } = data;
-	const {
-		youtube: youtubeCheckbox,
-		facebook: facebookCheckbox,
-		instagram: instagramCheckbox,
-	} = checkboxes;
 	const newFormDataToCheck = {
 		...data,
-		youtube: youtubeCheckbox
+		[GeneralDataOptionalValuesEnum.YOUTUBE]: checkboxes[
+			GeneralDataOptionalValuesEnum.YOUTUBE
+		]
 			? data[GeneralDataOptionalValuesEnum.YOUTUBE]
 			: undefined,
-		facebook: facebookCheckbox
+		[GeneralDataOptionalValuesEnum.FACEBOOK]: checkboxes[
+			GeneralDataOptionalValuesEnum.FACEBOOK
+		]
 			? data[GeneralDataOptionalValuesEnum.FACEBOOK]
 			: undefined,
-		instagram: instagramCheckbox
+		[GeneralDataOptionalValuesEnum.INSTAGRAM]: checkboxes[
+			GeneralDataOptionalValuesEnum.INSTAGRAM
+		]
 			? data[GeneralDataOptionalValuesEnum.INSTAGRAM]
 			: undefined,
 	};
@@ -63,13 +57,13 @@ export function useGeneralInfoForm() {
 			if (isFulfilled)
 				setDefaultValues({
 					...response.payload,
-					youtube:
+					[GeneralDataOptionalValuesEnum.YOUTUBE]:
 						response.payload[GeneralDataOptionalValuesEnum.YOUTUBE] ||
 						undefined,
-					facebook:
+					[GeneralDataOptionalValuesEnum.FACEBOOK]:
 						response.payload[GeneralDataOptionalValuesEnum.FACEBOOK] ||
 						undefined,
-					instagram:
+					[GeneralDataOptionalValuesEnum.INSTAGRAM]:
 						response.payload[GeneralDataOptionalValuesEnum.INSTAGRAM] ||
 						undefined,
 				});
@@ -119,17 +113,17 @@ export function useGeneralInfoForm() {
 				// check checkboxes
 				if (
 					entry[0] === GeneralDataOptionalValuesEnum.YOUTUBE &&
-					!youtubeCheckbox
+					!checkboxes[GeneralDataOptionalValuesEnum.YOUTUBE]
 				)
 					return;
 				if (
 					entry[0] === GeneralDataOptionalValuesEnum.FACEBOOK &&
-					!facebookCheckbox
+					!checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]
 				)
 					return;
 				if (
 					entry[0] === GeneralDataOptionalValuesEnum.INSTAGRAM &&
-					!instagramCheckbox
+					!checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]
 				)
 					return;
 
@@ -152,9 +146,15 @@ export function useGeneralInfoForm() {
 
 			const requestData: GeneralDataRequestValues = {
 				...data,
-				youtube: youtubeCheckbox ? youtube : undefined,
-				facebook: facebookCheckbox ? facebook : undefined,
-				instagram: instagramCheckbox ? instagram : undefined,
+				youtube: checkboxes[GeneralDataOptionalValuesEnum.YOUTUBE]
+					? data[GeneralDataOptionalValuesEnum.YOUTUBE]
+					: undefined,
+				facebook: checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]
+					? data[GeneralDataOptionalValuesEnum.FACEBOOK]
+					: undefined,
+				instagram: checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]
+					? data[GeneralDataOptionalValuesEnum.INSTAGRAM]
+					: undefined,
 			};
 
 			const response = await dispatch(updateDataAction(requestData));

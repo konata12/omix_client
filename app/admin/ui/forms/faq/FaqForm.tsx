@@ -24,7 +24,7 @@ export default function FaqForm({ formType }: FaqFormProps) {
 	return (
 		<form
 			className={`section admin container admin_form df fdc gap_24`}
-			onSubmit={(e) => handleSubmit(e, data)}
+			onSubmit={handleSubmit}
 		>
 			<InputContainer
 				label={"Заголовок (питання на яке потрібно розписати відповідь)"}

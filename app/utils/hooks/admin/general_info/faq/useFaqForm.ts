@@ -139,7 +139,7 @@ export function useFaqForm(form: FormTypes) {
 		[dispatch, form],
 	);
 	const handleSubmit = useCallback(
-		async (e: FormEvent<HTMLFormElement>, data: Omit<Faq, "id">) => {
+		async (e: FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 
 			const { errorsData, scrollToError } = useFormValidate();
@@ -178,7 +178,7 @@ export function useFaqForm(form: FormTypes) {
 					break;
 			}
 		},
-		[dispatch, form, id],
+		[dispatch, form, id, data],
 	);
 
 	// HELPER
