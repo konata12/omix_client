@@ -4,7 +4,7 @@ import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import ResultModal from "@/app/common_ui/modals/ResultModal";
 import ListCardsContainer from "@/app/common_ui/wrappers/ListCardsContainer/ListCardsContainer";
 import { fulfilled } from "@/app/services/admin/response.service";
-import { GrainDryerValuesEnum } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
+import { GrainDryerStringValuesEnum } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import {
 	deleteGrainDryer,
@@ -50,7 +50,7 @@ export default function GrainDryersList() {
 			{grain_dryers.length && !error.getAll ? (
 				grain_dryers.map((grain_dryer, i) => (
 					<ListCard key={grain_dryer.id}>
-						<h4>{grain_dryer[GrainDryerValuesEnum.TITLE]}</h4>
+						<h4>{grain_dryer[GrainDryerStringValuesEnum.TITLE]}</h4>
 						<div className={styles.btns}>
 							<button
 								className={`btn grey t4`}
@@ -81,7 +81,7 @@ export default function GrainDryersList() {
 								<span className={"semibold"}>видалити</span> часто
 								задаване питання:{" "}
 								<span className={"semibold"}>
-									{grain_dryer[GrainDryerValuesEnum.TITLE]}
+									{grain_dryer[GrainDryerStringValuesEnum.TITLE]}
 								</span>
 								?
 							</p>
