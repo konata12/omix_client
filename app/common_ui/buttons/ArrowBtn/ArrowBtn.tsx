@@ -3,7 +3,7 @@ import styles from "./ArrowBtn.module.scss";
 interface ArrowBtnProps {
 	directionLeft?: boolean;
 	unactive?: boolean;
-	handleFunc?: () => void;
+	handleFunc: () => void;
 }
 
 export default function ArrowBtn({
