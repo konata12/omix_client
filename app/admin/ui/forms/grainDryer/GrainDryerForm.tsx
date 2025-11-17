@@ -2,11 +2,18 @@
 
 import InputBlock from "@/app/admin/ui/sections/InputBlock/InputBlock";
 import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
+import { ImageInputCarouselPreviewFromIndexedDB } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputCarouselPreviewFromIndexedDB/ImageInputCarouselPreviewFromIndexedDB";
+import { ImageInputContainer } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputContainer";
+import { ImageInputPreviewFromIndexedDB } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputPreviewFromIndexedDB/ImageInputPreviewFromIndexedDB";
 import InputContainer from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
+import InputContainerWithCheckbox from "@/app/common_ui/form_components/inputs/InputContainerWithCheckbox/InputContainerWithCheckbox";
 import Stepper from "@/app/common_ui/form_components/inputs/Stepper/Stepper";
 import Title from "@/app/common_ui/titles/Title";
+import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
+	GrainDryerImagesValuesEnum,
+	GrainDryerImageValuesEnum,
 	GrainDryerNotStepperValuesEnum,
 	GrainDryerStepperValuesEnum,
 	GrainDryerStringValuesEnum,
@@ -91,10 +98,23 @@ const configurationInputsArrays = [
 ];
 
 export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
-	const { error, ...data } = useAppSelector((state: RootState) => state.grainDryerForms[formType]);
+	const { error, checkboxes, ...data } = useAppSelector(
+		(state: RootState) => state.grainDryerForms[formType],
+	);
 	const requestError = useAppSelector((state: RootState) => state.faq.error);
-	const { handleStringInputChange, handleNumberInputChange, handleStepperChange } =
-		useGrainDryersForm(formType);
+
+	const store = getIndexedDBForForm("grain_dryers", formType);
+	const {
+		handleStringInputChange,
+		handleNumberInputChange,
+		handleStepperChange,
+		handleImageInputChange,
+		handleImageCarouselInputChange,
+		handleImageCarouselDelete,
+		handleCheckbox,
+	} = useGrainDryersForm(formType, store);
+
+	console.log(data);
 
 	return (
 		<form
@@ -257,8 +277,73 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 							<div className={`straight_dashed_line`}></div>
 						</div>
 					</InputBlock>
+					{/*	RECOMMENDED HEAT GENERATORS */}
+					{/*	TODO ADD HEAT GENERATORS SEARCHBAR */}
 				</div>
-				<div className={`df fdc gap_80`}></div>
+				{/* GRAPHIC INFO */}
+				<div className={`df fdc gap_48`}>
+					<Title
+						title={"Графічна інфрмація"}
+						description={"Додайте зображення для цієї моделі"}
+						type={"h3"}
+					/>
+					<InputBlock title={"YouTube відгук (опціонально)"}>
+						<InputContainerWithCheckbox
+							isChecked={checkboxes[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]}
+							label={"Вставте посилання на відеоогляд цього продукту"}
+							inputId={GrainDryerStringValuesEnum.YOUTUBE_REVIEW}
+							value={data[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]}
+							handleCheckbox={() =>
+								handleCheckbox(
+									GrainDryerStringValuesEnum.YOUTUBE_REVIEW,
+									!checkboxes[GrainDryerStringValuesEnum.YOUTUBE_REVIEW],
+								)
+							}
+							changeEvent={(e) =>
+								handleStringInputChange(e, GrainDryerStringValuesEnum.YOUTUBE_REVIEW)
+							}
+							error={error[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]}
+							placeholder={"https://youtube.com/відео"}
+						/>
+					</InputBlock>
+					<div className={`df fdc gap_80`}>
+						<InputBlock title={"Фотокартка (фотографія картки)"}>
+							<ImageInputContainer
+								inputId={GrainDryerImageValuesEnum.CARD_IMAGE}
+								changeEvent={(e) => {
+									handleImageInputChange(e, GrainDryerImageValuesEnum.CARD_IMAGE);
+								}}
+							>
+								<ImageInputPreviewFromIndexedDB
+									inputId={GrainDryerImageValuesEnum.CARD_IMAGE}
+									store={store}
+									imageName={data[GrainDryerImageValuesEnum.CARD_IMAGE]}
+									error={error[GrainDryerImageValuesEnum.CARD_IMAGE]}
+								/>
+							</ImageInputContainer>
+						</InputBlock>
+						<InputBlock title={"Фотоколаж (фотографії продукту)"}>
+							<ImageInputContainer
+								inputId={GrainDryerImagesValuesEnum.PRODUCT_IMAGES}
+								multiple={true}
+								changeEvent={(e) => {
+									handleImageCarouselInputChange(
+										e,
+										GrainDryerImagesValuesEnum.PRODUCT_IMAGES,
+									);
+								}}
+							>
+								<ImageInputCarouselPreviewFromIndexedDB
+									inputId={GrainDryerImagesValuesEnum.PRODUCT_IMAGES}
+									store={store}
+									imageNames={data[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]}
+									error={error[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]}
+									handleDelete={handleImageCarouselDelete}
+								/>
+							</ImageInputContainer>
+						</InputBlock>
+					</div>
+				</div>
 			</div>
 			<ErrorBlock
 				title={`Виникла помилка при ${formType === "create" ? "створенні" : "збереженні"}:`}
@@ -268,6 +353,9 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 			<button className={`btn blue t4 ${styles.submit}`} type="submit">
 				{formType === "create" ? "Створити " : "Зберегти зміни"}
 			</button>
+			<p className={`t1 ${styles.bottom_text}`}>
+				*Перед збереженням змін переконайтесь що УСІ ЗМІНЕНІ ПОЛЯ ЗАПОВНЕНІ ПРАВИЛЬНО
+			</p>
 		</form>
 	);
 }

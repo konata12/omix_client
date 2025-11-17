@@ -1,8 +1,13 @@
-import { FormTypes, NotStepperValue } from "@/app/types/data/form.type";
+import { FormImageInputType, FormTypes, NotStepperValue } from "@/app/types/data/form.type";
 import {
+	GrainDryerCheckboxesType,
 	GrainDryerFormErrors,
 	GrainDryerFormsState,
 	GrainDryerFormState,
+	GrainDryerImagesValuesEnum,
+	GrainDryerImagesValuesType,
+	GrainDryerImageValuesEnum,
+	GrainDryerImageValuesType,
 	GrainDryerNotStepperValuesEnum,
 	GrainDryerNotStepperValuesType,
 	GrainDryerStepperValuesEnum,
@@ -62,8 +67,8 @@ const initError: GrainDryerFormErrors = {
 
 	// GRAPHIC INFO
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: { message: "" },
-	[GrainDryerStringValuesEnum.CARD_IMAGE]: { message: "" },
-	[GrainDryerStringValuesEnum.PRODUCT_IMAGES]: { message: "" },
+	[GrainDryerImageValuesEnum.CARD_IMAGE]: { message: "" },
+	[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]: { message: "" },
 };
 const initFormData: GrainDryerFormState = {
 	// GENERAL
@@ -103,9 +108,12 @@ const initFormData: GrainDryerFormState = {
 
 	// GRAPHIC INFO
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: "",
-	[GrainDryerStringValuesEnum.CARD_IMAGE]: "",
-	[GrainDryerStringValuesEnum.PRODUCT_IMAGES]: "",
+	[GrainDryerImageValuesEnum.CARD_IMAGE]: null,
+	[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]: [],
 
+	checkboxes: {
+		[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: false,
+	},
 	error: initError,
 };
 
@@ -124,12 +132,38 @@ export const grainDryerFormsSlice = createSlice({
 				payload: {
 					value: string;
 					form: FormTypes;
-					field: GrainDryerStringValuesEnumType;
+					field: GrainDryerStringValuesEnumType | GrainDryerImageValuesType;
 				};
 			},
 		) {
 			const { value, form, field } = action.payload;
 			state[form][field] = value;
+		},
+		deleteImageArrayValue(
+			state,
+			action: {
+				payload: {
+					index: number;
+					form: FormTypes;
+					field: GrainDryerImagesValuesType;
+				};
+			},
+		) {
+			const { index, form, field } = action.payload;
+			state[form][field].splice(index, 1);
+		},
+		pushImageArrayValues(
+			state,
+			action: {
+				payload: {
+					value: FormImageInputType[];
+					form: FormTypes;
+					field: GrainDryerImagesValuesType;
+				};
+			},
+		) {
+			const { value, form, field } = action.payload;
+			state[form][field].push(...value);
 		},
 		setNotStepperValue(
 			state,
@@ -156,6 +190,19 @@ export const grainDryerFormsSlice = createSlice({
 		) {
 			const { value, form, field } = action.payload;
 			state[form][field] = value;
+		},
+		handleCheckbox(
+			state,
+			action: {
+				payload: {
+					value: boolean;
+					form: FormTypes;
+					field: GrainDryerCheckboxesType;
+				};
+			},
+		) {
+			const { value, form, field } = action.payload;
+			state[form].checkboxes[field] = value;
 		},
 		setInputErrorValue(
 			state,
@@ -192,8 +239,11 @@ export const grainDryerFormsSlice = createSlice({
 export const {
 	setFormValues,
 	setStringValue,
+	deleteImageArrayValue,
+	pushImageArrayValues,
 	setNotStepperValue,
 	setStepperValue,
+	handleCheckbox,
 	setInputErrorValue,
 	clearForm,
 } = grainDryerFormsSlice.actions;

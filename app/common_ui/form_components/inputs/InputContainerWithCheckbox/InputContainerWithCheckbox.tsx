@@ -25,7 +25,7 @@ export default function InputContainerWithCheckbox({
 		<div className={`${styles.inputContainer} ${className?.inputContainer || ""}`}>
 			<Checkbox handleFunction={handleCheckbox} isChecked={isChecked} />
 
-			<label className={`t4 bold ${className?.inputLabel || ""}`} htmlFor={inputId}>
+			<label className={`t4 bold ${className?.label || ""}`} htmlFor={inputId}>
 				{label}
 			</label>
 

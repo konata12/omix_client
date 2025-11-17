@@ -9,8 +9,8 @@ export default function FaqCreate() {
 				heading={"Картка зерносушильного\n" + "комплексу"}
 				description={"Створюйте або редагуйте картку товару"}
 			>
-				<Link href="/admin/general_info" className={"link btn grey t4 hero_buttons"}>
-					Повернутись до загальної інформації
+				<Link href="/admin/products/grain_dryers" className={"link btn grey t4 hero_buttons"}>
+					Повернутись до зерносушильних комплексів
 				</Link>
 			</HeroSection>
 			<GrainDryerForm formType={"create"} />
