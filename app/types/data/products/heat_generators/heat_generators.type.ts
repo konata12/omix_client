@@ -72,7 +72,6 @@ export interface HeatGeneratorFormsState {
 export enum HeatGeneratorStringValuesEnum {
 	// GENERAL
 	TITLE = "title",
-	DRYING_METHOD = "drying_method",
 	// POWER
 	POWER_REGULATION_DIAPASON = "power_regulation_diapason",
 	// FUEL

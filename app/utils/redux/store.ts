@@ -6,6 +6,8 @@ import navigationSlice from "@/app/utils/redux/navigation/navigationSlice";
 import grainDryerFormsSlice from "@/app/utils/redux/products/grain_dryers/grainDryerFormsSlice";
 import grainDryerSlice from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
 import heatGeneratorSlice from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
+import householdHeatGeneratorFormsSlice from "@/app/utils/redux/products/heat_generators/householdHeatGeneratorFormsSlice";
+import industrialHeatGeneratorFormsSlice from "@/app/utils/redux/products/heat_generators/industrialHeatGeneratorFormsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import {
@@ -39,6 +41,8 @@ const rootReducer = combineReducers({
 	// FORM DATA
 	faqForms: faqFormsSlice,
 	grainDryerForms: grainDryerFormsSlice,
+	householdHeatGeneratorForms: householdHeatGeneratorFormsSlice,
+	industrialHeatGeneratorForms: industrialHeatGeneratorFormsSlice,
 
 	// FORM DATA AND API
 	generalData: generalDataSlice,
