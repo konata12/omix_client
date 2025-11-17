@@ -7,7 +7,7 @@ export interface InputContainerWithChangeEventProps<T extends FormElements> {
 // GENERAL
 export interface InputContainerBasicStyles {
 	inputContainer?: string;
-	inputLabel?: string;
+	label?: string;
 	error?: string;
 }
 

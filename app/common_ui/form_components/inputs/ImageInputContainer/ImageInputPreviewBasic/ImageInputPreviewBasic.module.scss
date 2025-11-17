@@ -1,0 +1,38 @@
+@use '../../../../../styles/variables' as *;
+
+.imageContainer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	&.small {
+		width: 298px;
+		height: 240px;
+	}
+
+	&.big {
+		width: 100%;
+		aspect-ratio: 2 / 1;
+		box-shadow: $card-big-shadow;
+	}
+
+	&.noImage {
+		background-color: $card-fill-color;
+	}
+
+	&.error {
+		border: 1px solid $accent-color;
+	}
+
+	img {
+		object-fit: contain;
+
+		&.noImage {
+			height: unset !important;
+			width: unset !important;
+			inset: unset !important;
+		}
+	}
+}

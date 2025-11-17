@@ -5,3 +5,4 @@ export type FormTypes = "create" | "update";
 
 // INPUTS
 export type NotStepperValue = number | "";
+export type FormImageInputType = string | null;

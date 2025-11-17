@@ -1,4 +1,6 @@
+import { FormTypes } from "@/app/types/data/form.type";
 import { IDBPDatabase, openDB } from "idb";
+import { createStore } from "idb-keyval";
 
 const tableGroups = ["household_heat_generators", "industrial_heat_generators", "grain_dryers"] as const;
 const tableSuffixes = ["images", "create_images", "update_images"] as const;
@@ -62,6 +64,10 @@ export const getIndexedDB = async (): Promise<IDBPDatabase<AppDBSchema>> => {
 	return dbInstance;
 };
 
+export const getIndexedDBForForm = (name: string, type: FormTypes) => {
+	const storeName = `${name}_${type}_images`;
+	return createStore(DB_NAME, storeName);
+};
 // export async function transferImageBetweenIndexDBStores(
 // 	image: string,
 // 	getStoreName: keyof AppDBSchema,

@@ -1,0 +1,57 @@
+@use '../../../../../styles/variables' as *;
+
+.imagePreview {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 36px;
+	width: 100%;
+	overflow: hidden;
+
+	.embla {
+		//overflow: hidden;
+		width: 375px;
+
+		.embla_container {
+			display: flex;
+			gap: 8px;
+			width: 100%;
+
+			.embla_slide {
+				flex: 0 0 100%;
+				min-width: 0;
+				padding: 26px;
+			}
+		}
+
+		.buttons {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 36px;
+			margin-top: 36px;
+
+			.scroll {
+				position: relative;
+				height: 8px;
+				width: 164px;
+				background-color: #D3D8DD;
+
+				.bar {
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 100%;
+					background-color: $secondary-color;
+					filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.21)) drop-shadow(0 3px 3px rgba(0, 0, 0, 0.15)) drop-shadow(0 6px 4px rgba(0, 0, 0, 0.10)) drop-shadow(0 11px 4px rgba(0, 0, 0, 0.02));
+					transition: $anim;
+				}
+			}
+		}
+	}
+
+	.caption {
+		text-align: center;
+	}
+}

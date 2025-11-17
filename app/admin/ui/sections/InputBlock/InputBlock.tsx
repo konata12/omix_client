@@ -6,7 +6,7 @@ interface InputSectionProps {
 export default function ({ title, children }: InputSectionProps) {
 	return (
 		<div className={`df fdc gap_36 admin_cont`}>
-			<h3>{title}</h3>
+			<h4>{title}</h4>
 			{children}
 		</div>
 	);

@@ -1,8 +1,9 @@
+import { FormInputError } from "@/app/types/data/form.type";
 import { ErrorResponse } from "@/app/types/data/response.type";
 
 interface ErrorBlockProps {
 	title: string;
-	error: ErrorResponse | null;
+	error: FormInputError | null;
 	className?: string;
 	id?: string;
 }
@@ -10,7 +11,7 @@ interface ErrorBlockProps {
 export default function ErrorBlock({ title, error, id, className }: ErrorBlockProps) {
 	return (
 		<>
-			{error && (
+			{!!error?.message.length && (
 				<div className={`error t1 ${className || ""}`} id={id}>
 					<p className={"h5 semibold"}>{title}</p>
 					<p>{error.message}</p>

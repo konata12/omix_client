@@ -20,7 +20,7 @@ export default function BasicInputContainer({
 }: BasicInputContainerProps) {
 	return (
 		<div className={`${styles.inputContainer} ${className?.inputContainer || ""}`}>
-			<label className={`t4 bold ${className?.inputLabel || ""}`} htmlFor={inputId}>
+			<label className={`t4 bold ${className?.label || ""}`} htmlFor={inputId}>
 				{label}
 			</label>
 

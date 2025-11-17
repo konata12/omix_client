@@ -1,10 +1,8 @@
-import { getIndexedDBStoreForImages } from "@/app/utils/hooks/admin/indexedDB/useIndexedDBStoreForImages";
-import { get } from "idb-keyval";
+import { get, UseStore } from "idb-keyval";
 import { useEffect, useState } from "react";
 
-export function useGetImageUrlFromIndexedDBImage(imageName: string | null, storeName: string) {
+export function useGetImageUrlFromIndexedDBImage(imageName: string | null, store: UseStore) {
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
-	const store = getIndexedDBStoreForImages(storeName);
 
 	useEffect(() => {
 		let isMounted = true;
@@ -31,7 +29,7 @@ export function useGetImageUrlFromIndexedDBImage(imageName: string | null, store
 				URL.revokeObjectURL(imageUrl); // Clean up the object URL
 			}
 		};
-	}, [imageName, storeName]);
+	}, [imageName, store]);
 
 	return imageUrl;
 }

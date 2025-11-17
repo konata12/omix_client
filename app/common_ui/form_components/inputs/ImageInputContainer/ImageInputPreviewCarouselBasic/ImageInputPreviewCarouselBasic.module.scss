@@ -1,0 +1,71 @@
+@use '../../../../../styles/variables' as *;
+
+.imageContainer {
+	position: relative;
+	height: 334px;
+	width: 334px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	&.noImage {
+		background-color: $card-fill-color;
+	}
+
+	.cover {
+		position: absolute;
+		inset: 0;
+		padding: 26px;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+
+		opacity: 0;
+		background: $card-image-cover-admin-gradient;
+		transition: $anim;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		.delete {
+			position: relative;
+			cursor: pointer;
+			background-color: transparent;
+			padding: 24px 32px;
+			border: none;
+			outline: none;
+			color: $text-body-unactive-primary-color;
+
+			&:hover {
+				color: $text-primary-color;
+
+				&::after {
+					opacity: 1;
+				}
+			}
+
+			&::after {
+				content: "";
+				position: absolute;
+				inset: auto 0 0 0;
+				height: 4px;
+
+				opacity: 0;
+				background-color: $text-body-unactive-contrast-color;
+			}
+		}
+	}
+
+	img {
+		position: unset !important;
+		object-fit: contain;
+
+		&.noImage {
+			height: unset !important;
+			width: unset !important;
+			inset: unset !important;
+		}
+	}
+}
