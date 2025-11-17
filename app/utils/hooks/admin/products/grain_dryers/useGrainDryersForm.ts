@@ -186,37 +186,37 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 			const entries = Object.entries(data);
 
 			// VALIDATE DATA
-			entries.forEach((entry) => {
-				// for strings
-				if (!entry[1].length) {
-					const field = entry[0] as FaqFormValuesEnumType;
-
-					dispatch(
-						setInputErrorValue({
-							message: "Введіть значення",
-							form,
-							field,
-						}),
-					);
-					errorsData.push({ id: field });
-				}
-			});
-
-			// VALIDATE CHANGE IN UPDATE
-			validateUpdateSameData(data, errorsData);
-
-			// SCROLL TO ERROR INPUT AND FINISH EXECUTING
-			if (scrollToError()) return;
-
-			switch (form) {
-				case "create":
-					await handleCreate(data);
-					break;
-
-				case "update":
-					await handleUpdate(data);
-					break;
-			}
+			// entries.forEach((entry) => {
+			// 	// for strings
+			// 	if (!entry[1].length) {
+			// 		const field = entry[0] as FaqFormValuesEnumType;
+			//
+			// 		dispatch(
+			// 			setInputErrorValue({
+			// 				message: "Введіть значення",
+			// 				form,
+			// 				field,
+			// 			}),
+			// 		);
+			// 		errorsData.push({ id: field });
+			// 	}
+			// });
+			//
+			// // VALIDATE CHANGE IN UPDATE
+			// validateUpdateSameData(data, errorsData);
+			//
+			// // SCROLL TO ERROR INPUT AND FINISH EXECUTING
+			// if (scrollToError()) return;
+			//
+			// switch (form) {
+			// 	case "industrial":
+			// 		await handleCreate(data);
+			// 		break;
+			//
+			// 	case "update":
+			// 		await handleUpdate(data);
+			// 		break;
+			// }
 		},
 		[dispatch, form, id, data],
 	);

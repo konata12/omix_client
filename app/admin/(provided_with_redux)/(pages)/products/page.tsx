@@ -1,5 +1,6 @@
 "use client";
 
+import { HEAT_GENERATOR_TYPES } from "@/app/admin/(provided_with_redux)/(pages)/products/heat_generators/constants";
 import ProductCategoryCard from "@/app/common_ui/cards/ProductCategoryCard/ProductCategoryCard";
 import HeroSection from "@/app/common_ui/sections/HeroSection/HeroSection";
 import grain_dryer from "@/public/admin/grain_dryer.png";
@@ -13,13 +14,13 @@ const cards = [
 		title: "Побутові теплогенератори",
 		image: household_heat_generator,
 		imageAlt: "Тепло генератор",
-		href: "/admin/products",
+		href: `/admin/products/heat_generators/${HEAT_GENERATOR_TYPES[0]}`,
 	},
 	{
 		title: "Промислові теплогенератори",
 		image: industrial_heat_generator,
 		imageAlt: "Тепло генератор",
-		href: "/admin/products ",
+		href: `/admin/products/heat_generators/${HEAT_GENERATOR_TYPES[1]}`,
 	},
 	{
 		title: "Зерносушильні комплекси ",

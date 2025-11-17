@@ -5,6 +5,7 @@ import generalDataSlice from "@/app/utils/redux/general_data/generalSlice";
 import navigationSlice from "@/app/utils/redux/navigation/navigationSlice";
 import grainDryerFormsSlice from "@/app/utils/redux/products/grain_dryers/grainDryerFormsSlice";
 import grainDryerSlice from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
+import heatGeneratorSlice from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import {
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
 	auth: authSlice,
 	faq: faqSlice,
 	grainDryer: grainDryerSlice,
+	heatGenerator: heatGeneratorSlice,
 
 	// FORM DATA
 	faqForms: faqFormsSlice,
