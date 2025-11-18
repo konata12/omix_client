@@ -101,7 +101,7 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 	const { error, checkboxes, ...data } = useAppSelector(
 		(state: RootState) => state.grainDryerForms[formType],
 	);
-	const requestError = useAppSelector((state: RootState) => state.faq.error);
+	const requestError = useAppSelector((state: RootState) => state.grainDryer.error);
 
 	const store = getIndexedDBForForm("grain_dryers", formType);
 	const {
