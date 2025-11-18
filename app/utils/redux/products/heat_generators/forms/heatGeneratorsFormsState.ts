@@ -1,22 +1,13 @@
-import { FormImageInputType, FormTypes, NotStepperValue } from "@/app/types/data/form.type";
 import {
-	HeatGeneratorCheckboxesType,
 	HeatGeneratorFormErrors,
 	HeatGeneratorFormsState,
 	HeatGeneratorFormState,
 	HeatGeneratorImagesValuesEnum,
-	HeatGeneratorImagesValuesType,
 	HeatGeneratorImageValuesEnum,
-	HeatGeneratorImageValuesType,
 	HeatGeneratorNotStepperValuesEnum,
-	HeatGeneratorNotStepperValuesType,
 	HeatGeneratorStepperValuesEnum,
-	HeatGeneratorStepperValuesType,
 	HeatGeneratorStringValuesEnum,
-	HeatGeneratorStringValuesEnumType,
-	HeatGeneratorValuesEnumType,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
-import { createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
 
 const initError: HeatGeneratorFormErrors = {
@@ -57,7 +48,7 @@ const initError: HeatGeneratorFormErrors = {
 	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: { message: "" },
 	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: { message: "" },
 };
-const initFormData: HeatGeneratorFormState = {
+export const heatGeneratorsInitFormData: HeatGeneratorFormState = {
 	// GENERAL
 	[HeatGeneratorStringValuesEnum.TITLE]: "",
 
@@ -101,134 +92,7 @@ const initFormData: HeatGeneratorFormState = {
 	error: initError,
 };
 
-export const initialState: HeatGeneratorFormsState = {
-	create: _.cloneDeep(initFormData),
-	update: _.cloneDeep(initFormData),
+export const heatGeneratorsFormsInitialState: HeatGeneratorFormsState = {
+	create: _.cloneDeep(heatGeneratorsInitFormData),
+	update: _.cloneDeep(heatGeneratorsInitFormData),
 };
-
-export const householdHeatGeneratorFormsSlice = createSlice({
-	name: "householdHeatGeneratorForms",
-	initialState,
-	reducers: {
-		setStringValue(
-			state,
-			action: {
-				payload: {
-					value: string;
-					form: FormTypes;
-					field: HeatGeneratorStringValuesEnumType | HeatGeneratorImageValuesType;
-				};
-			},
-		) {
-			const { value, form, field } = action.payload;
-			state[form][field] = value;
-		},
-		deleteImageArrayValue(
-			state,
-			action: {
-				payload: {
-					index: number;
-					form: FormTypes;
-					field: HeatGeneratorImagesValuesType;
-				};
-			},
-		) {
-			const { index, form, field } = action.payload;
-			state[form][field].splice(index, 1);
-		},
-		pushImageArrayValues(
-			state,
-			action: {
-				payload: {
-					value: FormImageInputType[];
-					form: FormTypes;
-					field: HeatGeneratorImagesValuesType;
-				};
-			},
-		) {
-			const { value, form, field } = action.payload;
-			state[form][field].push(...value);
-		},
-		setNotStepperValue(
-			state,
-			action: {
-				payload: {
-					value: NotStepperValue;
-					form: FormTypes;
-					field: HeatGeneratorNotStepperValuesType;
-				};
-			},
-		) {
-			const { value, form, field } = action.payload;
-			state[form][field] = value;
-		},
-		setStepperValue(
-			state,
-			action: {
-				payload: {
-					value: number;
-					form: FormTypes;
-					field: HeatGeneratorStepperValuesType;
-				};
-			},
-		) {
-			const { value, form, field } = action.payload;
-			state[form][field] = value;
-		},
-		handleCheckbox(
-			state,
-			action: {
-				payload: {
-					value: boolean;
-					form: FormTypes;
-					field: HeatGeneratorCheckboxesType;
-				};
-			},
-		) {
-			const { value, form, field } = action.payload;
-			state[form].checkboxes[field] = value;
-		},
-		setInputErrorValue(
-			state,
-			action: {
-				payload: {
-					message: string;
-					form: FormTypes;
-					field: HeatGeneratorValuesEnumType;
-				};
-			},
-		) {
-			const { message, form, field } = action.payload;
-			state[form].error[field] = { message };
-		},
-
-		setFormValues(
-			state,
-			action: {
-				payload: {
-					data: HeatGeneratorFormState;
-					form: FormTypes;
-				};
-			},
-		) {
-			const { data, form } = action.payload;
-			state[form] = data;
-		},
-		clearForm(state, action: { payload: FormTypes }) {
-			state[action.payload] = initFormData;
-		},
-	},
-});
-
-export const {
-	setFormValues,
-	setStringValue,
-	deleteImageArrayValue,
-	pushImageArrayValues,
-	setNotStepperValue,
-	setStepperValue,
-	handleCheckbox,
-	setInputErrorValue,
-	clearForm,
-} = householdHeatGeneratorFormsSlice.actions;
-export default householdHeatGeneratorFormsSlice.reducer;
