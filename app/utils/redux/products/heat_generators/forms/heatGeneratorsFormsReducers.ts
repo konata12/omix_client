@@ -4,6 +4,7 @@ import {
 	HeatGeneratorFormsState,
 	HeatGeneratorFormState,
 	HeatGeneratorImagesValuesType,
+	HeatGeneratorImageValuesType,
 	HeatGeneratorNotStepperValuesType,
 	HeatGeneratorStepperValuesType,
 	HeatGeneratorStringValuesEnumType,
@@ -18,7 +19,7 @@ export const heatGeneratorCommonReducers = {
 			payload: {
 				value: string;
 				form: FormTypes;
-				field: HeatGeneratorStringValuesEnumType;
+				field: HeatGeneratorStringValuesEnumType | HeatGeneratorImageValuesType;
 			};
 		},
 	) {

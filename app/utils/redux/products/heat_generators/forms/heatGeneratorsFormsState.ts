@@ -10,6 +10,8 @@ import {
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import _ from "lodash";
 
+export const FUEL_BURNING_TYPE_DEFAULT_VALUE = "Оберіть спосіб горіння";
+
 const initError: HeatGeneratorFormErrors = {
 	// GENERAL
 	[HeatGeneratorStringValuesEnum.TITLE]: { message: "" },
@@ -59,7 +61,7 @@ export const heatGeneratorsInitFormData: HeatGeneratorFormState = {
 	[HeatGeneratorStringValuesEnum.POWER_REGULATION_DIAPASON]: "",
 
 	// FUEL
-	[HeatGeneratorStringValuesEnum.FUEL_BURNING_TYPE]: "",
+	[HeatGeneratorStringValuesEnum.FUEL_BURNING_TYPE]: FUEL_BURNING_TYPE_DEFAULT_VALUE,
 	[HeatGeneratorStringValuesEnum.FUEL_TYPE]: "",
 	[HeatGeneratorStringValuesEnum.FUEL_MOISTURE]: "",
 	[HeatGeneratorStringValuesEnum.FUEL_BURNING_TIME]: "",
