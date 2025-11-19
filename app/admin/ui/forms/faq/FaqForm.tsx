@@ -2,7 +2,7 @@
 
 import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import InputContainer from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
-import TextareaContainer from "@/app/common_ui/form_components/inputs/TextareaContainer/TextareaContainer";
+import TextareaContainer from "@/app/common_ui/form_components/textareas/TextareaContainer/TextareaContainer";
 import { FaqValuesEnum } from "@/app/types/data/faq.type";
 import { FormTypes } from "@/app/types/data/form.type";
 import { useFaqForm } from "@/app/utils/hooks/admin/general_info/faq/useFaqForm";

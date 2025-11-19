@@ -1,12 +1,12 @@
 import BasicInputContainer, {
 	BasicInputContainerProps,
-} from "@/app/common_ui/form_components/inputs/BasicInputContainer/BasicInputContainer";
+} from "@/app/common_ui/form_components/BasicInputContainer/BasicInputContainer";
 import {
 	InputContainerBasicStyles,
 	InputContainerWithChangeEventProps,
 	InputOptionalProps,
 } from "@/app/types/ui/form_components/inputContainers.type";
-import { InputHTMLAttributes } from "react";
+import React, { InputHTMLAttributes } from "react";
 
 export interface InputContainerStyles extends InputContainerBasicStyles {
 	input?: string;

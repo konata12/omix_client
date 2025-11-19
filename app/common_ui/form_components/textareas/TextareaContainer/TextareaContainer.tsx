@@ -1,7 +1,7 @@
-import AutoResizingTextarea from "@/app/common_ui/form_components/inputs/AutoResizingTextarea/AutoResizingTextarea";
+import AutoResizingTextarea from "@/app/common_ui/form_components/textareas/AutoResizingTextarea/AutoResizingTextarea";
 import BasicInputContainer, {
 	BasicInputContainerProps,
-} from "@/app/common_ui/form_components/inputs/BasicInputContainer/BasicInputContainer";
+} from "@/app/common_ui/form_components/BasicInputContainer/BasicInputContainer";
 import { InputContainerStyles } from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
 import {
 	InputContainerWithChangeEventProps,

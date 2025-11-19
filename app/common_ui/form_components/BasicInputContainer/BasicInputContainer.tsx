@@ -1,6 +1,6 @@
 import { FormInputError } from "@/app/types/data/form.type";
 import { InputContainerBasicStyles } from "@/app/types/ui/form_components/inputContainers.type";
-import { JSX } from "react";
+import { CSSProperties, JSX } from "react";
 import styles from "./BasicInputContainer.module.scss";
 
 export interface BasicInputContainerProps {
@@ -9,6 +9,7 @@ export interface BasicInputContainerProps {
 	children: JSX.Element;
 	error?: FormInputError;
 	className?: InputContainerBasicStyles;
+	style?: CSSProperties;
 }
 
 export default function BasicInputContainer({
@@ -17,9 +18,10 @@ export default function BasicInputContainer({
 	children,
 	error,
 	className,
+	style,
 }: BasicInputContainerProps) {
 	return (
-		<div className={`${styles.inputContainer} ${className?.inputContainer || ""}`}>
+		<div className={`${styles.inputContainer} ${className?.inputContainer || ""}`} style={style}>
 			<label className={`t4 bold ${className?.label || ""}`} htmlFor={inputId}>
 				{label}
 			</label>
