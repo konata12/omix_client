@@ -1,0 +1,29 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.selectValueContainer {
+	position: relative;
+
+	.input {
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.arrow {
+		position: absolute;
+		top: 50%;
+		right: calc(24px);
+		transform: translateY(-50%);
+
+		transform-origin: center;
+		transition: $anim;
+
+		&.active {
+			transform: translateY(-50%) rotate(180deg);
+		}
+
+		path {
+			fill: $text-body-active-primary-color
+		}
+	}
+}

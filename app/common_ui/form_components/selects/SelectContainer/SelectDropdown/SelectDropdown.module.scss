@@ -1,0 +1,40 @@
+@use "../../../../../styles/variables" as *;
+@use "../../../../../styles/mixins" as *;
+
+
+.droplist {
+	border: 1px solid $card-stroke-color;
+	background-color: $card-fill-color;
+	box-shadow: $btn-shadow;
+
+	.option {
+		cursor: pointer;
+		position: relative;
+		padding: 12px 16px;
+		background-color: transparent;
+		@include t5();
+
+		&::after {
+			position: absolute;
+			content: "";
+			inset: -1px;
+		}
+
+		&:hover {
+			color: $text-body-active-contrast-color;
+
+			&::after {
+				background-color: $primary-color;
+			}
+		}
+
+		span {
+			position: relative;
+			z-index: 1;
+		}
+
+		@include respond-to(l) {
+			padding: 16px 24px;
+		}
+	}
+}
