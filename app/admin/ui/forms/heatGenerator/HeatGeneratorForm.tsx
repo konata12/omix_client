@@ -1,5 +1,9 @@
 "use client";
 
+import {
+	FUEL_BURNING_TYPES,
+	HEAT_GENERATOR_TYPES,
+} from "@/app/admin/(provided_with_redux)/(pages)/products/heat_generators/constants";
 import InputBlock from "@/app/admin/ui/sections/InputBlock/InputBlock";
 import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import { ImageInputCarouselPreviewFromIndexedDB } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputCarouselPreviewFromIndexedDB/ImageInputCarouselPreviewFromIndexedDB";
@@ -96,13 +100,13 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 		handleImageCarouselInputChange,
 		handleImageCarouselDelete,
 		handleCheckbox,
+		handleSubmit,
 	} = useHeatGeneratorsForm(formType, heatGeneratorType, store);
+	const fuelBurningTypesOptions =
+		heatGeneratorType === HEAT_GENERATOR_TYPES[0] ? [FUEL_BURNING_TYPES[0]] : FUEL_BURNING_TYPES;
 
 	return (
-		<form
-			className={`section admin container df fdc gap_24`}
-			// onSubmit={(e) => handleSubmit(e, data)}
-		>
+		<form className={`section admin container df fdc gap_24`} onSubmit={(e) => handleSubmit(e)}>
 			<Title
 				title={"Технічні характеристики"}
 				description={"Введіть усі технічні параметри моделі"}
@@ -178,7 +182,7 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 								label={"Спосіб горіння"}
 								inputId={HeatGeneratorStringValuesEnum.FUEL_BURNING_TYPE}
 								value={data[HeatGeneratorStringValuesEnum.FUEL_BURNING_TYPE]}
-								options={["123", "zxc", "W"]}
+								options={fuelBurningTypesOptions}
 								handleSelect={(value: string) =>
 									handleSelectChange(
 										value,

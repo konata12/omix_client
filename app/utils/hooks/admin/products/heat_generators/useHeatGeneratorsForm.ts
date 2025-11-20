@@ -14,6 +14,7 @@ import { useHeatGeneratorsFormReducers } from "@/app/utils/hooks/admin/products/
 import { useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { setUpdateError } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
+import { FUEL_BURNING_TYPE_DEFAULT_VALUE } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
 import { RootState } from "@/app/utils/redux/store";
 import { del, set, UseStore } from "idb-keyval";
 import { useParams, useRouter } from "next/navigation";
@@ -25,8 +26,12 @@ export function useHeatGeneratorsForm(
 	heat_generators_type: HeatGeneratorsTypes,
 	store: UseStore,
 ) {
-	const { grain_dryers } = useAppSelector((state: RootState) => state.grainDryer);
-	const { error, ...data } = useAppSelector((state: RootState) => state.grainDryerForms[form]);
+	const { heat_generators } = useAppSelector(
+		(state: RootState) => state.heatGenerator[heat_generators_type],
+	);
+	const { error, checkboxes, ...data } = useAppSelector(
+		(state: RootState) => state[`${heat_generators_type}HeatGeneratorForms`][form],
+	);
 
 	const {
 		deleteImageArrayValue,
@@ -102,7 +107,6 @@ export function useHeatGeneratorsForm(
 						message: "Зображення повинно бути в форматі PNG",
 					}),
 				);
-				// todo fix scroll to image on error
 				(document.querySelector(`#${field}`) as HTMLInputElement).scrollIntoView({
 					behavior: "smooth",
 					block: "center",
@@ -134,19 +138,21 @@ export function useHeatGeneratorsForm(
 		async (e: ChangeEvent<HTMLInputElement>, field: HeatGeneratorImagesValuesType) => {
 			const values = Array.from(e.target.files || []);
 			const imageNames: string[] = [];
+			const errors: string[] = []; // need this to check if to show error when uploaded many images
 			if (!values.length) return;
 
 			await Promise.all(
 				values.map(async (value) => {
 					if (value.type !== "image/png") {
+						const message = "Зображення повинно бути в форматі PNG";
 						dispatch(
 							setInputErrorValue({
 								form,
 								field,
-								message: "Зображення повинно бути в форматі PNG",
+								message,
 							}),
 						);
-						// todo fix scroll to image on error
+						errors.push(message);
 						(document.querySelector(`#${field}`) as HTMLInputElement).scrollIntoView({
 							behavior: "smooth",
 							block: "center",
@@ -161,7 +167,9 @@ export function useHeatGeneratorsForm(
 			);
 
 			dispatch(pushImageArrayValues({ value: imageNames, form, field }));
-			clearInputError(field);
+			if (!errors.length) {
+				clearInputError(field);
+			}
 		},
 		[dispatch, form, data, store],
 	);
@@ -196,30 +204,53 @@ export function useHeatGeneratorsForm(
 
 			const { errorsData, scrollToError } = useFormValidate();
 			const entries = Object.entries(data);
+			console.log(entries);
 
 			// VALIDATE DATA
-			// entries.forEach((entry) => {
-			// 	// for strings
-			// 	if (!entry[1].length) {
-			// 		const field = entry[0] as FaqFormValuesEnumType;
-			//
-			// 		dispatch(
-			// 			setInputErrorValue({
-			// 				message: "Введіть значення",
-			// 				form,
-			// 				field,
-			// 			}),
-			// 		);
-			// 		errorsData.push({ id: field });
-			// 	}
-			// });
-			//
+			entries.forEach((entry) => {
+				const field = entry[0] as HeatGeneratorValuesEnumType;
+				let message = "Введіть значення";
+				let err = false;
+				// for images
+				if (entry[1] === null || (typeof entry[1] === "object" && !entry[1].length)) {
+					err = true;
+					message = "Оберіть зображення";
+				}
+				// for select
+				else if (entry[1] === FUEL_BURNING_TYPE_DEFAULT_VALUE) {
+					err = true;
+					message = "Оберіть значення";
+				}
+				// for empty string and numbers inputs
+				else if (entry[1] === "") {
+					err = true;
+				}
+				// validate number inputs
+				else if (!isNaN(+entry[1]) && +entry[1] < 0) {
+					err = true;
+					message = "Значення має бути більше нуля";
+				}
+
+				if (err) {
+					dispatch(
+						setInputErrorValue({
+							message,
+							form,
+							field,
+						}),
+					);
+					errorsData.push({ id: field });
+				}
+			});
+
 			// // VALIDATE CHANGE IN UPDATE
 			// validateUpdateSameData(data, errorsData);
-			//
+
 			// // SCROLL TO ERROR INPUT AND FINISH EXECUTING
-			// if (scrollToError()) return;
-			//
+			if (scrollToError()) return;
+
+			console.log(data);
+
 			// switch (form) {
 			// 	case "industrial":
 			// 		await handleCreate(data);
@@ -269,5 +300,6 @@ export function useHeatGeneratorsForm(
 		handleImageCarouselInputChange,
 		handleImageCarouselDelete,
 		handleCheckbox,
+		handleSubmit,
 	};
 }
