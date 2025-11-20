@@ -65,7 +65,7 @@ export function ImageInputCarouselPreviewFromIndexedDB<T extends string>({
 	};
 
 	return (
-		<div className={`${styles.imagePreview} ${className?.imagePreview || ""}`} id={inputId}>
+		<div className={`${styles.imagePreview} ${className?.imagePreview || ""}`}>
 			<ErrorBlock title={`Не правильне зображення:`} error={error} />
 
 			<div className={styles.embla}>

@@ -20,13 +20,12 @@ export function ImageInputContainer({
 	className,
 }: ImageInputContainer) {
 	return (
-		<div className={`df fdc gap_24`}>
+		<div className={`df fdc gap_24 ${styles.container}`}>
 			<p className={`t4 bold`}>Завантажте фотографії у форматі .png (без фону)</p>
 			<input
-				className={className?.input || ""}
+				className={`${styles.input} ${className?.input || ""}`}
 				id={inputId}
 				type="file"
-				hidden
 				multiple={multiple}
 				onChange={changeEvent}
 			/>

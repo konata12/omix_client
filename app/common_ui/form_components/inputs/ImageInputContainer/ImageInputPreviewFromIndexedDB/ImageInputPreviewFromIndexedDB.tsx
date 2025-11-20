@@ -23,12 +23,11 @@ export function ImageInputPreviewFromIndexedDB({
 	imageName,
 	size = "small",
 	store,
-	inputId,
 	error,
 	className,
 }: ImageInputPreviewFromIndexedDBProps) {
 	return (
-		<div className={`${styles.imagePreview} ${className?.imagePreview || ""}`} id={inputId}>
+		<div className={`${styles.imagePreview} ${className?.imagePreview || ""}`}>
 			<ErrorBlock title={`Не правильне зображення:`} error={error} />
 
 			<ImageInputPreviewBasic imageName={imageName} size={size} store={store} error={error} />

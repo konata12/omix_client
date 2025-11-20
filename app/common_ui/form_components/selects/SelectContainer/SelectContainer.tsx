@@ -9,7 +9,7 @@ import {
 	InputContainerWithChangeEventProps,
 	InputOptionalProps,
 } from "@/app/types/ui/form_components/inputContainers.type";
-import React, { InputHTMLAttributes } from "react";
+import React, { useEffect } from "react";
 import styles from "./SelectContainer.module.scss";
 
 export interface SelectContainerStyles extends InputContainerBasicStyles {
@@ -36,6 +36,17 @@ export default function SelectContainer({
 }: SelectContainerProps) {
 	const [open, setOpen] = React.useState(false);
 
+	useEffect(() => {
+		if (options.length === 1) handleSelect(options[0]);
+	}, []);
+
+	const handleSelectAction = (value: string) => {
+		handleSelect(value);
+		setOpen(false);
+	};
+
+	console.log(error);
+
 	return (
 		<BasicInputContainer label={label} inputId={inputId} error={error} className={className}>
 			<div>
@@ -60,7 +71,7 @@ export default function SelectContainer({
 						<path d="M0.000647641 1.38997L5.61068 7L11.2207 1.38997L9.83073 0L5.61068 4.22005L1.39062 0L0.000647641 1.38997Z" />
 					</svg>
 				</div>
-				<SelectDropdown open={open} options={options} handleSelect={handleSelect} />
+				<SelectDropdown open={open} options={options} handleSelect={handleSelectAction} />
 			</div>
 		</BasicInputContainer>
 	);

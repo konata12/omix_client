@@ -256,5 +256,6 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 		handleImageCarouselInputChange,
 		handleImageCarouselDelete,
 		handleCheckbox,
+		handleSubmit,
 	};
 }

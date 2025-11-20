@@ -1,3 +1,16 @@
-.label {
-	width: fit-content;
+.container {
+	position: relative;
+
+	.input {
+		z-index: -10;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.label {
+		width: fit-content;
+	}
 }
