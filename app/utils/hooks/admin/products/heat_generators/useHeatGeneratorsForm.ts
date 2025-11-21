@@ -1,36 +1,47 @@
-import { parseNumberInput } from "@/app/services/admin/forms.service";
+import { renameFile } from "@/app/services/admin/files.service";
+import {
+	checkCheckboxInputValuesToValidate,
+	parseNumberInput,
+} from "@/app/services/admin/forms.service";
+import { fulfilled } from "@/app/services/admin/response.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
+	HeatGenerator,
 	HeatGeneratorCheckboxesType,
 	HeatGeneratorImagesValuesType,
 	HeatGeneratorImageValuesType,
 	HeatGeneratorNotStepperValuesType,
 	HeatGeneratorStepperValuesType,
+	HeatGeneratorStringValuesEnum,
 	HeatGeneratorStringValuesEnumType,
 	HeatGeneratorsTypes,
 	HeatGeneratorValuesEnumType,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import { useHeatGeneratorsFormReducers } from "@/app/utils/hooks/admin/products/heat_generators/useHeatGeneratorsFormReducers";
 import { useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
+import { clearForm } from "@/app/utils/redux/general_data/faq/faqFormsSlice";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { setUpdateError } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
 import { FUEL_BURNING_TYPE_DEFAULT_VALUE } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
+import { createHeatGenerator } from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { RootState } from "@/app/utils/redux/store";
 import { del, set, UseStore } from "idb-keyval";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useCallback } from "react";
 import { v4 as uuid } from "uuid";
 
+const formValidationSkipValues = [HeatGeneratorStringValuesEnum.FAN_MODEL];
+
 export function useHeatGeneratorsForm(
 	form: FormTypes,
-	heat_generators_type: HeatGeneratorsTypes,
+	heat_generator_type: HeatGeneratorsTypes,
 	store: UseStore,
 ) {
 	const { heat_generators } = useAppSelector(
-		(state: RootState) => state.heatGenerator[heat_generators_type],
+		(state: RootState) => state.heatGenerator[heat_generator_type],
 	);
 	const { error, checkboxes, ...data } = useAppSelector(
-		(state: RootState) => state[`${heat_generators_type}HeatGeneratorForms`][form],
+		(state: RootState) => state[`${heat_generator_type}HeatGeneratorForms`][form],
 	);
 
 	const {
@@ -41,7 +52,7 @@ export function useHeatGeneratorsForm(
 		setNotStepperValue,
 		setStepperValue,
 		setStringValue,
-	} = useHeatGeneratorsFormReducers(heat_generators_type);
+	} = useHeatGeneratorsFormReducers(heat_generator_type);
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -96,7 +107,7 @@ export function useHeatGeneratorsForm(
 			if (!value) return;
 
 			const imageName = uuid();
-			const image = value[0];
+			const image = renameFile(value[0], imageName);
 
 			// IF IMAGE IS NOT PNG SHOW ERROR
 			if (value[0].type !== "image/png") {
@@ -161,7 +172,8 @@ export function useHeatGeneratorsForm(
 					}
 
 					const imageName = uuid();
-					await set(imageName, value, store);
+					const image = renameFile(value, imageName);
+					await set(imageName, image, store);
 					imageNames.push(imageName);
 				}),
 			);
@@ -198,19 +210,41 @@ export function useHeatGeneratorsForm(
 	);
 
 	// SUBMIT
+	const handleCreate = useCallback(
+		async (data: Omit<HeatGenerator, "id">) => {
+			const response = await dispatch(createHeatGenerator({ ...data, type: heat_generator_type }));
+			const isFulfilled = fulfilled(response.meta.requestStatus);
+			if (isFulfilled) {
+				// dispatch(clearForm(form));
+				// router.push(`/admin/products/heat_generators/${heat_generator_type}`);
+			} else {
+				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
+					behavior: "smooth",
+					block: "center",
+				});
+			}
+		},
+		[dispatch, form],
+	);
 	const handleSubmit = useCallback(
 		async (e: FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 
 			const { errorsData, scrollToError } = useFormValidate();
 			const entries = Object.entries(data);
-			console.log(entries);
 
 			// VALIDATE DATA
 			entries.forEach((entry) => {
 				const field = entry[0] as HeatGeneratorValuesEnumType;
 				let message = "Введіть значення";
 				let err = false;
+
+				// check checkboxes
+				if (checkCheckboxInputValuesToValidate(checkboxes, field)) return;
+
+				// SKIP VALIDATION FOR SET VALUES
+				if (formValidationSkipValues.some((value) => value === entry[0])) return;
+
 				// for images
 				if (entry[1] === null || (typeof entry[1] === "object" && !entry[1].length)) {
 					err = true;
@@ -243,23 +277,26 @@ export function useHeatGeneratorsForm(
 				}
 			});
 
+			// todo add update submit
 			// // VALIDATE CHANGE IN UPDATE
 			// validateUpdateSameData(data, errorsData);
 
 			// // SCROLL TO ERROR INPUT AND FINISH EXECUTING
 			if (scrollToError()) return;
 
-			console.log(data);
+			const requestData: Omit<HeatGenerator, "id"> = {
+				...data,
+			};
 
-			// switch (form) {
-			// 	case "industrial":
-			// 		await handleCreate(data);
-			// 		break;
-			//
-			// 	case "update":
-			// 		await handleUpdate(data);
-			// 		break;
-			// }
+			switch (form) {
+				case "create":
+					await handleCreate(data);
+					break;
+
+				// case "update":
+				// 	await handleUpdate(data);
+				// 	break;
+			}
 		},
 		[dispatch, form, id, data],
 	);

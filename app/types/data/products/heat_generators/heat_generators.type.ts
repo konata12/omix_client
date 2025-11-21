@@ -53,9 +53,12 @@ export interface HeatGeneratorsResponseData {
 	data: HeatGenerator[];
 	type: HeatGeneratorsTypes;
 }
+export interface HeatGeneratorsCreateData extends Omit<HeatGenerator, "id"> {
+	type: HeatGeneratorsTypes;
+}
 
 // FORMS
-export interface HeatGeneratorCheckboxes {
+export interface HeatGeneratorCheckboxes extends Record<string, boolean> {
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: boolean;
 }
 export type HeatGeneratorFormErrors = AsFromInputError<Omit<HeatGenerator, "id">>;

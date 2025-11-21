@@ -79,7 +79,6 @@ const constructionSettingsInputsArray = {
 const configurationInputsArrays = [
 	{ lable: "Теплогенератор (шт)", enum: HeatGeneratorStepperValuesEnum.HEAT_GENERATORS_COUNT },
 	{ lable: "Вентилятор-димотяг (шт)", enum: HeatGeneratorStepperValuesEnum.EXHAUST_FANS_COUNT },
-	{ lable: "Гарантія (років)", enum: HeatGeneratorStepperValuesEnum.WARRANTY_YEARS_COUNT },
 ];
 
 export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatGeneratorFormProps) {

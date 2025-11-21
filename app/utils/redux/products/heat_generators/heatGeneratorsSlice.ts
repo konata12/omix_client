@@ -1,8 +1,9 @@
 import { HEAT_GENERATOR_TYPES } from "@/app/admin/(provided_with_redux)/(pages)/products/heat_generators/constants";
+import { createHeatGeneratorFormData } from "@/app/services/admin/products/heat_generators.service";
 import { reduxSerializeError } from "@/app/services/admin/response.service";
 import {
-	HeatGenerator,
 	HeatGeneratorData,
+	HeatGeneratorsCreateData,
 	HeatGeneratorSliceData,
 	HeatGeneratorsResponseData,
 	HeatGeneratorsTypes,
@@ -33,7 +34,7 @@ export const initialState: HeatGeneratorSliceData = Object.fromEntries(
 	HEAT_GENERATOR_TYPES.map((type) => [type, _.cloneDeep(emptyHeatGeneratorData)]),
 ) as HeatGeneratorSliceData;
 
-const baseUrl = "products/heatGenerator";
+const baseUrl = "heat-generators";
 
 export const getHeatGenerator = createAsyncThunk(
 	"heatGenerator/getHeatGenerator",
@@ -49,13 +50,14 @@ export const getHeatGenerator = createAsyncThunk(
 
 export const createHeatGenerator = createAsyncThunk(
 	"heatGenerator/createHeatGenerator",
-	async (
-		props: { data: Omit<HeatGenerator, "id">; type: HeatGeneratorsTypes },
-		{ rejectWithValue },
-	) => {
+	async (props: HeatGeneratorsCreateData, { rejectWithValue }) => {
 		try {
-			const { data, type } = props;
-			const response = await axiosInstance.post(`${baseUrl}`, data);
+			const { type } = props;
+			const formData = await createHeatGeneratorFormData(props);
+			console.log("formData: ", Array.from(formData));
+			console.log(props);
+			const response = await axiosInstance.post(`${baseUrl}`, formData);
+			console.log(response.data);
 			return { data: response.data, type };
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));

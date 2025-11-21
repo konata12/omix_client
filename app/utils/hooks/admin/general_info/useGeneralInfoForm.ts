@@ -1,3 +1,4 @@
+import { checkCheckboxInputValuesToValidate } from "@/app/services/admin/forms.service";
 import { fulfilled } from "@/app/services/admin/response.service";
 import {
 	GeneralDataOptionalValuesEnum,
@@ -94,21 +95,7 @@ export function useGeneralInfoForm() {
 			// VALIDATE DATA
 			entries.forEach((entry) => {
 				// check checkboxes
-				if (
-					entry[0] === GeneralDataOptionalValuesEnum.YOUTUBE &&
-					!checkboxes[GeneralDataOptionalValuesEnum.YOUTUBE]
-				)
-					return;
-				if (
-					entry[0] === GeneralDataOptionalValuesEnum.FACEBOOK &&
-					!checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]
-				)
-					return;
-				if (
-					entry[0] === GeneralDataOptionalValuesEnum.INSTAGRAM &&
-					!checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]
-				)
-					return;
+				if (checkCheckboxInputValuesToValidate(checkboxes, entry[0])) return;
 
 				// for strings
 				if (!entry[1].length) {

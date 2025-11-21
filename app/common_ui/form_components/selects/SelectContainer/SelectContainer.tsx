@@ -45,8 +45,6 @@ export default function SelectContainer({
 		setOpen(false);
 	};
 
-	console.log(error);
-
 	return (
 		<BasicInputContainer label={label} inputId={inputId} error={error} className={className}>
 			<div>
