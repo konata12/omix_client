@@ -1,10 +1,13 @@
-import { checkCheckboxInputValuesToValidate } from "@/app/services/admin/forms.service";
+import {
+	checkCheckboxInputValuesToValidate,
+	filterRequestDataByCheckboxes,
+} from "@/app/services/admin/forms.service";
 import { fulfilled } from "@/app/services/admin/response.service";
 import {
 	GeneralDataOptionalValuesEnum,
 	GeneralDataOptionalValuesEnumType,
 	GeneralDataRequestValues,
-	GeneralDataValues,
+	GeneralDataResponseValues,
 	GeneralDataValuesEnumType,
 } from "@/app/types/data/general_data.type";
 import { useFormChangeCheck } from "@/app/utils/hooks/common/form/useFormChangeCheck";
@@ -22,13 +25,13 @@ import { RootState } from "@/app/utils/redux/store";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
 
 export function useGeneralInfoForm() {
-	const [defaultValues, setDefaultValues] = useState<GeneralDataValues | undefined>(undefined);
+	const [defaultValues, setDefaultValues] = useState<GeneralDataResponseValues | undefined>(undefined);
 	const { status, error, checkboxes, ...data } = useAppSelector(
 		(state: RootState) => state.generalData,
 	);
 	const dispatch = useAppDispatch();
 
-	const newFormDataToCheck = {
+	const newFormDataToCheck: GeneralDataResponseValues = {
 		...data,
 		[GeneralDataOptionalValuesEnum.YOUTUBE]: checkboxes[GeneralDataOptionalValuesEnum.YOUTUBE]
 			? data[GeneralDataOptionalValuesEnum.YOUTUBE]
@@ -44,21 +47,25 @@ export function useGeneralInfoForm() {
 	// LOAD NEW DATA
 	useEffect(() => {
 		(async () => {
-			const response = await dispatch(getGeneral());
-			const isFulfilled = fulfilled(response.meta.requestStatus);
+			const response = dispatch(getGeneral());
+			const data = await response.unwrap();
+			const status = (await response).meta.requestStatus;
+			const isFulfilled = fulfilled(status);
 
 			if (isFulfilled)
 				setDefaultValues({
-					...response.payload,
+					...data,
 					[GeneralDataOptionalValuesEnum.YOUTUBE]:
-						response.payload[GeneralDataOptionalValuesEnum.YOUTUBE] || undefined,
+						data[GeneralDataOptionalValuesEnum.YOUTUBE] || undefined,
 					[GeneralDataOptionalValuesEnum.FACEBOOK]:
-						response.payload[GeneralDataOptionalValuesEnum.FACEBOOK] || undefined,
+						data[GeneralDataOptionalValuesEnum.FACEBOOK] || undefined,
 					[GeneralDataOptionalValuesEnum.INSTAGRAM]:
-						response.payload[GeneralDataOptionalValuesEnum.INSTAGRAM] || undefined,
+						data[GeneralDataOptionalValuesEnum.INSTAGRAM] || undefined,
 				});
 		})();
 	}, [dispatch, status.update]);
+	console.log("newFormDataToCheck", newFormDataToCheck);
+	console.log("defaultValues", defaultValues);
 	useFormChangeCheck(defaultValues, newFormDataToCheck);
 
 	// FORM
@@ -114,18 +121,10 @@ export function useGeneralInfoForm() {
 			// SCROLL TO ERROR INPUT AND FINISH EXECUTING
 			if (scrollToError()) return;
 
-			const requestData: GeneralDataRequestValues = {
-				...data,
-				youtube: checkboxes[GeneralDataOptionalValuesEnum.YOUTUBE]
-					? data[GeneralDataOptionalValuesEnum.YOUTUBE]
-					: undefined,
-				facebook: checkboxes[GeneralDataOptionalValuesEnum.FACEBOOK]
-					? data[GeneralDataOptionalValuesEnum.FACEBOOK]
-					: undefined,
-				instagram: checkboxes[GeneralDataOptionalValuesEnum.INSTAGRAM]
-					? data[GeneralDataOptionalValuesEnum.INSTAGRAM]
-					: undefined,
-			};
+			const requestData: GeneralDataRequestValues = filterRequestDataByCheckboxes(
+				checkboxes,
+				data,
+			);
 
 			const response = await dispatch(updateDataAction(requestData));
 			const isFulfilled = fulfilled(response.meta.requestStatus);

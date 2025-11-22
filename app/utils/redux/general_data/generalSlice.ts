@@ -3,12 +3,13 @@ import {
 	GeneralData,
 	GeneralDataOptionalValuesEnumType,
 	GeneralDataRequestValues,
+	GeneralDataResponseValues,
 	GeneralDataStringValuesEnum,
 	GeneralDataValuesEnumType,
 } from "@/app/types/data/general_data.type";
 import { ErrorResponse, StatusType } from "@/app/types/data/response.type";
 import axiosInstance from "@/app/utils/axios";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: GeneralData = {
 	phone_number: "",
@@ -57,7 +58,7 @@ export const updateGeneral = createAsyncThunk(
 
 export const getGeneral = createAsyncThunk("generalData/getGeneral", async (_, { rejectWithValue }) => {
 	try {
-		const response = await axiosInstance.get("general/main");
+		const response = await axiosInstance.get<GeneralDataResponseValues>("general/main");
 		return response.data;
 	} catch (error) {
 		return rejectWithValue(reduxSerializeError(error));
@@ -137,7 +138,7 @@ export const generalDataSlice = createSlice({
 				state.status.get = "loading";
 				state.error.get = null;
 			})
-			.addCase(getGeneral.fulfilled, (state, action: PayloadAction<GeneralDataRequestValues>) => {
+			.addCase(getGeneral.fulfilled, (state, action) => {
 				state.status.get = "succeeded";
 				const { phone_number, email, address, google_maps_url, ...social } = action.payload;
 

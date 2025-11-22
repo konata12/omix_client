@@ -10,13 +10,14 @@ export interface GeneralDataValues {
 	[GeneralDataOptionalValuesEnum.FACEBOOK]: string;
 	[GeneralDataOptionalValuesEnum.INSTAGRAM]: string;
 }
-
-export interface GeneralDataRequestValues
+// TODO TRY TO MAKE THIS TYPE PARTIAL
+export interface GeneralDataResponseValues
 	extends Omit<GeneralDataValues, GeneralDataOptionalValuesEnumType> {
 	[GeneralDataOptionalValuesEnum.YOUTUBE]?: string;
 	[GeneralDataOptionalValuesEnum.FACEBOOK]?: string;
 	[GeneralDataOptionalValuesEnum.INSTAGRAM]?: string;
 }
+export interface GeneralDataRequestValues extends Partial<GeneralDataValues> {}
 
 export interface GeneralData extends GeneralDataValues {
 	checkboxes: {

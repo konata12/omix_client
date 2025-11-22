@@ -53,7 +53,7 @@ export interface HeatGeneratorsResponseData {
 	data: HeatGenerator[];
 	type: HeatGeneratorsTypes;
 }
-export interface HeatGeneratorsCreateData extends Omit<HeatGenerator, "id"> {
+export interface HeatGeneratorsCreateData extends Partial<Omit<HeatGenerator, "id">> {
 	type: HeatGeneratorsTypes;
 }
 

@@ -1,6 +1,7 @@
 import { renameFile } from "@/app/services/admin/files.service";
 import {
 	checkCheckboxInputValuesToValidate,
+	filterRequestDataByCheckboxes,
 	parseNumberInput,
 } from "@/app/services/admin/forms.service";
 import { fulfilled } from "@/app/services/admin/response.service";
@@ -19,7 +20,6 @@ import {
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import { useHeatGeneratorsFormReducers } from "@/app/utils/hooks/admin/products/heat_generators/useHeatGeneratorsFormReducers";
 import { useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
-import { clearForm } from "@/app/utils/redux/general_data/faq/faqFormsSlice";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import { setUpdateError } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
 import { FUEL_BURNING_TYPE_DEFAULT_VALUE } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
@@ -211,7 +211,7 @@ export function useHeatGeneratorsForm(
 
 	// SUBMIT
 	const handleCreate = useCallback(
-		async (data: Omit<HeatGenerator, "id">) => {
+		async (data: Partial<Omit<HeatGenerator, "id">>) => {
 			const response = await dispatch(createHeatGenerator({ ...data, type: heat_generator_type }));
 			const isFulfilled = fulfilled(response.meta.requestStatus);
 			if (isFulfilled) {
@@ -284,13 +284,14 @@ export function useHeatGeneratorsForm(
 			// // SCROLL TO ERROR INPUT AND FINISH EXECUTING
 			if (scrollToError()) return;
 
-			const requestData: Omit<HeatGenerator, "id"> = {
-				...data,
-			};
+			const requestData: Partial<Omit<HeatGenerator, "id">> = filterRequestDataByCheckboxes(
+				checkboxes,
+				data,
+			);
 
 			switch (form) {
 				case "create":
-					await handleCreate(data);
+					await handleCreate(requestData);
 					break;
 
 				// case "update":
