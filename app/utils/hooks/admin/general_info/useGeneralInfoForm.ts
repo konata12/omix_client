@@ -64,8 +64,6 @@ export function useGeneralInfoForm() {
 				});
 		})();
 	}, [dispatch, status.update]);
-	console.log("newFormDataToCheck", newFormDataToCheck);
-	console.log("defaultValues", defaultValues);
 	useFormChangeCheck(defaultValues, newFormDataToCheck);
 
 	// FORM

@@ -48,7 +48,6 @@ export const updateGeneral = createAsyncThunk(
 	async (data: GeneralDataRequestValues, { rejectWithValue }) => {
 		try {
 			const response = await axiosInstance.put("general/main", data);
-			console.log(response);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));
