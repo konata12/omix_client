@@ -21,7 +21,7 @@ export default function ListCardError({
 
 		if (error.getAll?.statusCode === 500) return errorMessage;
 		if (error.getAll?.statusCode === 404 || status.delete === "succeeded") {
-			return notFoundMessage;
+			return error.getAll?.message || notFoundMessage;
 		}
 
 		return errorMessage;

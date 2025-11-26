@@ -24,7 +24,7 @@ export const heatGeneratorCommonReducers = {
 		},
 	) {
 		const { value, form, field } = action.payload;
-		state[form][field] = value;
+		state[form].data[field] = value;
 	},
 
 	deleteImageArrayValue(
@@ -38,7 +38,7 @@ export const heatGeneratorCommonReducers = {
 		},
 	) {
 		const { index, form, field } = action.payload;
-		state[form][field].splice(index, 1);
+		state[form].data[field].splice(index, 1);
 	},
 
 	pushImageArrayValues(
@@ -52,7 +52,7 @@ export const heatGeneratorCommonReducers = {
 		},
 	) {
 		const { value, form, field } = action.payload;
-		state[form][field].push(...value);
+		state[form].data[field].push(...value);
 	},
 
 	setNotStepperValue(
@@ -66,7 +66,7 @@ export const heatGeneratorCommonReducers = {
 		},
 	) {
 		const { value, form, field } = action.payload;
-		state[form][field] = value;
+		state[form].data[field] = value;
 	},
 
 	setStepperValue(
@@ -80,7 +80,7 @@ export const heatGeneratorCommonReducers = {
 		},
 	) {
 		const { value, form, field } = action.payload;
-		state[form][field] = value;
+		state[form].data[field] = value;
 	},
 
 	handleCheckbox(
@@ -121,116 +121,9 @@ export const heatGeneratorCommonReducers = {
 		},
 	) {
 		const { data, form } = action.payload;
-		state[form] = data;
+		state[form].data = data.data;
 	},
 	clearForm(state: HeatGeneratorFormsState, action: { payload: FormTypes }) {
 		state[action.payload] = heatGeneratorsInitFormData;
 	},
 };
-
-// setStringValue(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			value: string;
-// 			form: FormTypes;
-// 			field: HeatGeneratorStringValuesEnumType | HeatGeneratorImageValuesType;
-// 		};
-// 	},
-// ) {
-// 	const { value, form, field } = action.payload;
-// 	state[form][field] = value;
-// },
-// deleteImageArrayValue(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			index: number;
-// 			form: FormTypes;
-// 			field: HeatGeneratorImagesValuesType;
-// 		};
-// 	},
-// ) {
-// 	const { index, form, field } = action.payload;
-// 	state[form][field].splice(index, 1);
-// },
-// pushImageArrayValues(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			value: FormImageInputType[];
-// 			form: FormTypes;
-// 			field: HeatGeneratorImagesValuesType;
-// 		};
-// 	},
-// ) {
-// 	const { value, form, field } = action.payload;
-// 	state[form][field].push(...value);
-// },
-// setNotStepperValue(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			value: NotStepperValue;
-// 			form: FormTypes;
-// 			field: HeatGeneratorNotStepperValuesType;
-// 		};
-// 	},
-// ) {
-// 	const { value, form, field } = action.payload;
-// 	state[form][field] = value;
-// },
-// setStepperValue(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			value: number;
-// 			form: FormTypes;
-// 			field: HeatGeneratorStepperValuesType;
-// 		};
-// 	},
-// ) {
-// 	const { value, form, field } = action.payload;
-// 	state[form][field] = value;
-// },
-// handleCheckbox(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			value: boolean;
-// 			form: FormTypes;
-// 			field: HeatGeneratorCheckboxesType;
-// 		};
-// 	},
-// ) {
-// 	const { value, form, field } = action.payload;
-// 	state[form].checkboxes[field] = value;
-// },
-// setInputErrorValue(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			message: string;
-// 			form: FormTypes;
-// 			field: HeatGeneratorValuesEnumType;
-// 		};
-// 	},
-// ) {
-// 	const { message, form, field } = action.payload;
-// 	state[form].error[field] = { message };
-// },
-// setFormValues(
-// 	state,
-// 	action: {
-// 		payload: {
-// 			data: HeatGeneratorFormState;
-// 			form: FormTypes;
-// 		};
-// 	},
-// ) {
-// 	const { data, form } = action.payload;
-// 	state[form] = data;
-// },
-// clearForm(state, action: { payload: FormTypes }) {
-// 	state[action.payload] = heatGeneratorsInitFormData;
-// },

@@ -82,7 +82,7 @@ const configurationInputsArrays = [
 ];
 
 export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatGeneratorFormProps) {
-	const { error, checkboxes, ...data } = useAppSelector(
+	const { error, checkboxes, data } = useAppSelector(
 		(state: RootState) => state[`${heatGeneratorType}HeatGeneratorForms`][formType],
 	);
 	const requestError = useAppSelector(

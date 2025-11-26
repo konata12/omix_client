@@ -1,4 +1,4 @@
-import { renameFile } from "@/app/services/admin/files.service";
+import { giveFileUniqNameKeepExtension } from "@/app/services/admin/files.service";
 import {
 	checkCheckboxInputValuesToValidate,
 	filterRequestDataByCheckboxes,
@@ -9,6 +9,7 @@ import { FormTypes } from "@/app/types/data/form.type";
 import {
 	HeatGenerator,
 	HeatGeneratorCheckboxesType,
+	HeatGeneratorCompareType,
 	HeatGeneratorImagesValuesType,
 	HeatGeneratorImageValuesType,
 	HeatGeneratorNotStepperValuesType,
@@ -19,16 +20,20 @@ import {
 	HeatGeneratorValuesEnumType,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import { useHeatGeneratorsFormReducers } from "@/app/utils/hooks/admin/products/heat_generators/useHeatGeneratorsFormReducers";
-import { useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
+import { useFormChangeCheck } from "@/app/utils/hooks/common/form/useFormChangeCheck";
+import { formValidateErrorsData, useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
-import { setUpdateError } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
 import { FUEL_BURNING_TYPE_DEFAULT_VALUE } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
-import { createHeatGenerator } from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
+import {
+	createHeatGenerator,
+	setUpdateError,
+	updateHeatGenerator,
+} from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { RootState } from "@/app/utils/redux/store";
 import { del, set, UseStore } from "idb-keyval";
+import _ from "lodash";
 import { useParams, useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useCallback } from "react";
-import { v4 as uuid } from "uuid";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useRef } from "react";
 
 const formValidationSkipValues = [HeatGeneratorStringValuesEnum.FAN_MODEL];
 
@@ -37,13 +42,13 @@ export function useHeatGeneratorsForm(
 	heat_generator_type: HeatGeneratorsTypes,
 	store: UseStore,
 ) {
-	const { heat_generators } = useAppSelector(
-		(state: RootState) => state.heatGenerator[heat_generator_type],
-	);
-	const { error, checkboxes, ...data } = useAppSelector(
+	const { checkboxes, data } = useAppSelector(
 		(state: RootState) => state[`${heat_generator_type}HeatGeneratorForms`][form],
 	);
-
+	const defaultValue = useRef<HeatGeneratorCompareType | undefined>(undefined);
+	const dispatch = useAppDispatch();
+	const router = useRouter();
+	const { id } = useParams<{ id: string }>();
 	const {
 		deleteImageArrayValue,
 		handleCheckboxAction,
@@ -52,11 +57,46 @@ export function useHeatGeneratorsForm(
 		setNotStepperValue,
 		setStepperValue,
 		setStringValue,
+		clearForm,
+		getHeatGenerator,
+		// EXTRA
 	} = useHeatGeneratorsFormReducers(heat_generator_type);
 
-	const dispatch = useAppDispatch();
-	const router = useRouter();
-	const { id } = useParams<{ id: string }>();
+	const newFormDataToCheck: HeatGeneratorCompareType = {
+		...data,
+		[HeatGeneratorStringValuesEnum.FAN_MODEL]:
+			data[HeatGeneratorStringValuesEnum.FAN_MODEL] !== ""
+				? data[HeatGeneratorStringValuesEnum.FAN_MODEL]
+				: undefined,
+		[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: checkboxes[
+			HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW
+		]
+			? data[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]
+			: undefined,
+	};
+
+	// SET UPDATE FORM DEFAULT VALUES
+	useEffect(() => {
+		if (form === "update" && id) {
+			(async () => {
+				const response = dispatch(getHeatGenerator(id));
+				const data = await response.unwrap();
+				const status = (await response).meta.requestStatus;
+				const isFulfilled = fulfilled(status);
+
+				if (isFulfilled) {
+					defaultValue.current = {
+						...data,
+						[HeatGeneratorStringValuesEnum.FAN_MODEL]:
+							data[HeatGeneratorStringValuesEnum.FAN_MODEL] || undefined,
+						[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]:
+							data[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW] || undefined,
+					};
+				}
+			})();
+		}
+	}, [dispatch, heat_generator_type, id]);
+	useFormChangeCheck(defaultValue.current, newFormDataToCheck);
 
 	// INPUTS
 	// string
@@ -106,9 +146,6 @@ export function useHeatGeneratorsForm(
 			const oldValue = data[field];
 			if (!value) return;
 
-			const imageName = uuid();
-			const image = renameFile(value[0], imageName);
-
 			// IF IMAGE IS NOT PNG SHOW ERROR
 			if (value[0].type !== "image/png") {
 				dispatch(
@@ -125,18 +162,20 @@ export function useHeatGeneratorsForm(
 				return;
 			}
 
+			const image = giveFileUniqNameKeepExtension(value[0]);
+
 			// DELETE OLD IMAGE FROM INDEXEDDB
 			if (oldValue) {
 				await del(oldValue, store);
 			}
 
 			// SAVE NEW IMAGE TO INDEXEDDB
-			await set(imageName, image, store);
+			await set(image.name, image, store);
 
 			// SET NEW IMAGE NAME IN REDUX, IT WILL BE KEY TO FILE IN INDEXEDDB
 			dispatch(
 				setStringValue({
-					value: imageName,
+					value: image.name,
 					form,
 					field,
 				}),
@@ -171,10 +210,9 @@ export function useHeatGeneratorsForm(
 						return;
 					}
 
-					const imageName = uuid();
-					const image = renameFile(value, imageName);
-					await set(imageName, image, store);
-					imageNames.push(imageName);
+					const image = giveFileUniqNameKeepExtension(value);
+					await set(image.name, image, store);
+					imageNames.push(image.name);
 				}),
 			);
 
@@ -215,8 +253,8 @@ export function useHeatGeneratorsForm(
 			const response = await dispatch(createHeatGenerator({ ...data, type: heat_generator_type }));
 			const isFulfilled = fulfilled(response.meta.requestStatus);
 			if (isFulfilled) {
-				// dispatch(clearForm(form));
-				// router.push(`/admin/products/heat_generators/${heat_generator_type}`);
+				dispatch(clearForm(form));
+				router.push(`/admin/products/heat_generators/${heat_generator_type}`);
 			} else {
 				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
 					behavior: "smooth",
@@ -225,6 +263,40 @@ export function useHeatGeneratorsForm(
 			}
 		},
 		[dispatch, form],
+	);
+	const handleUpdate = useCallback(
+		async (data: Partial<HeatGenerator>) => {
+			const response = await dispatch(
+				updateHeatGenerator({ ...data, id, type: heat_generator_type }),
+			);
+			const isFulfilled = fulfilled(response.meta.requestStatus);
+			if (isFulfilled) {
+				dispatch(clearForm(form));
+				router.push(`/admin/products/heat_generators/${heat_generator_type}`);
+			} else {
+				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
+					behavior: "smooth",
+					block: "center",
+				});
+			}
+		},
+		[dispatch, form],
+	);
+	const validateUpdateSameData = useCallback(
+		(errorsData: formValidateErrorsData) => {
+			if (form === "update") {
+				if (_.isEqual(defaultValue.current, newFormDataToCheck)) {
+					dispatch(
+						setUpdateError({
+							message: "Дані ті самі, спочатку змініть значення",
+							type: heat_generator_type,
+						}),
+					);
+					errorsData.push({ id: "submit_error" });
+				}
+			}
+		},
+		[dispatch, defaultValue, newFormDataToCheck, checkboxes],
 	);
 	const handleSubmit = useCallback(
 		async (e: FormEvent<HTMLFormElement>) => {
@@ -277,11 +349,10 @@ export function useHeatGeneratorsForm(
 				}
 			});
 
-			// todo add update submit
-			// // VALIDATE CHANGE IN UPDATE
-			// validateUpdateSameData(data, errorsData);
+			// VALIDATE CHANGE IN UPDATE
+			validateUpdateSameData(errorsData);
 
-			// // SCROLL TO ERROR INPUT AND FINISH EXECUTING
+			// SCROLL TO ERROR INPUT AND FINISH EXECUTING
 			if (scrollToError()) return;
 
 			const requestData: Partial<Omit<HeatGenerator, "id">> = filterRequestDataByCheckboxes(
@@ -294,12 +365,12 @@ export function useHeatGeneratorsForm(
 					await handleCreate(requestData);
 					break;
 
-				// case "update":
-				// 	await handleUpdate(data);
-				// 	break;
+				case "update":
+					await handleUpdate({ ...requestData, id });
+					break;
 			}
 		},
-		[dispatch, form, id, data],
+		[dispatch, form, id, data, checkboxes],
 	);
 
 	// HELPER
@@ -311,22 +382,13 @@ export function useHeatGeneratorsForm(
 				field,
 			}),
 		);
-		dispatch(setUpdateError(null));
+		dispatch(
+			setUpdateError({
+				message: null,
+				type: heat_generator_type,
+			}),
+		);
 	}
-	// const validateUpdateSameData = useCallback(
-	// 	(data: Omit<Faq, "id">, errorsData: formValidateErrorsData) => {
-	// 		if (form === "update") {
-	// 			const index = faqs.findIndex((faq) => `${faq.id}` === id);
-	// 			const { id: x, ...oldData } = faqs[index];
-	//
-	// 			if (_.isEqual(oldData, data)) {
-	// 				dispatch(setUpdateError("Дані ті самі, спочатку змініть значення"));
-	// 				errorsData.push({ id: "submit_error" });
-	// 			}
-	// 		}
-	// 	},
-	// 	[dispatch, form],
-	// );
 
 	return {
 		// INPUTS

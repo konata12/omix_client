@@ -1,6 +1,8 @@
 import { HeatGeneratorsTypes } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import {
+	clearForm as clearFormStringValueHousehold,
 	deleteImageArrayValue as deleteImageArrayValueHousehold,
+	getHeatGenerator as getHeatGeneratorHousehold,
 	handleCheckbox as handleCheckboxActionHousehold,
 	pushImageArrayValues as pushImageArrayValuesHousehold,
 	setInputErrorValue as setInputErrorValueHousehold,
@@ -9,7 +11,9 @@ import {
 	setStringValue as setStringValueHousehold,
 } from "@/app/utils/redux/products/heat_generators/forms/householdHeatGeneratorFormsSlice";
 import {
+	clearForm as clearFormStringValueIndustrial,
 	deleteImageArrayValue as deleteImageArrayValueIndustrial,
+	getHeatGenerator as getHeatGeneratorIndustrial,
 	handleCheckbox as handleCheckboxActionIndustrial,
 	pushImageArrayValues as pushImageArrayValuesIndustrial,
 	setInputErrorValue as setInputErrorValueIndustrial,
@@ -29,6 +33,8 @@ export function useHeatGeneratorsFormReducers(heat_generators_type: HeatGenerato
 				setNotStepperValue: setNotStepperValueHousehold,
 				setStepperValue: setStepperValueHousehold,
 				setStringValue: setStringValueHousehold,
+				clearForm: clearFormStringValueHousehold,
+				getHeatGenerator: getHeatGeneratorHousehold,
 			};
 
 		case "industrial":
@@ -40,6 +46,8 @@ export function useHeatGeneratorsFormReducers(heat_generators_type: HeatGenerato
 				setNotStepperValue: setNotStepperValueIndustrial,
 				setStepperValue: setStepperValueIndustrial,
 				setStringValue: setStringValueIndustrial,
+				clearForm: clearFormStringValueIndustrial,
+				getHeatGenerator: getHeatGeneratorIndustrial,
 			};
 	}
 }

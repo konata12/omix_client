@@ -1,7 +1,7 @@
 import { HEAT_GENERATOR_TYPES } from "@/app/admin/(provided_with_redux)/(pages)/products/heat_generators/constants";
 import HeatGeneratorForm from "@/app/admin/ui/forms/heatGenerator/HeatGeneratorForm";
+import SafeLink from "@/app/admin/ui/links/SafeLink/SafeLink";
 import HeroSection from "@/app/common_ui/sections/HeroSection/HeroSection";
-import Link from "next/link";
 
 export default function HouseholdHeatGeneratorUpdate() {
 	return (
@@ -10,12 +10,12 @@ export default function HouseholdHeatGeneratorUpdate() {
 				heading={"Картка побутового \n" + "теплогенератора"}
 				description={"Створюйте або редагуйте картку товару"}
 			>
-				<Link
+				<SafeLink
 					href="/admin/products/heat_generators/household"
 					className={"link btn grey t4 hero_buttons"}
 				>
 					Повернутись до побутових теплогенераторів
-				</Link>
+				</SafeLink>
 			</HeroSection>
 			<HeatGeneratorForm formType={"update"} heatGeneratorType={HEAT_GENERATOR_TYPES[0]} />
 		</>

@@ -3,9 +3,11 @@ import { createHeatGeneratorFormData } from "@/app/services/admin/products/heat_
 import { reduxSerializeError } from "@/app/services/admin/response.service";
 import {
 	HeatGeneratorData,
+	HeatGeneratorListData,
 	HeatGeneratorsCreateData,
 	HeatGeneratorSliceData,
-	HeatGeneratorsResponseData,
+	HeatGeneratorsListResponseData,
+	HeatGeneratorStringValuesEnum,
 	HeatGeneratorsTypes,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import { ErrorResponse } from "@/app/types/data/response.type";
@@ -34,13 +36,17 @@ export const initialState: HeatGeneratorSliceData = Object.fromEntries(
 	HEAT_GENERATOR_TYPES.map((type) => [type, _.cloneDeep(emptyHeatGeneratorData)]),
 ) as HeatGeneratorSliceData;
 
-const baseUrl = "heat-generators";
+export const baseUrlHeatGenerators = "heat-generators";
 
-export const getHeatGenerator = createAsyncThunk(
-	"heatGenerator/getHeatGenerator",
+export const getHeatGenerators = createAsyncThunk(
+	"heatGenerator/getHeatGenerators",
 	async (type: HeatGeneratorsTypes, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.get(`${baseUrl}?type=${type}`);
+			const response = await axiosInstance.get<HeatGeneratorListData[]>(
+				`${baseUrlHeatGenerators}/basic?type=${type}`,
+			);
+			console.log(response.data);
+
 			return { data: response.data, type };
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));
@@ -53,11 +59,11 @@ export const createHeatGenerator = createAsyncThunk(
 	async (props: HeatGeneratorsCreateData, { rejectWithValue }) => {
 		try {
 			const { type } = props;
-			const formData = await createHeatGeneratorFormData(props);
-			console.log("formData: ", Array.from(formData));
-			console.log(props);
-			const response = await axiosInstance.post(`${baseUrl}`, formData);
-			console.log(response.data);
+			const formData = await createHeatGeneratorFormData(props, "create");
+			const response = await axiosInstance.post<HeatGeneratorListData[]>(
+				`${baseUrlHeatGenerators}`,
+				formData,
+			);
 			return { data: response.data, type };
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));
@@ -65,18 +71,20 @@ export const createHeatGenerator = createAsyncThunk(
 	},
 );
 
-// export const updateHeatGenerator = createAsyncThunk<HeatGenerator, HeatGenerator, { rejectValue: ErrorResponse }>(
-// 	"heatGenerator/updateHeatGenerator",
-// 	async (data: HeatGenerator, { rejectWithValue }) => {
-// 		try {
-// 			const { id, ...otherData } = data;
-// 			await axiosInstance.put(`${baseUrl}/${id}`, otherData);
-// 			return data;
-// 		} catch (error) {
-// 			return rejectWithValue(reduxSerializeError(error));
-// 		}
-// 	},
-// );
+export const updateHeatGenerator = createAsyncThunk(
+	"heatGenerator/updateHeatGenerator",
+	async (props: HeatGeneratorsCreateData & { id: string }, { rejectWithValue }) => {
+		try {
+			const { id, ...otherData } = props;
+			const formData = await createHeatGeneratorFormData(otherData, "update");
+			console.log("formData: ", Array.from(formData));
+			await axiosInstance.put(`${baseUrlHeatGenerators}/${id}`, formData);
+			return props;
+		} catch (error) {
+			return rejectWithValue(reduxSerializeError(error));
+		}
+	},
+);
 
 export const deleteHeatGenerator = createAsyncThunk<
 	{ id: string; type: HeatGeneratorsTypes },
@@ -85,7 +93,7 @@ export const deleteHeatGenerator = createAsyncThunk<
 >("heatGenerator/deleteHeatGenerator", async (props, { rejectWithValue }) => {
 	const { id, type } = props;
 	try {
-		await axiosInstance.delete(`${baseUrl}/${id}`);
+		await axiosInstance.delete(`${baseUrlHeatGenerators}/${id}`);
 		return { id, type };
 	} catch (error) {
 		return rejectWithValue({ ...reduxSerializeError(error), id });
@@ -120,14 +128,14 @@ export const heatGeneratorSlice = createSlice({
 	extraReducers(builder) {
 		builder
 			// GET
-			.addCase(getHeatGenerator.pending, (state, action) => {
+			.addCase(getHeatGenerators.pending, (state, action) => {
 				const type = action.meta.arg;
 				state[type].status.getAll = "loading";
 				state[type].error.getAll = null;
 			})
 			.addCase(
-				getHeatGenerator.fulfilled,
-				(state, action: PayloadAction<HeatGeneratorsResponseData>) => {
+				getHeatGenerators.fulfilled,
+				(state, action: PayloadAction<HeatGeneratorsListResponseData>) => {
 					const { data, type } = action.payload;
 
 					state[type].status.getAll = "succeeded";
@@ -136,7 +144,7 @@ export const heatGeneratorSlice = createSlice({
 					state[type].error.delete = new Array(data.length).fill(null);
 				},
 			)
-			.addCase(getHeatGenerator.rejected, (state, action) => {
+			.addCase(getHeatGenerators.rejected, (state, action) => {
 				const type = action.meta.arg;
 				state[type].status.getAll = "failed";
 				state[type].error.getAll = action.payload as ErrorResponse;
@@ -144,13 +152,13 @@ export const heatGeneratorSlice = createSlice({
 
 			// CREATE
 			.addCase(createHeatGenerator.pending, (state, action) => {
-				const type = action.meta.arg.type;
+				const { type } = action.meta.arg;
 				state[type].status.create = "loading";
 				state[type].error.create = null;
 			})
 			.addCase(
 				createHeatGenerator.fulfilled,
-				(state, action: PayloadAction<HeatGeneratorsResponseData>) => {
+				(state, action: PayloadAction<HeatGeneratorsListResponseData>) => {
 					const { data, type } = action.payload;
 
 					state[type].status.create = "succeeded";
@@ -164,24 +172,31 @@ export const heatGeneratorSlice = createSlice({
 				state[type].status.create = "failed";
 				state[type].error.create = action.payload as ErrorResponse;
 			})
-			//
-			// // UPDATE
-			// .addCase(updateHeatGenerator.pending, (state) => {
-			// 	state.status.update = "loading";
-			// 	state.error.update = null;
-			// })
-			// .addCase(updateHeatGenerator.fulfilled, (state, action: PayloadAction<HeatGenerator>) => {
-			// 	state.status.update = "succeeded";
-			// 	const index = state.heatGenerators.findIndex(
-			// 		(heatGenerator) => `${heatGenerator.id}` === action.payload.id,
-			// 	);
-			// 	state.heatGenerators[index] = action.payload;
-			// })
-			// .addCase(updateHeatGenerator.rejected, (state, action) => {
-			// 	state.status.update = "failed";
-			// 	state.error.update = action.payload as ErrorResponse;
-			// })
-			//
+
+			// UPDATE
+			.addCase(updateHeatGenerator.pending, (state, action) => {
+				const type = action.meta.arg.type;
+				state[type].status.update = "loading";
+				state[type].error.update = null;
+			})
+			.addCase(updateHeatGenerator.fulfilled, (state, action) => {
+				const { id, type, ...data } = action.payload;
+
+				state[type].status.update = "succeeded";
+				const index = state[type].heat_generators.findIndex(
+					(heatGenerator) => `${heatGenerator.id}` === action.payload.id,
+				);
+				if (data[HeatGeneratorStringValuesEnum.TITLE]) {
+					state[type].heat_generators[index][HeatGeneratorStringValuesEnum.TITLE] =
+						data[HeatGeneratorStringValuesEnum.TITLE];
+				}
+			})
+			.addCase(updateHeatGenerator.rejected, (state, action) => {
+				const { type } = action.meta.arg;
+				state[type].status.update = "failed";
+				state[type].error.update = action.payload as ErrorResponse;
+			})
+
 			// DELETE
 			.addCase(deleteHeatGenerator.pending, (state, action) => {
 				const { id, type } = action.meta.arg;

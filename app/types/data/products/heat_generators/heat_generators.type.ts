@@ -1,5 +1,5 @@
 import { FormImageInputType, NotStepperValue } from "@/app/types/data/form.type";
-import { ErrorsResponses, Status } from "@/app/types/data/response.type";
+import { ErrorResponse, ErrorsResponses, Status, StatusType } from "@/app/types/data/response.type";
 import { AsFromInputError } from "@/app/types/generic.type";
 
 export type HeatGeneratorsTypes = "household" | "industrial";
@@ -38,8 +38,12 @@ export interface HeatGenerator {
 	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: FormImageInputType;
 	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: FormImageInputType[];
 }
+export interface HeatGeneratorListData {
+	id: string;
+	[HeatGeneratorStringValuesEnum.TITLE]: string;
+}
 export interface HeatGeneratorData {
-	heat_generators: HeatGenerator[];
+	heat_generators: HeatGeneratorListData[];
 	heat_generators_modal_is_open: boolean[];
 	error: ErrorsResponses;
 	status: Status;
@@ -49,9 +53,19 @@ export type HeatGeneratorSliceData = {
 };
 
 // FETCHING
-export interface HeatGeneratorsResponseData {
-	data: HeatGenerator[];
+export interface HeatGeneratorsListResponseData {
+	data: HeatGeneratorListData[];
 	type: HeatGeneratorsTypes;
+}
+export interface HeatGeneratorResponseData
+	extends Omit<
+		HeatGenerator,
+		HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW | HeatGeneratorStringValuesEnum.FAN_MODEL
+	> {
+	[HeatGeneratorStringValuesEnum.FAN_MODEL]?: string;
+	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]?: string;
+	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: string;
+	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: string[];
 }
 export interface HeatGeneratorsCreateData extends Partial<Omit<HeatGenerator, "id">> {
 	type: HeatGeneratorsTypes;
@@ -62,13 +76,31 @@ export interface HeatGeneratorCheckboxes extends Record<string, boolean> {
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: boolean;
 }
 export type HeatGeneratorFormErrors = AsFromInputError<Omit<HeatGenerator, "id">>;
-export interface HeatGeneratorFormState extends Omit<HeatGenerator, "id"> {
+export interface HeatGeneratorFormState {
+	data: Omit<HeatGenerator, "id">;
 	checkboxes: HeatGeneratorCheckboxes;
 	error: HeatGeneratorFormErrors;
+	fetching: {
+		status: {
+			getOne: StatusType;
+		};
+		error: {
+			getOne: ErrorResponse | null;
+		};
+	};
 }
 export interface HeatGeneratorFormsState {
 	create: HeatGeneratorFormState;
 	update: HeatGeneratorFormState;
+}
+
+export interface HeatGeneratorCompareType
+	extends Omit<
+		HeatGenerator,
+		"id" | HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW | HeatGeneratorStringValuesEnum.FAN_MODEL
+	> {
+	[HeatGeneratorStringValuesEnum.FAN_MODEL]?: string;
+	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]?: string;
 }
 
 // ENUMS

@@ -1,3 +1,4 @@
+import { parseBlobToFileWithUniqName } from "@/app/services/admin/files.service";
 import { ErrorResponse, ParsingResponseErrorsEnum } from "@/app/types/data/response.type";
 import { AxiosError } from "axios";
 import { set, UseStore } from "idb-keyval";
@@ -23,22 +24,21 @@ export const reduxSerializeError = (error: unknown): ErrorResponse => {
 };
 
 export function getFileNameFromSignedURL(str: string) {
-	return str.match(/[^/]+\.(?:png|jpe?g|webp|gif|bmp|svg|pdf|txt|zip|tar|gz|mp4|mp3)(?=\?)/)?.[0];
+	const fileName = str.match(
+		/[^/]+\.(?:png|jpe?g|webp|gif|bmp|svg|pdf|txt|zip|tar|gz|mp4|mp3)(?=\?)/,
+	)?.[0];
+	if (!fileName) throw new Error("Can't get file name from Signed URL");
+
+	return fileName;
 }
 
-export async function getFileNameFromSignedURLAndSaveBlobInIndexedDB(str: string, store: UseStore) {
-	// GET FILENAME
+export async function getFileFromSignedURLAndSaveFileInIndexedDB(str: string, store: UseStore) {
 	let fileName = getFileNameFromSignedURL(str);
+	const response = await fetch(str);
+	const blob = await response.blob();
+	const { file, name } = parseBlobToFileWithUniqName(blob, fileName);
 
-	// Get the image as a Blob and save it if URL is correct
-	if (str && fileName) {
-		const response = await fetch(str);
-		const blob = await response.blob();
+	await set(name, file, store);
 
-		set(fileName, blob, store);
-	}
-
-	// IF SIGNED IS WRONG MAKE NAME ERROR
-	if (!fileName) fileName = ParsingResponseErrorsEnum.GETNAMEFROMSIGNEDURL;
-	return fileName;
+	return name;
 }

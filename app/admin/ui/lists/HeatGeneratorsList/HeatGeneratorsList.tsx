@@ -11,7 +11,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import {
 	deleteHeatGenerator,
-	getHeatGenerator,
+	getHeatGenerators,
 	handleHeatGeneratorModal,
 } from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { RootState } from "@/app/utils/redux/store";
@@ -24,11 +24,10 @@ export default function HeatGeneratorsList({ type }: { type: HeatGeneratorsTypes
 	const { status, error, heat_generators, heat_generators_modal_is_open } = useAppSelector(
 		(state: RootState) => state.heatGenerator[type],
 	);
-	const requestError = useAppSelector((state: RootState) => state.faq.error);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(getHeatGenerator(type));
+		dispatch(getHeatGenerators(type));
 	}, [dispatch]);
 
 	const deleteHandler = async (id: string, i: number) => {
@@ -89,7 +88,7 @@ export default function HeatGeneratorsList({ type }: { type: HeatGeneratorsTypes
 							</p>
 							<ErrorBlock
 								title={`Виникла помилка при видаленні:`}
-								error={requestError.delete[i]}
+								error={error.delete[i]}
 							/>
 							<div className={styles.modal_btns}>
 								<button

@@ -1,4 +1,6 @@
 import {
+	HeatGenerator,
+	HeatGeneratorCheckboxes,
 	HeatGeneratorFormErrors,
 	HeatGeneratorFormsState,
 	HeatGeneratorFormState,
@@ -50,7 +52,7 @@ const initError: HeatGeneratorFormErrors = {
 	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: { message: "" },
 	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: { message: "" },
 };
-export const heatGeneratorsInitFormData: HeatGeneratorFormState = {
+const initFormData: Omit<HeatGenerator, "id"> = {
 	// GENERAL
 	[HeatGeneratorStringValuesEnum.TITLE]: "",
 
@@ -87,13 +89,24 @@ export const heatGeneratorsInitFormData: HeatGeneratorFormState = {
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: "",
 	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: null,
 	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: [],
-
-	checkboxes: {
-		[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: false,
-	},
-	error: initError,
+};
+const checkboxesInitData: HeatGeneratorCheckboxes = {
+	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: false,
 };
 
+export const heatGeneratorsInitFormData: HeatGeneratorFormState = {
+	data: initFormData,
+	checkboxes: checkboxesInitData,
+	error: initError,
+	fetching: {
+		status: {
+			getOne: null,
+		},
+		error: {
+			getOne: null,
+		},
+	},
+};
 export const heatGeneratorsFormsInitialState: HeatGeneratorFormsState = {
 	create: _.cloneDeep(heatGeneratorsInitFormData),
 	update: _.cloneDeep(heatGeneratorsInitFormData),

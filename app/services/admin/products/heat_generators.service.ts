@@ -1,20 +1,28 @@
 import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
-import { FormImageInputType } from "@/app/types/data/form.type";
+import { getFileFromSignedURLAndSaveFileInIndexedDB } from "@/app/services/admin/response.service";
+import { FormImageInputType, FormTypes } from "@/app/types/data/form.type";
 import {
 	HeatGeneratorImagesValuesEnum,
 	HeatGeneratorImageValuesEnum,
+	HeatGeneratorResponseData,
 	HeatGeneratorsCreateData,
 	HeatGeneratorStringValuesEnum,
+	HeatGeneratorsTypes,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
-import { get } from "idb-keyval";
+import { clear, get } from "idb-keyval";
 
 const nullableValues = [
 	HeatGeneratorStringValuesEnum.FAN_MODEL,
 	HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW,
 ];
 
-export const createHeatGeneratorFormData = async (data: HeatGeneratorsCreateData) => {
-	const store = getIndexedDBForForm(`${data.type}_heat_generators`, "create");
+// REQUEST
+export const createHeatGeneratorFormData = async (
+	data: HeatGeneratorsCreateData,
+	formType: FormTypes,
+) => {
+	const store = getIndexedDBForForm(`${data.type}_heat_generators`, formType);
+	console.log("data: ", data);
 
 	try {
 		const formData = new FormData();
@@ -57,3 +65,25 @@ export const createHeatGeneratorFormData = async (data: HeatGeneratorsCreateData
 		throw Error("Помилка про створенні formData для виконання запиту");
 	}
 };
+
+// RESPONSE
+export async function parseHeatGeneratorResponse(
+	type: HeatGeneratorsTypes,
+	data: HeatGeneratorResponseData,
+): Promise<HeatGeneratorResponseData> {
+	// SAVE IMAGES IN INDEXEDDB
+	const store = getIndexedDBForForm(`${type}_heat_generators`, "update");
+	await clear(store);
+	return {
+		...data,
+		[HeatGeneratorImageValuesEnum.CARD_IMAGE]: await getFileFromSignedURLAndSaveFileInIndexedDB(
+			data[HeatGeneratorImageValuesEnum.CARD_IMAGE],
+			store,
+		),
+		[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: await Promise.all(
+			data[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES].map(async (image) => {
+				return await getFileFromSignedURLAndSaveFileInIndexedDB(image, store);
+			}),
+		),
+	};
+}
