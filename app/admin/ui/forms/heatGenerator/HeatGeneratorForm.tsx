@@ -17,8 +17,8 @@ import Title from "@/app/common_ui/titles/Title";
 import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
-	HeatGeneratorImagesValuesEnum,
-	HeatGeneratorImageValuesEnum,
+	ProductImagesValuesEnum,
+	ProductImageValuesEnum,
 	HeatGeneratorNotStepperValuesEnum,
 	HeatGeneratorStepperValuesEnum,
 	HeatGeneratorStringValuesEnum,
@@ -333,35 +333,35 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 					<div className={`df fdc gap_80`}>
 						<InputBlock title={"Фотокартка (фотографія картки)"}>
 							<ImageInputContainer
-								inputId={HeatGeneratorImageValuesEnum.CARD_IMAGE}
+								inputId={ProductImageValuesEnum.CARD_IMAGE}
 								changeEvent={(e) => {
-									handleImageInputChange(e, HeatGeneratorImageValuesEnum.CARD_IMAGE);
+									handleImageInputChange(e, ProductImageValuesEnum.CARD_IMAGE);
 								}}
 							>
 								<ImageInputPreviewFromIndexedDB
-									inputId={HeatGeneratorImageValuesEnum.CARD_IMAGE}
+									inputId={ProductImageValuesEnum.CARD_IMAGE}
 									store={store}
-									imageName={data[HeatGeneratorImageValuesEnum.CARD_IMAGE]}
-									error={error[HeatGeneratorImageValuesEnum.CARD_IMAGE]}
+									imageName={data[ProductImageValuesEnum.CARD_IMAGE]}
+									error={error[ProductImageValuesEnum.CARD_IMAGE]}
 								/>
 							</ImageInputContainer>
 						</InputBlock>
 						<InputBlock title={"Фотоколаж (фотографії продукту)"}>
 							<ImageInputContainer
-								inputId={HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES}
+								inputId={ProductImagesValuesEnum.PRODUCT_IMAGES}
 								multiple={true}
 								changeEvent={(e) => {
 									handleImageCarouselInputChange(
 										e,
-										HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES,
+										ProductImagesValuesEnum.PRODUCT_IMAGES,
 									);
 								}}
 							>
 								<ImageInputCarouselPreviewFromIndexedDB
-									inputId={HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES}
+									inputId={ProductImagesValuesEnum.PRODUCT_IMAGES}
 									store={store}
-									imageNames={data[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]}
-									error={error[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]}
+									imageNames={data[ProductImagesValuesEnum.PRODUCT_IMAGES]}
+									error={error[ProductImagesValuesEnum.PRODUCT_IMAGES]}
 									handleDelete={handleImageCarouselDelete}
 								/>
 							</ImageInputContainer>

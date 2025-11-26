@@ -4,8 +4,8 @@ import {
 	HeatGeneratorFormErrors,
 	HeatGeneratorFormsState,
 	HeatGeneratorFormState,
-	HeatGeneratorImagesValuesEnum,
-	HeatGeneratorImageValuesEnum,
+	ProductImagesValuesEnum,
+	ProductImageValuesEnum,
 	HeatGeneratorNotStepperValuesEnum,
 	HeatGeneratorStepperValuesEnum,
 	HeatGeneratorStringValuesEnum,
@@ -49,8 +49,8 @@ const initError: HeatGeneratorFormErrors = {
 
 	// GRAPHIC INFO
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: { message: "" },
-	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: { message: "" },
-	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: { message: "" },
+	[ProductImageValuesEnum.CARD_IMAGE]: { message: "" },
+	[ProductImagesValuesEnum.PRODUCT_IMAGES]: { message: "" },
 };
 const initFormData: Omit<HeatGenerator, "id"> = {
 	// GENERAL
@@ -87,8 +87,8 @@ const initFormData: Omit<HeatGenerator, "id"> = {
 
 	// GRAPHIC INFO
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: "",
-	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: null,
-	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: [],
+	[ProductImageValuesEnum.CARD_IMAGE]: null,
+	[ProductImagesValuesEnum.PRODUCT_IMAGES]: [],
 };
 const checkboxesInitData: HeatGeneratorCheckboxes = {
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: false,

@@ -2,13 +2,12 @@ import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
 import { getFileFromSignedURLAndSaveFileInIndexedDB } from "@/app/services/admin/response.service";
 import { FormImageInputType, FormTypes } from "@/app/types/data/form.type";
 import {
-	HeatGeneratorImagesValuesEnum,
-	HeatGeneratorImageValuesEnum,
 	HeatGeneratorResponseData,
 	HeatGeneratorsCreateData,
 	HeatGeneratorStringValuesEnum,
 	HeatGeneratorsTypes,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
+import { ProductImagesValuesEnum, ProductImageValuesEnum } from "@/app/types/data/products/product.type";
 import { clear, get } from "idb-keyval";
 
 const nullableValues = [
@@ -32,7 +31,7 @@ export const createHeatGeneratorFormData = async (
 
 			// don't add nullable values
 			if (nullableValues.some((v) => v === key) && value === "") continue;
-			if (key === HeatGeneratorImageValuesEnum.CARD_IMAGE) {
+			if (key === ProductImageValuesEnum.CARD_IMAGE) {
 				// if value is null error will be thrown
 				const image = await get<File>(value as string, store);
 
@@ -41,9 +40,9 @@ export const createHeatGeneratorFormData = async (
 				formData.append(key, image);
 				continue;
 			}
-			if (key === HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES) {
+			if (key === ProductImagesValuesEnum.PRODUCT_IMAGES) {
 				await Promise.all(
-					(value as FormImageInputType[]).map(async (v, i) => {
+					(value as FormImageInputType[]).map(async (v) => {
 						// if value is null error will be thrown
 						const image = await get<File>(v as string, store);
 
@@ -76,12 +75,12 @@ export async function parseHeatGeneratorResponse(
 	await clear(store);
 	return {
 		...data,
-		[HeatGeneratorImageValuesEnum.CARD_IMAGE]: await getFileFromSignedURLAndSaveFileInIndexedDB(
-			data[HeatGeneratorImageValuesEnum.CARD_IMAGE],
+		[ProductImageValuesEnum.CARD_IMAGE]: await getFileFromSignedURLAndSaveFileInIndexedDB(
+			data[ProductImageValuesEnum.CARD_IMAGE],
 			store,
 		),
-		[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: await Promise.all(
-			data[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES].map(async (image) => {
+		[ProductImagesValuesEnum.PRODUCT_IMAGES]: await Promise.all(
+			data[ProductImagesValuesEnum.PRODUCT_IMAGES].map(async (image) => {
 				return await getFileFromSignedURLAndSaveFileInIndexedDB(image, store);
 			}),
 		),

@@ -3,8 +3,8 @@ import {
 	HeatGeneratorCheckboxesType,
 	HeatGeneratorFormsState,
 	HeatGeneratorFormState,
-	HeatGeneratorImagesValuesType,
-	HeatGeneratorImageValuesType,
+	ProductImagesValuesType,
+	ProductImageValuesType,
 	HeatGeneratorNotStepperValuesType,
 	HeatGeneratorStepperValuesType,
 	HeatGeneratorStringValuesEnumType,
@@ -19,7 +19,7 @@ export const heatGeneratorCommonReducers = {
 			payload: {
 				value: string;
 				form: FormTypes;
-				field: HeatGeneratorStringValuesEnumType | HeatGeneratorImageValuesType;
+				field: HeatGeneratorStringValuesEnumType | ProductImageValuesType;
 			};
 		},
 	) {
@@ -33,7 +33,7 @@ export const heatGeneratorCommonReducers = {
 			payload: {
 				index: number;
 				form: FormTypes;
-				field: HeatGeneratorImagesValuesType;
+				field: ProductImagesValuesType;
 			};
 		},
 	) {
@@ -47,7 +47,7 @@ export const heatGeneratorCommonReducers = {
 			payload: {
 				value: FormImageInputType[];
 				form: FormTypes;
-				field: HeatGeneratorImagesValuesType;
+				field: ProductImagesValuesType;
 			};
 		},
 	) {

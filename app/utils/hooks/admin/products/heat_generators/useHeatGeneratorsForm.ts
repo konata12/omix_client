@@ -10,8 +10,6 @@ import {
 	HeatGenerator,
 	HeatGeneratorCheckboxesType,
 	HeatGeneratorCompareType,
-	HeatGeneratorImagesValuesType,
-	HeatGeneratorImageValuesType,
 	HeatGeneratorNotStepperValuesType,
 	HeatGeneratorStepperValuesType,
 	HeatGeneratorStringValuesEnum,
@@ -19,6 +17,7 @@ import {
 	HeatGeneratorsTypes,
 	HeatGeneratorValuesEnumType,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
+import { ProductImagesValuesType, ProductImageValuesType } from "@/app/types/data/products/product.type";
 import { useHeatGeneratorsFormReducers } from "@/app/utils/hooks/admin/products/heat_generators/useHeatGeneratorsFormReducers";
 import { useFormChangeCheck } from "@/app/utils/hooks/common/form/useFormChangeCheck";
 import { formValidateErrorsData, useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
@@ -141,7 +140,7 @@ export function useHeatGeneratorsForm(
 	);
 	// media
 	const handleImageInputChange = useCallback(
-		async (e: ChangeEvent<HTMLInputElement>, field: HeatGeneratorImageValuesType) => {
+		async (e: ChangeEvent<HTMLInputElement>, field: ProductImageValuesType) => {
 			const value = e.target.files;
 			const oldValue = data[field];
 			if (!value) return;
@@ -185,7 +184,7 @@ export function useHeatGeneratorsForm(
 		[dispatch, form, data, store],
 	);
 	const handleImageCarouselInputChange = useCallback(
-		async (e: ChangeEvent<HTMLInputElement>, field: HeatGeneratorImagesValuesType) => {
+		async (e: ChangeEvent<HTMLInputElement>, field: ProductImagesValuesType) => {
 			const values = Array.from(e.target.files || []);
 			const imageNames: string[] = [];
 			const errors: string[] = []; // need this to check if to show error when uploaded many images
@@ -224,7 +223,7 @@ export function useHeatGeneratorsForm(
 		[dispatch, form, data, store],
 	);
 	const handleImageCarouselDelete = useCallback(
-		async (index: number, field: HeatGeneratorImagesValuesType) => {
+		async (index: number, field: ProductImagesValuesType) => {
 			if (data[field][index]) {
 				await del(data[field][index], store);
 			}

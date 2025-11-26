@@ -1,4 +1,10 @@
 import { FormImageInputType, NotStepperValue } from "@/app/types/data/form.type";
+import {
+	ProductImagesValuesEnum,
+	ProductImagesValuesType,
+	ProductImageValuesEnum,
+	ProductImageValuesType,
+} from "@/app/types/data/products/product.type";
 import { ErrorResponse, ErrorsResponses, Status, StatusType } from "@/app/types/data/response.type";
 import { AsFromInputError } from "@/app/types/generic.type";
 
@@ -35,8 +41,8 @@ export interface HeatGenerator {
 	[HeatGeneratorStepperValuesEnum.WARRANTY_YEARS_COUNT]: number;
 	// GRAPHIC INFO
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: string;
-	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: FormImageInputType;
-	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: FormImageInputType[];
+	[ProductImageValuesEnum.CARD_IMAGE]: FormImageInputType;
+	[ProductImagesValuesEnum.PRODUCT_IMAGES]: FormImageInputType[];
 }
 export interface HeatGeneratorListData {
 	id: string;
@@ -64,8 +70,8 @@ export interface HeatGeneratorResponseData
 	> {
 	[HeatGeneratorStringValuesEnum.FAN_MODEL]?: string;
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]?: string;
-	[HeatGeneratorImageValuesEnum.CARD_IMAGE]: string;
-	[HeatGeneratorImagesValuesEnum.PRODUCT_IMAGES]: string[];
+	[ProductImageValuesEnum.CARD_IMAGE]: string;
+	[ProductImagesValuesEnum.PRODUCT_IMAGES]: string[];
 }
 export interface HeatGeneratorsCreateData extends Partial<Omit<HeatGenerator, "id">> {
 	type: HeatGeneratorsTypes;
@@ -143,20 +149,13 @@ export enum HeatGeneratorStepperValuesEnum {
 	FAN_MODELS_COUNT = "fan_models_count",
 	WARRANTY_YEARS_COUNT = "warranty_years_count",
 }
-// images enums
-export enum HeatGeneratorImageValuesEnum {
-	CARD_IMAGE = "card_image",
-}
-export enum HeatGeneratorImagesValuesEnum {
-	PRODUCT_IMAGES = "product_images",
-}
 
 // ENUM TYPES
 export type HeatGeneratorValuesEnumType =
 	| HeatGeneratorNumberValuesEnumType
 	| HeatGeneratorStringValuesEnumType
-	| HeatGeneratorImageValuesType
-	| HeatGeneratorImagesValuesType;
+	| ProductImageValuesType
+	| ProductImagesValuesType;
 export type HeatGeneratorStringValuesEnumType = `${HeatGeneratorStringValuesEnum}`;
 // number
 export type HeatGeneratorNumberValuesEnumType =
@@ -164,9 +163,6 @@ export type HeatGeneratorNumberValuesEnumType =
 	| HeatGeneratorStepperValuesType;
 export type HeatGeneratorNotStepperValuesType = `${HeatGeneratorNotStepperValuesEnum}`;
 export type HeatGeneratorStepperValuesType = `${HeatGeneratorStepperValuesEnum}`;
-// graphic
-export type HeatGeneratorImageValuesType = `${HeatGeneratorImageValuesEnum}`;
-export type HeatGeneratorImagesValuesType = `${HeatGeneratorImagesValuesEnum}`;
 
 // OTHER TYPES
 export type HeatGeneratorCheckboxesType = HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW;
