@@ -5,25 +5,15 @@
 	position: relative;
 
 	.input {
-		cursor: pointer;
+		cursor: text;
 		text-align: left;
 	}
 
-	.arrow {
+	.glass {
+		cursor: text;
 		position: absolute;
 		top: 50%;
 		right: calc(24px);
 		transform: translateY(-50%);
-
-		transform-origin: center;
-		transition: $anim;
-
-		&.active {
-			transform: translateY(-50%) rotate(180deg);
-		}
-
-		path {
-			fill: $text-body-active-primary-color
-		}
 	}
 }

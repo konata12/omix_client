@@ -1,8 +1,10 @@
-@use "../../../../../styles/variables" as *;
-@use "../../../../../styles/mixins" as *;
+@use "../../../../../styles/variables/variables" as *;
+@use "../../../../../styles/mixins/mixins" as *;
 
 
 .droplist {
+	overflow-x: hidden;
+
 	border: 1px solid $card-stroke-color;
 	background-color: $card-fill-color;
 	box-shadow: $btn-shadow;

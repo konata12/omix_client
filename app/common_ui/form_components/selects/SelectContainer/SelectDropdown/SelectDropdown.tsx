@@ -9,9 +9,16 @@ export interface SelectDropdownProps {
 }
 
 export default function SelectDropdown({ open, options, handleSelect }: SelectDropdownProps) {
+	const maxLines = 6;
+	const border = 1;
+	const padding = 16;
+	const height = 24;
+	const maxHeight = `${border * 2 + padding * maxLines + height}px`;
+	const overflowY = options.length > maxLines ? "auto" : "hidden";
+
 	return (
 		<AnimatePresenceWithDynamicHeight childrenIsRendered={open}>
-			<div className={styles.droplist}>
+			<div className={styles.droplist} style={{ maxHeight, overflowY }}>
 				{options.map((option, index) => (
 					<p className={styles.option} key={index} onClick={() => handleSelect(option)}>
 						<span>{option}</span>
