@@ -33,6 +33,7 @@ export default function FaqForm({ formType }: FaqFormProps) {
 				label={"Відповідь на запитання"}
 				inputId={FaqValuesEnum.ANSWER}
 				value={data[FaqValuesEnum.ANSWER]}
+				minRows={4}
 				changeEvent={(e) => handleInputChange(e, FaqValuesEnum.ANSWER)}
 				error={error[FaqValuesEnum.ANSWER]}
 				placeholder={"Дайте відповідь на запитання (розгорнуто)"}
