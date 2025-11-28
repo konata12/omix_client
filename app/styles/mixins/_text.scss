@@ -1,22 +1,5 @@
-@use './variables' as *;
-@use './functions' as *;
+@use '../mixins/responsive' as *;
 @use "sass:color";
-
-@mixin respond-to($breakpoint) {
-	@if $breakpoint ==s {
-		@media (min-width: $breakpoint-s) and (max-width: $container-max-width-s) {
-			@content;
-		}
-	} @else if $breakpoint ==m {
-		@media (min-width: $breakpoint-m) and (max-width: $container-max-width-m) {
-			@content;
-		}
-	} @else if $breakpoint ==l {
-		@media (min-width: $breakpoint-l) {
-			@content;
-		}
-	}
-}
 
 // HEADINGS
 @mixin h1 {
@@ -116,12 +99,4 @@
 			color.channel($color, "green", $space: rgb),
 			color.channel($color, "blue", $space: rgb),
 			$opacity);
-}
-
-// COMPONENTS
-@mixin straight-dashed-line { 
-	height: 2px;
-	width: calc(100% + 8px);
-	margin-left: -4px;
-	background-image: repeating-linear-gradient(to right, #b2c7cf 0, #b2c7cf 8px, transparent 8px, transparent 16px);
 }

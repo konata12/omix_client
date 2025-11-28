@@ -1,0 +1,7 @@
+@use '../../../../../styles/variables/variables' as *;
+
+.bottom_text {
+	margin-top: 24px;
+	text-align: center;
+	color: $text-body-active-primary-color;
+}

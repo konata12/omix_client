@@ -1,13 +1,10 @@
-@use '../../../../styles/variables' as *;
+@use '../../../../../styles/variables/variables' as *;
 
-.submit {
-	margin: 40px 24px 0;
+.furnace_cross_section {
+	order: -1
 }
-
 .bottom_text {
 	margin-top: 24px;
-
-
 	text-align: center;
 	color: $text-body-active-primary-color;
 }

@@ -1,5 +1,5 @@
-@use './variables' as *;
-@use './mixins' as *;
+@use 'variables/variables' as *;
+@use 'mixins/mixins' as *;
 @use './functions' as *;
 
 * {
