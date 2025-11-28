@@ -4,6 +4,7 @@ import {
 	GrainDryer,
 	GrainDryerData,
 	GrainDryerListData,
+	GrainDryerStringValuesEnum,
 } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
 import { ErrorResponse } from "@/app/types/data/response.type";
 import axiosInstance from "@/app/utils/axios";
@@ -26,13 +27,13 @@ const initialState: GrainDryerData = {
 	},
 };
 
-const baseUrl = "products";
+export const baseUrlGrainDryers = "grain-dryers";
 
-export const getGrainDryer = createAsyncThunk(
-	"grainDryer/getGrainDryer",
+export const getGrainDryers = createAsyncThunk(
+	"grainDryer/getGrainDryers",
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.get<GrainDryerListData[]>(`${baseUrl}/grainDryer`);
+			const response = await axiosInstance.get<GrainDryerListData[]>(`${baseUrlGrainDryers}`);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));
@@ -47,8 +48,8 @@ export const createGrainDryer = createAsyncThunk(
 			const formData = await createGrainDryerFormData(data, "create");
 			console.log("formData: ", Array.from(formData));
 			const response = await axiosInstance.post<GrainDryerListData[]>(
-				`${baseUrl}/grainDryer`,
-				data,
+				`${baseUrlGrainDryers}`,
+				formData,
 			);
 			return response.data;
 		} catch (error) {
@@ -62,7 +63,9 @@ export const updateGrainDryer = createAsyncThunk(
 	async (props: Partial<Omit<GrainDryer, "id">> & { id: string }, { rejectWithValue }) => {
 		try {
 			const { id, ...otherData } = props;
-			await axiosInstance.put(`${baseUrl}/grainDryer/${id}`, otherData);
+			const formData = await createGrainDryerFormData(otherData, "update");
+			console.log("formData: ", Array.from(formData));
+			await axiosInstance.put(`${baseUrlGrainDryers}/${id}`, formData);
 			return props;
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));
@@ -74,7 +77,7 @@ export const deleteGrainDryer = createAsyncThunk<string, string, { rejectValue: 
 	"grainDryer/deleteGrainDryer",
 	async (id: string, { rejectWithValue }) => {
 		try {
-			await axiosInstance.delete(`${baseUrl}/grainDryer/${id}`);
+			await axiosInstance.delete(`${baseUrlGrainDryers}/${id}`);
 			return id;
 		} catch (error) {
 			return rejectWithValue({ ...reduxSerializeError(error), id });
@@ -102,17 +105,17 @@ export const grainDryerSlice = createSlice({
 	extraReducers(builder) {
 		builder
 			// GET
-			.addCase(getGrainDryer.pending, (state) => {
+			.addCase(getGrainDryers.pending, (state) => {
 				state.status.getAll = "loading";
 				state.error.getAll = null;
 			})
-			.addCase(getGrainDryer.fulfilled, (state, action) => {
+			.addCase(getGrainDryers.fulfilled, (state, action) => {
 				state.status.getAll = "succeeded";
 				state.grain_dryers = action.payload;
 				state.grain_dryers_modal_is_open = new Array(state.grain_dryers.length).fill(false);
 				state.error.delete = new Array(state.grain_dryers.length).fill(null);
 			})
-			.addCase(getGrainDryer.rejected, (state, action) => {
+			.addCase(getGrainDryers.rejected, (state, action) => {
 				state.status.getAll = "failed";
 				console.log(action.payload);
 				state.error.getAll = action.payload as ErrorResponse;
@@ -135,21 +138,24 @@ export const grainDryerSlice = createSlice({
 			})
 
 			// UPDATE
-			// .addCase(updateGrainDryer.pending, (state) => {
-			// 	state.status.update = "loading";
-			// 	state.error.update = null;
-			// })
-			// .addCase(updateGrainDryer.fulfilled, (state, action: PayloadAction<GrainDryer>) => {
-			// 	state.status.update = "succeeded";
-			// 	const index = state.grainDryers.findIndex(
-			// 		(grainDryer) => `${grainDryer.id}` === action.payload.id,
-			// 	);
-			// 	state.grainDryers[index] = action.payload;
-			// })
-			// .addCase(updateGrainDryer.rejected, (state, action) => {
-			// 	state.status.update = "failed";
-			// 	state.error.update = action.payload as ErrorResponse;
-			// })
+			.addCase(updateGrainDryer.pending, (state) => {
+				state.status.update = "loading";
+				state.error.update = null;
+			})
+			.addCase(updateGrainDryer.fulfilled, (state, action) => {
+				state.status.update = "succeeded";
+				const index = state.grain_dryers.findIndex(
+					(grainDryer) => `${grainDryer.id}` === action.payload.id,
+				);
+				if (action.payload[GrainDryerStringValuesEnum.TITLE]) {
+					state.grain_dryers[index][GrainDryerStringValuesEnum.TITLE] =
+						action.payload[GrainDryerStringValuesEnum.TITLE];
+				}
+			})
+			.addCase(updateGrainDryer.rejected, (state, action) => {
+				state.status.update = "failed";
+				state.error.update = action.payload as ErrorResponse;
+			})
 
 			// DELETE
 			.addCase(deleteGrainDryer.pending, (state, action: PayloadAction<string | undefined>) => {

@@ -1,4 +1,5 @@
 import { NotStepperValue } from "@/app/types/data/form.type";
+import { HeatGeneratorStringValuesEnum } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import {
 	ProductImages,
 	ProductImagesValuesEnum,
@@ -6,7 +7,7 @@ import {
 	ProductImageValuesEnum,
 	ProductImageValuesType,
 } from "@/app/types/data/products/product.type";
-import { ErrorsResponses, Status } from "@/app/types/data/response.type";
+import { ErrorResponse, ErrorsResponses, Status, StatusType } from "@/app/types/data/response.type";
 import { AsFromInputError } from "@/app/types/generic.type";
 
 export interface GrainDryer extends ProductImages {
@@ -75,10 +76,23 @@ export interface GrainDryerFormState {
 	data: Omit<GrainDryer, "id">;
 	checkboxes: GrainDryerCheckboxes;
 	error: GrainDryerFormErrors;
+	fetching: {
+		status: {
+			getOne: StatusType;
+		};
+		error: {
+			getOne: ErrorResponse | null;
+		};
+	};
 }
 export interface GrainDryerFormsState {
 	create: GrainDryerFormState;
 	update: GrainDryerFormState;
+}
+
+export interface GrainDryerCompareType
+	extends Omit<GrainDryer, "id" | GrainDryerStringValuesEnum.YOUTUBE_REVIEW> {
+	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]?: string;
 }
 
 // ENUMS

@@ -8,7 +8,7 @@ import { GrainDryerStringValuesEnum } from "@/app/types/data/products/grain_drye
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import {
 	deleteGrainDryer,
-	getGrainDryer,
+	getGrainDryers,
 	handleGrainDryerModal,
 } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
 import { RootState } from "@/app/utils/redux/store";
@@ -20,11 +20,10 @@ export default function GrainDryersList() {
 	const { status, error, grain_dryers, grain_dryers_modal_is_open } = useAppSelector(
 		(state: RootState) => state.grainDryer,
 	);
-	const requestError = useAppSelector((state: RootState) => state.faq.error);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(getGrainDryer());
+		dispatch(getGrainDryers());
 	}, [dispatch]);
 
 	const deleteHandler = async (id: string, i: number) => {
@@ -77,7 +76,7 @@ export default function GrainDryersList() {
 						>
 							<p className={"t3"}>
 								Ви дійсно бажаєте <span className={"semibold"}>видалити</span> часто
-								задаване питання:{" "}
+								зерносушильний комплекс:{" "}
 								<span className={"semibold"}>
 									{grain_dryer[GrainDryerStringValuesEnum.TITLE]}
 								</span>
@@ -85,7 +84,7 @@ export default function GrainDryersList() {
 							</p>
 							<ErrorBlock
 								title={`Виникла помилка при видаленні:`}
-								error={requestError.delete[i]}
+								error={error.delete[i]}
 							/>
 							<div className={styles.modal_btns}>
 								<button

@@ -1,3 +1,5 @@
+import { parseGrainDryerResponse } from "@/app/services/admin/products/grain_dryers.service";
+import { reduxSerializeError } from "@/app/services/admin/response.service";
 import { FormImageInputType, FormTypes, NotStepperValue } from "@/app/types/data/form.type";
 import {
 	GrainDryer,
@@ -8,6 +10,7 @@ import {
 	GrainDryerFormState,
 	GrainDryerNotStepperValuesEnum,
 	GrainDryerNotStepperValuesType,
+	GrainDryerResponseData,
 	GrainDryerStepperValuesEnum,
 	GrainDryerStepperValuesType,
 	GrainDryerStringArrayValuesEnum,
@@ -22,7 +25,10 @@ import {
 	ProductImageValuesEnum,
 	ProductImageValuesType,
 } from "@/app/types/data/products/product.type";
-import { createSlice } from "@reduxjs/toolkit";
+import { ErrorResponse } from "@/app/types/data/response.type";
+import axiosInstance from "@/app/utils/axios";
+import { baseUrlGrainDryers } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
 
 const initError: GrainDryerFormErrors = {
@@ -129,12 +135,38 @@ const initFormData: GrainDryerFormState = {
 		[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: false,
 	},
 	error: initError,
+	fetching: {
+		status: {
+			getOne: null,
+		},
+		error: {
+			getOne: null,
+		},
+	},
 };
 
 export const initialState: GrainDryerFormsState = {
 	create: _.cloneDeep(initFormData),
 	update: _.cloneDeep(initFormData),
 };
+
+export const getGrainDryer = createAsyncThunk(
+	"grainDryerForms/getGrainDryer",
+	async (id: string, { rejectWithValue }) => {
+		try {
+			const { data } = await axiosInstance.get<GrainDryerResponseData>(
+				`${baseUrlGrainDryers}/${id}`,
+			);
+
+			const parsedData = await parseGrainDryerResponse(data);
+			console.log("parsedData", parsedData);
+
+			return parsedData;
+		} catch (error) {
+			return rejectWithValue(reduxSerializeError(error));
+		}
+	},
+);
 
 export const grainDryerFormsSlice = createSlice({
 	name: "grainDryerForms",
@@ -246,26 +278,41 @@ export const grainDryerFormsSlice = createSlice({
 			state[form].error[field] = { message };
 		},
 
-		setFormValues(
-			state,
-			action: {
-				payload: {
-					data: GrainDryerFormState;
-					form: FormTypes;
-				};
-			},
-		) {
-			const { data, form } = action.payload;
-			state[form] = data;
+		clearErrors(state, action: { payload: FormTypes }) {
+			state[action.payload].error = initError;
 		},
 		clearForm(state, action: { payload: FormTypes }) {
 			state[action.payload] = initFormData;
 		},
 	},
+	extraReducers(builder) {
+		builder
+			// GET
+			.addCase(getGrainDryer.pending, (state) => {
+				state.update.fetching.status.getOne = "loading";
+				state.update.fetching.error.getOne = null;
+			})
+			.addCase(getGrainDryer.fulfilled, (state, action) => {
+				state.update.fetching.status.getOne = "succeeded";
+
+				state.update.data = {
+					...action.payload,
+					[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]:
+						action.payload[GrainDryerStringValuesEnum.YOUTUBE_REVIEW] || "",
+				};
+				state.update.checkboxes = {
+					[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]:
+						!!action.payload[GrainDryerStringValuesEnum.YOUTUBE_REVIEW],
+				};
+			})
+			.addCase(getGrainDryer.rejected, (state, action) => {
+				state.update.fetching.status.getOne = "failed";
+				state.update.fetching.error.getOne = action.payload as ErrorResponse;
+			});
+	},
 });
 
 export const {
-	setFormValues,
 	setStringValue,
 	deleteArrayValue,
 	pushStringArrayValue,
@@ -274,6 +321,7 @@ export const {
 	setStepperValue,
 	handleCheckbox,
 	setInputErrorValue,
+	clearErrors,
 	clearForm,
 } = grainDryerFormsSlice.actions;
 export default grainDryerFormsSlice.reducer;

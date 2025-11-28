@@ -10,6 +10,7 @@ import {
 	GrainDryer,
 	GrainDryerArrayValuesType,
 	GrainDryerCheckboxesType,
+	GrainDryerCompareType,
 	GrainDryerNotStepperValuesType,
 	GrainDryerStepperValuesType,
 	GrainDryerStringArrayValuesEnum,
@@ -17,12 +18,16 @@ import {
 	GrainDryerStringValuesEnumType,
 	GrainDryerValuesEnumType,
 } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
+import { HeatGeneratorStringValuesEnum } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import { ProductImagesValuesType, ProductImageValuesType } from "@/app/types/data/products/product.type";
-import { useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
+import { useFormChangeCheck } from "@/app/utils/hooks/common/form/useFormChangeCheck";
+import { formValidateErrorsData, useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import {
+	clearErrors,
 	clearForm,
 	deleteArrayValue,
+	getGrainDryer,
 	handleCheckbox as handleCheckboxAction,
 	pushImageArrayValues,
 	pushStringArrayValue,
@@ -39,20 +44,63 @@ import {
 import { getHeatGenerators } from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { RootState } from "@/app/utils/redux/store";
 import { del, set, UseStore } from "idb-keyval";
+import _ from "lodash";
 import { useParams, useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useCallback, useEffect } from "react";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
 export function useGrainDryersForm(form: FormTypes, store: UseStore) {
+	const [defaultValue, setDefaultValue] = useState<GrainDryerCompareType | undefined>(undefined);
 	const { checkboxes, data } = useAppSelector((state: RootState) => state.grainDryerForms[form]);
-	const { heat_generators } = useAppSelector((state: RootState) => state.heatGenerator.industrial);
+	const defaultValueRef = useRef<GrainDryerCompareType | undefined>(undefined);
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const { id } = useParams<{ id: string }>();
 
+	const newFormDataToCheck: GrainDryerCompareType = {
+		...data,
+		[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: checkboxes[
+			HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW
+		]
+			? data[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]
+			: undefined,
+	};
+
+	// GET LIST OF HEAT GENERATORS
 	useEffect(() => {
 		dispatch(getHeatGenerators("industrial"));
 	}, [dispatch]);
+	// CLEAR FORM ERRORS
+	useEffect(() => {
+		dispatch(clearErrors(form));
+	}, [dispatch]);
+	// SET UPDATE FORM DEFAULT VALUES
+	useEffect(() => {
+		if (form === "update" && id) {
+			(async () => {
+				const response = dispatch(getGrainDryer(id));
+				const data = await response.unwrap();
+				const status = (await response).meta.requestStatus;
+				const isFulfilled = fulfilled(status);
+
+				if (isFulfilled) {
+					defaultValueRef.current = {
+						...data,
+						[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]:
+							data[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW] || undefined,
+					};
+					setDefaultValue({
+						...data,
+						[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]:
+							data[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW] || undefined,
+					});
+				}
+			})();
+		}
+	}, [dispatch, id]);
+	if (form === "update") {
+		useFormChangeCheck(defaultValue, newFormDataToCheck);
+	}
 
 	// INPUTS
 	// string
@@ -243,22 +291,17 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 		},
 		[dispatch, form, id],
 	);
-	// const validateUpdateSameData = useCallback(
-	// 	(errorsData: formValidateErrorsData) => {
-	// 		if (form === "update") {
-	// 			if (_.isEqual(defaultValue.current, newFormDataToCheck)) {
-	// 				dispatch(
-	// 					setUpdateError({
-	// 						message: "Дані ті самі, спочатку змініть значення",
-	// 						type: heat_generator_type,
-	// 					}),
-	// 				);
-	// 				errorsData.push({ id: "submit_error" });
-	// 			}
-	// 		}
-	// 	},
-	// 	[dispatch, defaultValue, newFormDataToCheck, checkboxes],
-	// );
+	const validateUpdateSameData = useCallback(
+		(errorsData: formValidateErrorsData) => {
+			if (form === "update") {
+				if (_.isEqual(defaultValueRef.current, newFormDataToCheck)) {
+					dispatch(setUpdateError("Дані ті самі, спочатку змініть значення"));
+					errorsData.push({ id: "submit_error" });
+				}
+			}
+		},
+		[dispatch, defaultValue, newFormDataToCheck, checkboxes],
+	);
 	const handleSubmit = useCallback(
 		async (e: FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
@@ -280,6 +323,7 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 					Array.isArray(entry[1]) &&
 					!entry[1].length
 				) {
+					console.log(entry);
 					err = true;
 					message = "Оберіть теплогенератор";
 				}
@@ -310,10 +354,10 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 				}
 			});
 
-			// // VALIDATE CHANGE IN UPDATE
-			// validateUpdateSameData(data, errorsData);
+			// VALIDATE CHANGE IN UPDATE
+			validateUpdateSameData(errorsData);
 
-			// // SCROLL TO ERROR INPUT AND FINISH EXECUTING
+			// SCROLL TO ERROR INPUT AND FINISH EXECUTING
 			if (scrollToError()) return;
 
 			const requestData: Partial<Omit<GrainDryer, "id">> = filterRequestDataByCheckboxes(

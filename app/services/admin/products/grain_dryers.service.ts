@@ -1,11 +1,11 @@
 import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
 import { getFileFromSignedURLAndSaveFileInIndexedDB } from "@/app/services/admin/response.service";
 import { FormImageInputType, FormTypes } from "@/app/types/data/form.type";
-import { GrainDryer } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
 import {
-	HeatGeneratorResponseData,
-	HeatGeneratorStringValuesEnum,
-} from "@/app/types/data/products/heat_generators/heat_generators.type";
+	GrainDryer,
+	GrainDryerResponseData,
+} from "@/app/types/data/products/grain_dryers/grain_dryers.type";
+import { HeatGeneratorStringValuesEnum } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import { ProductImagesValuesEnum, ProductImageValuesEnum } from "@/app/types/data/products/product.type";
 import { clear, get } from "idb-keyval";
 
@@ -52,8 +52,8 @@ export const createGrainDryerFormData = async (
 			}
 			// FormImageInputType[] is only for images, so here item will be string only
 			if (Array.isArray(value)) {
-				value.forEach((item) => {
-					formData.append(key, item as string);
+				value.forEach((item, i) => {
+					formData.append(`${key}[${i}]`, item as string);
 				});
 				continue;
 			}
@@ -70,8 +70,8 @@ export const createGrainDryerFormData = async (
 
 // RESPONSE
 export async function parseGrainDryerResponse(
-	data: HeatGeneratorResponseData,
-): Promise<HeatGeneratorResponseData> {
+	data: GrainDryerResponseData,
+): Promise<GrainDryerResponseData> {
 	// SAVE IMAGES IN INDEXEDDB
 	const store = getIndexedDBForForm(`grain_dryers`, "update");
 	await clear(store);

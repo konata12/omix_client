@@ -32,7 +32,7 @@ import { RootState } from "@/app/utils/redux/store";
 import { del, set, UseStore } from "idb-keyval";
 import _ from "lodash";
 import { useParams, useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useCallback, useEffect, useRef } from "react";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
 const formValidationSkipValues = [HeatGeneratorStringValuesEnum.FAN_MODEL];
 
@@ -41,10 +41,12 @@ export function useHeatGeneratorsForm(
 	heat_generator_type: HeatGeneratorsTypes,
 	store: UseStore,
 ) {
+	const [defaultValue, setDefaultValue] = useState<HeatGeneratorCompareType | undefined>(undefined);
 	const { checkboxes, data } = useAppSelector(
 		(state: RootState) => state[`${heat_generator_type}HeatGeneratorForms`][form],
 	);
-	const defaultValue = useRef<HeatGeneratorCompareType | undefined>(undefined);
+	const defaultValueRef = useRef<HeatGeneratorCompareType | undefined>(undefined);
+
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const { id } = useParams<{ id: string }>();
@@ -74,10 +76,11 @@ export function useHeatGeneratorsForm(
 			: undefined,
 	};
 
-	// SET UPDATE FORM DEFAULT VALUES
+	// CLEAR FORM ERRORS
 	useEffect(() => {
 		dispatch(clearErrors(form));
 	}, [dispatch]);
+	// SET UPDATE FORM DEFAULT VALUES
 	useEffect(() => {
 		if (form === "update" && id) {
 			(async () => {
@@ -87,19 +90,26 @@ export function useHeatGeneratorsForm(
 				const isFulfilled = fulfilled(status);
 
 				if (isFulfilled) {
-					defaultValue.current = {
+					defaultValueRef.current = {
 						...data,
 						[HeatGeneratorStringValuesEnum.FAN_MODEL]:
 							data[HeatGeneratorStringValuesEnum.FAN_MODEL] || undefined,
 						[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]:
 							data[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW] || undefined,
 					};
+					setDefaultValue({
+						...data,
+						[HeatGeneratorStringValuesEnum.FAN_MODEL]:
+							data[HeatGeneratorStringValuesEnum.FAN_MODEL] || undefined,
+						[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]:
+							data[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW] || undefined,
+					});
 				}
 			})();
 		}
 	}, [dispatch, heat_generator_type, id]);
 	if (form === "update") {
-		useFormChangeCheck(defaultValue.current, newFormDataToCheck);
+		useFormChangeCheck(defaultValue, newFormDataToCheck);
 	}
 
 	// INPUTS
@@ -289,7 +299,7 @@ export function useHeatGeneratorsForm(
 	const validateUpdateSameData = useCallback(
 		(errorsData: formValidateErrorsData) => {
 			if (form === "update") {
-				if (_.isEqual(defaultValue.current, newFormDataToCheck)) {
+				if (_.isEqual(defaultValueRef.current, newFormDataToCheck)) {
 					dispatch(
 						setUpdateError({
 							message: "Дані ті самі, спочатку змініть значення",
@@ -300,7 +310,7 @@ export function useHeatGeneratorsForm(
 				}
 			}
 		},
-		[dispatch, defaultValue, newFormDataToCheck, checkboxes],
+		[dispatch, heat_generator_type, defaultValue, newFormDataToCheck, checkboxes],
 	);
 	const handleSubmit = useCallback(
 		async (e: FormEvent<HTMLFormElement>) => {
