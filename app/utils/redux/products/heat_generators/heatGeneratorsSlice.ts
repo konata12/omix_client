@@ -45,7 +45,6 @@ export const getHeatGenerators = createAsyncThunk(
 			const response = await axiosInstance.get<HeatGeneratorListData[]>(
 				`${baseUrlHeatGenerators}/basic?type=${type}`,
 			);
-			console.log(response.data);
 
 			return { data: response.data, type };
 		} catch (error) {
@@ -202,7 +201,7 @@ export const heatGeneratorSlice = createSlice({
 				const { id, type } = action.meta.arg;
 				state[type].status.delete = "loading";
 				const index = state[type].heat_generators.findIndex(
-					(grain_dryer) => grain_dryer.id === id,
+					(heat_generator) => heat_generator.id === id,
 				);
 				if (index !== -1) {
 					state[type].error.delete[index] = null;
@@ -212,9 +211,9 @@ export const heatGeneratorSlice = createSlice({
 				const { id, type } = action.payload;
 
 				state[type].status.delete = "succeeded";
-				const index = state[type].heat_generators.findIndex((grain_dryer) => {
+				const index = state[type].heat_generators.findIndex((heat_generator) => {
 					console.log("state.heatGenerators", state[type].heat_generators);
-					return grain_dryer.id === id;
+					return heat_generator.id === id;
 				});
 				if (index !== -1) {
 					state[type].heat_generators.splice(index, 1);
@@ -229,7 +228,7 @@ export const heatGeneratorSlice = createSlice({
 				if (action.payload) {
 					const error = action.payload;
 					const index = state[type].heat_generators.findIndex(
-						(grain_dryer) => grain_dryer.id === error.id,
+						(heat_generator) => heat_generator.id === error.id,
 					);
 					if (index !== -1) {
 						state[type].error.delete[index] = error;

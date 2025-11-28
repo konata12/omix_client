@@ -1,7 +1,8 @@
 import { HeatGeneratorsTypes } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import {
 	clearForm as clearFormStringValueHousehold,
-	deleteImageArrayValue as deleteImageArrayValueHousehold,
+	clearErrors as clearErrorsHousehold,
+	deleteArrayValue as deleteImageArrayValueHousehold,
 	getHeatGenerator as getHeatGeneratorHousehold,
 	handleCheckbox as handleCheckboxActionHousehold,
 	pushImageArrayValues as pushImageArrayValuesHousehold,
@@ -12,7 +13,8 @@ import {
 } from "@/app/utils/redux/products/heat_generators/forms/householdHeatGeneratorFormsSlice";
 import {
 	clearForm as clearFormStringValueIndustrial,
-	deleteImageArrayValue as deleteImageArrayValueIndustrial,
+	clearErrors as clearErrorsIndustrial,
+	deleteArrayValue as deleteImageArrayValueIndustrial,
 	getHeatGenerator as getHeatGeneratorIndustrial,
 	handleCheckbox as handleCheckboxActionIndustrial,
 	pushImageArrayValues as pushImageArrayValuesIndustrial,
@@ -26,7 +28,7 @@ export function useHeatGeneratorsFormReducers(heat_generators_type: HeatGenerato
 	switch (heat_generators_type) {
 		case "household":
 			return {
-				deleteImageArrayValue: deleteImageArrayValueHousehold,
+				deleteArrayValue: deleteImageArrayValueHousehold,
 				handleCheckboxAction: handleCheckboxActionHousehold,
 				pushImageArrayValues: pushImageArrayValuesHousehold,
 				setInputErrorValue: setInputErrorValueHousehold,
@@ -34,12 +36,13 @@ export function useHeatGeneratorsFormReducers(heat_generators_type: HeatGenerato
 				setStepperValue: setStepperValueHousehold,
 				setStringValue: setStringValueHousehold,
 				clearForm: clearFormStringValueHousehold,
+				clearErrors: clearErrorsHousehold,
 				getHeatGenerator: getHeatGeneratorHousehold,
 			};
 
 		case "industrial":
 			return {
-				deleteImageArrayValue: deleteImageArrayValueIndustrial,
+				deleteArrayValue: deleteImageArrayValueIndustrial,
 				handleCheckboxAction: handleCheckboxActionIndustrial,
 				pushImageArrayValues: pushImageArrayValuesIndustrial,
 				setInputErrorValue: setInputErrorValueIndustrial,
@@ -47,6 +50,7 @@ export function useHeatGeneratorsFormReducers(heat_generators_type: HeatGenerato
 				setStepperValue: setStepperValueIndustrial,
 				setStringValue: setStringValueIndustrial,
 				clearForm: clearFormStringValueIndustrial,
+				clearErrors: clearErrorsIndustrial,
 				getHeatGenerator: getHeatGeneratorIndustrial,
 			};
 	}

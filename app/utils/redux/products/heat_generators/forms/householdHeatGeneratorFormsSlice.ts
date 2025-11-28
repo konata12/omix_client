@@ -70,14 +70,14 @@ export const householdHeatGeneratorFormsSlice = createSlice({
 });
 
 export const {
-	setFormValues,
 	setStringValue,
-	deleteImageArrayValue,
+	deleteArrayValue,
 	pushImageArrayValues,
 	setNotStepperValue,
 	setStepperValue,
 	handleCheckbox,
 	setInputErrorValue,
 	clearForm,
+	clearErrors,
 } = householdHeatGeneratorFormsSlice.actions;
 export default householdHeatGeneratorFormsSlice.reducer;

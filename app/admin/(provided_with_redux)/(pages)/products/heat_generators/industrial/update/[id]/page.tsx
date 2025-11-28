@@ -1,5 +1,5 @@
 import { HEAT_GENERATOR_TYPES } from "@/app/admin/(provided_with_redux)/(pages)/products/heat_generators/constants";
-import HeatGeneratorForm from "@/app/admin/ui/forms/heatGenerator/HeatGeneratorForm";
+import HeatGeneratorForm from "@/app/admin/ui/forms/products/heatGenerator/HeatGeneratorForm";
 import SafeLink from "@/app/admin/ui/links/SafeLink/SafeLink";
 import HeroSection from "@/app/common_ui/sections/HeroSection/HeroSection";
 

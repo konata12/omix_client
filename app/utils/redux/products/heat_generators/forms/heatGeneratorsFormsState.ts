@@ -4,17 +4,16 @@ import {
 	HeatGeneratorFormErrors,
 	HeatGeneratorFormsState,
 	HeatGeneratorFormState,
-	ProductImagesValuesEnum,
-	ProductImageValuesEnum,
 	HeatGeneratorNotStepperValuesEnum,
 	HeatGeneratorStepperValuesEnum,
 	HeatGeneratorStringValuesEnum,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
+import { ProductImagesValuesEnum, ProductImageValuesEnum } from "@/app/types/data/products/product.type";
 import _ from "lodash";
 
 export const FUEL_BURNING_TYPE_DEFAULT_VALUE = "Оберіть спосіб горіння";
 
-const initError: HeatGeneratorFormErrors = {
+export const heatGeneratorFormInitError: HeatGeneratorFormErrors = {
 	// GENERAL
 	[HeatGeneratorStringValuesEnum.TITLE]: { message: "" },
 
@@ -97,7 +96,7 @@ const checkboxesInitData: HeatGeneratorCheckboxes = {
 export const heatGeneratorsInitFormData: HeatGeneratorFormState = {
 	data: initFormData,
 	checkboxes: checkboxesInitData,
-	error: initError,
+	error: heatGeneratorFormInitError,
 	fetching: {
 		status: {
 			getOne: null,

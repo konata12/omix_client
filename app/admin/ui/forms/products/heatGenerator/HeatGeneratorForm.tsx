@@ -13,17 +13,17 @@ import InputContainer from "@/app/common_ui/form_components/inputs/InputContaine
 import InputContainerWithCheckbox from "@/app/common_ui/form_components/inputs/InputContainerWithCheckbox/InputContainerWithCheckbox";
 import Stepper from "@/app/common_ui/form_components/inputs/Stepper/Stepper";
 import SelectContainer from "@/app/common_ui/form_components/selects/SelectContainer/SelectContainer";
+import TextareaContainer from "@/app/common_ui/form_components/textareas/TextareaContainer/TextareaContainer";
 import Title from "@/app/common_ui/titles/Title";
 import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
-	ProductImagesValuesEnum,
-	ProductImageValuesEnum,
 	HeatGeneratorNotStepperValuesEnum,
 	HeatGeneratorStepperValuesEnum,
 	HeatGeneratorStringValuesEnum,
 	HeatGeneratorsTypes,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
+import { ProductImagesValuesEnum, ProductImageValuesEnum } from "@/app/types/data/products/product.type";
 import { useHeatGeneratorsForm } from "@/app/utils/hooks/admin/products/heat_generators/useHeatGeneratorsForm";
 import { useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
@@ -105,7 +105,7 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 		heatGeneratorType === HEAT_GENERATOR_TYPES[0] ? [FUEL_BURNING_TYPES[0]] : FUEL_BURNING_TYPES;
 
 	return (
-		<form className={`section admin container df fdc gap_24`} onSubmit={(e) => handleSubmit(e)}>
+		<form className={`section admin container df fdc gap_24`} onSubmit={handleSubmit}>
 			<Title
 				title={"Технічні характеристики"}
 				description={"Введіть усі технічні параметри моделі"}
@@ -176,7 +176,6 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 					{/* FUEL */}
 					<InputBlock title={"Горіння та паливо"}>
 						<>
-							{/* TODO ADD SELECT FOR FUEL BURNING TYPE */}
 							<SelectContainer
 								label={"Спосіб горіння"}
 								inputId={HeatGeneratorStringValuesEnum.FUEL_BURNING_TYPE}
@@ -193,11 +192,12 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 							/>
 							<div className={`df gap_24`}>
 								{fuelInputsArray.map((item) => (
-									<InputContainer
+									<TextareaContainer
 										key={item.enum}
 										label={item.lable}
 										inputId={item.enum}
 										value={data[item.enum]}
+										minRows={2}
 										changeEvent={(e) => handleStringInputChange(e, item.enum)}
 										error={error[item.enum]}
 										className={{ inputContainer: "flex_half" }}
@@ -374,7 +374,7 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 				error={requestError[formType]}
 				id={"submit_error"}
 			/>
-			<button className={`btn blue t4 ${styles.submit}`} type="submit">
+			<button className={`btn blue t4`} type="submit">
 				{formType === "create" ? "Створити " : "Зберегти зміни"}
 			</button>
 			<p className={`t1 ${styles.bottom_text}`}>

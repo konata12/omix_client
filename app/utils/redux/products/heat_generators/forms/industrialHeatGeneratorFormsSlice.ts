@@ -70,14 +70,14 @@ export const industrialHeatGeneratorFormsSlice = createSlice({
 });
 
 export const {
-	setFormValues,
 	setStringValue,
-	deleteImageArrayValue,
+	deleteArrayValue,
 	pushImageArrayValues,
 	setNotStepperValue,
 	setStepperValue,
 	handleCheckbox,
 	setInputErrorValue,
 	clearForm,
+	clearErrors,
 } = industrialHeatGeneratorFormsSlice.actions;
 export default industrialHeatGeneratorFormsSlice.reducer;

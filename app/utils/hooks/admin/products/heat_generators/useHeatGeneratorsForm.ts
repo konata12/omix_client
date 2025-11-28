@@ -49,7 +49,7 @@ export function useHeatGeneratorsForm(
 	const router = useRouter();
 	const { id } = useParams<{ id: string }>();
 	const {
-		deleteImageArrayValue,
+		deleteArrayValue,
 		handleCheckboxAction,
 		pushImageArrayValues,
 		setInputErrorValue,
@@ -57,8 +57,8 @@ export function useHeatGeneratorsForm(
 		setStepperValue,
 		setStringValue,
 		clearForm,
+		clearErrors,
 		getHeatGenerator,
-		// EXTRA
 	} = useHeatGeneratorsFormReducers(heat_generator_type);
 
 	const newFormDataToCheck: HeatGeneratorCompareType = {
@@ -75,6 +75,9 @@ export function useHeatGeneratorsForm(
 	};
 
 	// SET UPDATE FORM DEFAULT VALUES
+	useEffect(() => {
+		dispatch(clearErrors(form));
+	}, [dispatch]);
 	useEffect(() => {
 		if (form === "update" && id) {
 			(async () => {
@@ -95,7 +98,9 @@ export function useHeatGeneratorsForm(
 			})();
 		}
 	}, [dispatch, heat_generator_type, id]);
-	useFormChangeCheck(defaultValue.current, newFormDataToCheck);
+	if (form === "update") {
+		useFormChangeCheck(defaultValue.current, newFormDataToCheck);
+	}
 
 	// INPUTS
 	// string
@@ -228,7 +233,7 @@ export function useHeatGeneratorsForm(
 				await del(data[field][index], store);
 			}
 
-			dispatch(deleteImageArrayValue({ index, form, field }));
+			dispatch(deleteArrayValue({ index, form, field }));
 		},
 		[dispatch, form, data, store],
 	);
@@ -264,7 +269,7 @@ export function useHeatGeneratorsForm(
 		[dispatch, form],
 	);
 	const handleUpdate = useCallback(
-		async (data: Partial<HeatGenerator>) => {
+		async (data: Partial<Omit<HeatGenerator, "id">>) => {
 			const response = await dispatch(
 				updateHeatGenerator({ ...data, id, type: heat_generator_type }),
 			);
@@ -279,7 +284,7 @@ export function useHeatGeneratorsForm(
 				});
 			}
 		},
-		[dispatch, form],
+		[dispatch, form, id],
 	);
 	const validateUpdateSameData = useCallback(
 		(errorsData: formValidateErrorsData) => {
@@ -317,7 +322,7 @@ export function useHeatGeneratorsForm(
 				if (formValidationSkipValues.some((value) => value === entry[0])) return;
 
 				// for images
-				if (entry[1] === null || (typeof entry[1] === "object" && !entry[1].length)) {
+				if (entry[1] === null || (Array.isArray(entry[1]) && !entry[1].length)) {
 					err = true;
 					message = "Оберіть зображення";
 				}
@@ -365,7 +370,7 @@ export function useHeatGeneratorsForm(
 					break;
 
 				case "update":
-					await handleUpdate({ ...requestData, id });
+					await handleUpdate(requestData);
 					break;
 			}
 		},

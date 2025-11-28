@@ -40,7 +40,7 @@ export default function HeatGeneratorsList({ type }: { type: HeatGeneratorsTypes
 	};
 
 	return (
-		<ListCardsContainer titles={["Питання", "Дії"]}>
+		<ListCardsContainer titles={["Назва моделі", "Дії"]}>
 			<ListCard>
 				<h4>
 					Індивідуальне замовлення {type === "household" ? "побутового" : "промислового"}{" "}

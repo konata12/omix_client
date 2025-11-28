@@ -2,15 +2,16 @@ import { FormImageInputType, FormTypes } from "@/app/types/data/form.type";
 import {
 	HeatGeneratorCheckboxesType,
 	HeatGeneratorFormsState,
-	HeatGeneratorFormState,
-	ProductImagesValuesType,
-	ProductImageValuesType,
 	HeatGeneratorNotStepperValuesType,
 	HeatGeneratorStepperValuesType,
 	HeatGeneratorStringValuesEnumType,
 	HeatGeneratorValuesEnumType,
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
-import { heatGeneratorsInitFormData } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
+import { ProductImagesValuesType, ProductImageValuesType } from "@/app/types/data/products/product.type";
+import {
+	heatGeneratorFormInitError,
+	heatGeneratorsInitFormData,
+} from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
 
 export const heatGeneratorCommonReducers = {
 	setStringValue(
@@ -27,7 +28,7 @@ export const heatGeneratorCommonReducers = {
 		state[form].data[field] = value;
 	},
 
-	deleteImageArrayValue(
+	deleteArrayValue(
 		state: HeatGeneratorFormsState,
 		action: {
 			payload: {
@@ -111,17 +112,8 @@ export const heatGeneratorCommonReducers = {
 		state[form].error[field] = { message };
 	},
 
-	setFormValues(
-		state: HeatGeneratorFormsState,
-		action: {
-			payload: {
-				data: HeatGeneratorFormState;
-				form: FormTypes;
-			};
-		},
-	) {
-		const { data, form } = action.payload;
-		state[form].data = data.data;
+	clearErrors(state: HeatGeneratorFormsState, action: { payload: FormTypes }) {
+		state[action.payload].error = heatGeneratorFormInitError;
 	},
 	clearForm(state: HeatGeneratorFormsState, action: { payload: FormTypes }) {
 		state[action.payload] = heatGeneratorsInitFormData;

@@ -1,5 +1,6 @@
-import { FormImageInputType, NotStepperValue } from "@/app/types/data/form.type";
+import { NotStepperValue } from "@/app/types/data/form.type";
 import {
+	ProductImages,
 	ProductImagesValuesEnum,
 	ProductImagesValuesType,
 	ProductImageValuesEnum,
@@ -10,7 +11,7 @@ import { AsFromInputError } from "@/app/types/generic.type";
 
 export type HeatGeneratorsTypes = "household" | "industrial";
 
-export interface HeatGenerator {
+export interface HeatGenerator extends ProductImages {
 	id: string;
 	// GENERAL
 	[HeatGeneratorStringValuesEnum.TITLE]: string;
@@ -41,8 +42,6 @@ export interface HeatGenerator {
 	[HeatGeneratorStepperValuesEnum.WARRANTY_YEARS_COUNT]: number;
 	// GRAPHIC INFO
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: string;
-	[ProductImageValuesEnum.CARD_IMAGE]: FormImageInputType;
-	[ProductImagesValuesEnum.PRODUCT_IMAGES]: FormImageInputType[];
 }
 export interface HeatGeneratorListData {
 	id: string;
