@@ -3,7 +3,7 @@ import { IDBPDatabase, openDB } from "idb";
 import { createStore } from "idb-keyval";
 
 const tableGroups = ["household_heat_generators", "industrial_heat_generators", "grain_dryers"] as const;
-const tableSuffixes = ["images", "create_images", "update_images"] as const;
+const tableSuffixes = ["create_images", "update_images"] as const;
 
 type AppDBSchema = {
 	[K in `${(typeof tableGroups)[number]}_${(typeof tableSuffixes)[number]}`]: {
@@ -13,7 +13,7 @@ type AppDBSchema = {
 };
 
 const DB_NAME = "omix_admin";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 let dbInstance: Promise<IDBPDatabase<AppDBSchema>> | null = null;
 
