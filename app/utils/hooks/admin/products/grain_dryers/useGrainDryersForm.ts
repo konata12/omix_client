@@ -1,41 +1,58 @@
-import { parseNumberInput } from "@/app/services/admin/forms.service";
-import { Faq, FaqFormValuesEnumType } from "@/app/types/data/faq.type";
+import { giveFileUniqNameKeepExtension } from "@/app/services/admin/files.service";
+import {
+	checkCheckboxInputValuesToValidate,
+	filterRequestDataByCheckboxes,
+	parseNumberInput,
+} from "@/app/services/admin/forms.service";
+import { fulfilled } from "@/app/services/admin/response.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
+	GrainDryer,
+	GrainDryerArrayValuesType,
 	GrainDryerCheckboxesType,
-	GrainDryerImagesValuesType,
-	GrainDryerImageValuesType,
 	GrainDryerNotStepperValuesType,
 	GrainDryerStepperValuesType,
+	GrainDryerStringArrayValuesEnum,
+	GrainDryerStringArrayValuesType,
 	GrainDryerStringValuesEnumType,
 	GrainDryerValuesEnumType,
 } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
-import { formValidateErrorsData, useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
+import { ProductImagesValuesType, ProductImageValuesType } from "@/app/types/data/products/product.type";
+import { useFormValidate } from "@/app/utils/hooks/common/form/useFormValidate";
 import { useAppDispatch, useAppSelector } from "@/app/utils/redux/hooks";
 import {
+	clearForm,
+	deleteArrayValue,
 	handleCheckbox as handleCheckboxAction,
 	pushImageArrayValues,
-	deleteImageArrayValue,
+	pushStringArrayValue,
 	setInputErrorValue,
 	setNotStepperValue,
 	setStepperValue,
 	setStringValue,
 } from "@/app/utils/redux/products/grain_dryers/grainDryerFormsSlice";
-import { setUpdateError } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
+import {
+	createGrainDryer,
+	setUpdateError,
+	updateGrainDryer,
+} from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
+import { getHeatGenerators } from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { RootState } from "@/app/utils/redux/store";
 import { del, set, UseStore } from "idb-keyval";
-import _ from "lodash";
 import { useParams, useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useCallback } from "react";
-import { v4 as uuid } from "uuid";
+import { ChangeEvent, FormEvent, useCallback, useEffect } from "react";
 
 export function useGrainDryersForm(form: FormTypes, store: UseStore) {
-	const { grain_dryers } = useAppSelector((state: RootState) => state.grainDryer);
-	const { error, ...data } = useAppSelector((state: RootState) => state.grainDryerForms[form]);
+	const { checkboxes, data } = useAppSelector((state: RootState) => state.grainDryerForms[form]);
+	const { heat_generators } = useAppSelector((state: RootState) => state.heatGenerator.industrial);
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const { id } = useParams<{ id: string }>();
+
+	useEffect(() => {
+		dispatch(getHeatGenerators("industrial"));
+	}, [dispatch]);
 
 	// INPUTS
 	// string
@@ -71,15 +88,26 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 		},
 		[dispatch, form],
 	);
+	// arrays
+	const handleStringArrayPush = useCallback(
+		(value: string, field: GrainDryerStringArrayValuesType) => {
+			dispatch(pushStringArrayValue({ value, form, field }));
+			clearInputError(field);
+		},
+		[dispatch, form],
+	);
+	const handleDeleteArrayValue = useCallback(
+		(index: number, field: GrainDryerArrayValuesType) => {
+			dispatch(deleteArrayValue({ index, form, field }));
+		},
+		[dispatch, form],
+	);
 	// media
 	const handleImageInputChange = useCallback(
-		async (e: ChangeEvent<HTMLInputElement>, field: GrainDryerImageValuesType) => {
+		async (e: ChangeEvent<HTMLInputElement>, field: ProductImageValuesType) => {
 			const value = e.target.files;
 			const oldValue = data[field];
 			if (!value) return;
-
-			const imageName = uuid();
-			const image = value[0];
 
 			// IF IMAGE IS NOT PNG SHOW ERROR
 			if (value[0].type !== "image/png") {
@@ -90,7 +118,6 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 						message: "Зображення повинно бути в форматі PNG",
 					}),
 				);
-				// todo fix scroll to image on error
 				(document.querySelector(`#${field}`) as HTMLInputElement).scrollIntoView({
 					behavior: "smooth",
 					block: "center",
@@ -98,18 +125,20 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 				return;
 			}
 
+			const image = giveFileUniqNameKeepExtension(value[0]);
+
 			// DELETE OLD IMAGE FROM INDEXEDDB
 			if (oldValue) {
 				await del(oldValue, store);
 			}
 
 			// SAVE NEW IMAGE TO INDEXEDDB
-			await set(imageName, image, store);
+			await set(image.name, image, store);
 
 			// SET NEW IMAGE NAME IN REDUX, IT WILL BE KEY TO FILE IN INDEXEDDB
 			dispatch(
 				setStringValue({
-					value: imageName,
+					value: image.name,
 					form,
 					field,
 				}),
@@ -119,22 +148,24 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 		[dispatch, form, data, store],
 	);
 	const handleImageCarouselInputChange = useCallback(
-		async (e: ChangeEvent<HTMLInputElement>, field: GrainDryerImagesValuesType) => {
+		async (e: ChangeEvent<HTMLInputElement>, field: ProductImagesValuesType) => {
 			const values = Array.from(e.target.files || []);
 			const imageNames: string[] = [];
+			const errors: string[] = []; // need this to check if to show error when uploaded many images
 			if (!values.length) return;
 
 			await Promise.all(
 				values.map(async (value) => {
 					if (value.type !== "image/png") {
+						const message = "Зображення повинно бути в форматі PNG";
 						dispatch(
 							setInputErrorValue({
 								form,
 								field,
-								message: "Зображення повинно бути в форматі PNG",
+								message,
 							}),
 						);
-						// todo fix scroll to image on error
+						errors.push(message);
 						(document.querySelector(`#${field}`) as HTMLInputElement).scrollIntoView({
 							behavior: "smooth",
 							block: "center",
@@ -142,24 +173,26 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 						return;
 					}
 
-					const imageName = uuid();
-					await set(imageName, value, store);
-					imageNames.push(imageName);
+					const image = giveFileUniqNameKeepExtension(value);
+					await set(image.name, image, store);
+					imageNames.push(image.name);
 				}),
 			);
 
 			dispatch(pushImageArrayValues({ value: imageNames, form, field }));
-			clearInputError(field);
+			if (!errors.length) {
+				clearInputError(field);
+			}
 		},
 		[dispatch, form, data, store],
 	);
 	const handleImageCarouselDelete = useCallback(
-		async (index: number, field: GrainDryerImagesValuesType) => {
+		async (index: number, field: ProductImagesValuesType) => {
 			if (data[field][index]) {
 				await del(data[field][index], store);
 			}
 
-			dispatch(deleteImageArrayValue({ index, form, field }));
+			dispatch(deleteArrayValue({ index, form, field }));
 		},
 		[dispatch, form, data, store],
 	);
@@ -178,6 +211,54 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 	);
 
 	// SUBMIT
+	const handleCreate = useCallback(
+		async (data: Partial<Omit<GrainDryer, "id">>) => {
+			const response = await dispatch(createGrainDryer(data));
+			const isFulfilled = fulfilled(response.meta.requestStatus);
+			if (isFulfilled) {
+				dispatch(clearForm(form));
+				router.push(`/admin/products/grain_dryers`);
+			} else {
+				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
+					behavior: "smooth",
+					block: "center",
+				});
+			}
+		},
+		[dispatch, form],
+	);
+	const handleUpdate = useCallback(
+		async (data: Partial<GrainDryer>) => {
+			const response = await dispatch(updateGrainDryer({ ...data, id }));
+			const isFulfilled = fulfilled(response.meta.requestStatus);
+			if (isFulfilled) {
+				dispatch(clearForm(form));
+				router.push(`/admin/products/grain_dryers`);
+			} else {
+				(document.querySelector(`#submit_error`) as HTMLInputElement).scrollIntoView({
+					behavior: "smooth",
+					block: "center",
+				});
+			}
+		},
+		[dispatch, form, id],
+	);
+	// const validateUpdateSameData = useCallback(
+	// 	(errorsData: formValidateErrorsData) => {
+	// 		if (form === "update") {
+	// 			if (_.isEqual(defaultValue.current, newFormDataToCheck)) {
+	// 				dispatch(
+	// 					setUpdateError({
+	// 						message: "Дані ті самі, спочатку змініть значення",
+	// 						type: heat_generator_type,
+	// 					}),
+	// 				);
+	// 				errorsData.push({ id: "submit_error" });
+	// 			}
+	// 		}
+	// 	},
+	// 	[dispatch, defaultValue, newFormDataToCheck, checkboxes],
+	// );
 	const handleSubmit = useCallback(
 		async (e: FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
@@ -186,39 +267,71 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 			const entries = Object.entries(data);
 
 			// VALIDATE DATA
-			// entries.forEach((entry) => {
-			// 	// for strings
-			// 	if (!entry[1].length) {
-			// 		const field = entry[0] as FaqFormValuesEnumType;
-			//
-			// 		dispatch(
-			// 			setInputErrorValue({
-			// 				message: "Введіть значення",
-			// 				form,
-			// 				field,
-			// 			}),
-			// 		);
-			// 		errorsData.push({ id: field });
-			// 	}
-			// });
-			//
+			entries.forEach((entry) => {
+				const field = entry[0] as GrainDryerValuesEnumType;
+				let message = "Введіть значення";
+				let err = false;
+
+				// check checkboxes
+				if (checkCheckboxInputValuesToValidate(checkboxes, field)) return;
+
+				if (
+					entry[0] === GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS &&
+					Array.isArray(entry[1]) &&
+					!entry[1].length
+				) {
+					err = true;
+					message = "Оберіть теплогенератор";
+				}
+				// for images
+				else if (entry[1] === null || (Array.isArray(entry[1]) && !entry[1].length)) {
+					err = true;
+					message = "Оберіть зображення";
+				}
+				// for empty string and numbers inputs
+				else if (entry[1] === "") {
+					err = true;
+				}
+				// validate number inputs
+				else if (!isNaN(+entry[1]) && +entry[1] < 0) {
+					err = true;
+					message = "Значення має бути більше нуля";
+				}
+
+				if (err) {
+					dispatch(
+						setInputErrorValue({
+							message,
+							form,
+							field,
+						}),
+					);
+					errorsData.push({ id: field });
+				}
+			});
+
 			// // VALIDATE CHANGE IN UPDATE
 			// validateUpdateSameData(data, errorsData);
-			//
+
 			// // SCROLL TO ERROR INPUT AND FINISH EXECUTING
-			// if (scrollToError()) return;
-			//
-			// switch (form) {
-			// 	case "industrial":
-			// 		await handleCreate(data);
-			// 		break;
-			//
-			// 	case "update":
-			// 		await handleUpdate(data);
-			// 		break;
-			// }
+			if (scrollToError()) return;
+
+			const requestData: Partial<Omit<GrainDryer, "id">> = filterRequestDataByCheckboxes(
+				checkboxes,
+				data,
+			);
+
+			switch (form) {
+				case "create":
+					await handleCreate(requestData);
+					break;
+
+				case "update":
+					await handleUpdate(requestData);
+					break;
+			}
 		},
-		[dispatch, form, id, data],
+		[dispatch, form, id, data, checkboxes],
 	);
 
 	// HELPER
@@ -232,26 +345,14 @@ export function useGrainDryersForm(form: FormTypes, store: UseStore) {
 		);
 		dispatch(setUpdateError(null));
 	}
-	// const validateUpdateSameData = useCallback(
-	// 	(data: Omit<Faq, "id">, errorsData: formValidateErrorsData) => {
-	// 		if (form === "update") {
-	// 			const index = faqs.findIndex((faq) => `${faq.id}` === id);
-	// 			const { id: x, ...oldData } = faqs[index];
-	//
-	// 			if (_.isEqual(oldData, data)) {
-	// 				dispatch(setUpdateError("Дані ті самі, спочатку змініть значення"));
-	// 				errorsData.push({ id: "submit_error" });
-	// 			}
-	// 		}
-	// 	},
-	// 	[dispatch, form],
-	// );
 
 	return {
 		// INPUTS
 		handleStringInputChange,
 		handleNumberInputChange,
 		handleStepperChange,
+		handleStringArrayPush,
+		handleDeleteArrayValue,
 		handleImageInputChange,
 		handleImageCarouselInputChange,
 		handleImageCarouselDelete,

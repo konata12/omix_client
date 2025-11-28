@@ -1,4 +1,4 @@
-import GrainDryerForm from "@/app/admin/ui/forms/grainDryer/GrainDryerForm";
+import GrainDryerForm from "@/app/admin/ui/forms/products/grainDryer/GrainDryerForm";
 import HeroSection from "@/app/common_ui/sections/HeroSection/HeroSection";
 import Link from "next/link";
 

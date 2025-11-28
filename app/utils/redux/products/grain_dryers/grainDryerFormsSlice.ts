@@ -1,21 +1,27 @@
 import { FormImageInputType, FormTypes, NotStepperValue } from "@/app/types/data/form.type";
 import {
+	GrainDryer,
+	GrainDryerArrayValuesType,
 	GrainDryerCheckboxesType,
 	GrainDryerFormErrors,
 	GrainDryerFormsState,
 	GrainDryerFormState,
-	GrainDryerImagesValuesEnum,
-	GrainDryerImagesValuesType,
-	GrainDryerImageValuesEnum,
-	GrainDryerImageValuesType,
 	GrainDryerNotStepperValuesEnum,
 	GrainDryerNotStepperValuesType,
 	GrainDryerStepperValuesEnum,
 	GrainDryerStepperValuesType,
+	GrainDryerStringArrayValuesEnum,
+	GrainDryerStringArrayValuesType,
 	GrainDryerStringValuesEnum,
 	GrainDryerStringValuesEnumType,
 	GrainDryerValuesEnumType,
 } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
+import {
+	ProductImagesValuesEnum,
+	ProductImagesValuesType,
+	ProductImageValuesEnum,
+	ProductImageValuesType,
+} from "@/app/types/data/products/product.type";
 import { createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
 
@@ -65,12 +71,15 @@ const initError: GrainDryerFormErrors = {
 	},
 	[GrainDryerStepperValuesEnum.WARRANTY_YEARS_COUNT]: { message: "" },
 
+	// RECOMENDED HEAT GENERATORS
+	[GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS]: { message: "" },
+
 	// GRAPHIC INFO
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: { message: "" },
-	[GrainDryerImageValuesEnum.CARD_IMAGE]: { message: "" },
-	[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]: { message: "" },
+	[ProductImageValuesEnum.CARD_IMAGE]: { message: "" },
+	[ProductImagesValuesEnum.PRODUCT_IMAGES]: { message: "" },
 };
-const initFormData: GrainDryerFormState = {
+const initData: Omit<GrainDryer, "id"> = {
 	// GENERAL
 	[GrainDryerStringValuesEnum.TITLE]: "",
 	[GrainDryerStepperValuesEnum.HEATING_SECTIONS]: 0,
@@ -106,11 +115,16 @@ const initFormData: GrainDryerFormState = {
 	[GrainDryerStepperValuesEnum.DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT]: 0,
 	[GrainDryerStepperValuesEnum.WARRANTY_YEARS_COUNT]: 0,
 
+	// RECOMENDED HEAT GENERATORS
+	[GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS]: [],
+
 	// GRAPHIC INFO
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: "",
-	[GrainDryerImageValuesEnum.CARD_IMAGE]: null,
-	[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]: [],
-
+	[ProductImageValuesEnum.CARD_IMAGE]: null,
+	[ProductImagesValuesEnum.PRODUCT_IMAGES]: [],
+};
+const initFormData: GrainDryerFormState = {
+	data: initData,
 	checkboxes: {
 		[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: false,
 	},
@@ -132,25 +146,39 @@ export const grainDryerFormsSlice = createSlice({
 				payload: {
 					value: string;
 					form: FormTypes;
-					field: GrainDryerStringValuesEnumType | GrainDryerImageValuesType;
+					field: GrainDryerStringValuesEnumType | ProductImageValuesType;
 				};
 			},
 		) {
 			const { value, form, field } = action.payload;
-			state[form][field] = value;
+			state[form].data[field] = value;
 		},
-		deleteImageArrayValue(
+		deleteArrayValue(
 			state,
 			action: {
 				payload: {
 					index: number;
 					form: FormTypes;
-					field: GrainDryerImagesValuesType;
+					field: ProductImagesValuesType | GrainDryerArrayValuesType;
 				};
 			},
 		) {
 			const { index, form, field } = action.payload;
-			state[form][field].splice(index, 1);
+			state[form].data[field].splice(index, 1);
+		},
+		pushStringArrayValue(
+			state,
+			action: {
+				payload: {
+					value: string;
+					form: FormTypes;
+					field: GrainDryerStringArrayValuesType;
+				};
+			},
+		) {
+			const { value, form, field } = action.payload;
+			if (state[form].data[field].includes(value)) return;
+			state[form].data[field].push(value);
 		},
 		pushImageArrayValues(
 			state,
@@ -158,12 +186,12 @@ export const grainDryerFormsSlice = createSlice({
 				payload: {
 					value: FormImageInputType[];
 					form: FormTypes;
-					field: GrainDryerImagesValuesType;
+					field: ProductImagesValuesType;
 				};
 			},
 		) {
 			const { value, form, field } = action.payload;
-			state[form][field].push(...value);
+			state[form].data[field].push(...value);
 		},
 		setNotStepperValue(
 			state,
@@ -176,7 +204,7 @@ export const grainDryerFormsSlice = createSlice({
 			},
 		) {
 			const { value, form, field } = action.payload;
-			state[form][field] = value;
+			state[form].data[field] = value;
 		},
 		setStepperValue(
 			state,
@@ -189,7 +217,7 @@ export const grainDryerFormsSlice = createSlice({
 			},
 		) {
 			const { value, form, field } = action.payload;
-			state[form][field] = value;
+			state[form].data[field] = value;
 		},
 		handleCheckbox(
 			state,
@@ -239,7 +267,8 @@ export const grainDryerFormsSlice = createSlice({
 export const {
 	setFormValues,
 	setStringValue,
-	deleteImageArrayValue,
+	deleteArrayValue,
+	pushStringArrayValue,
 	pushImageArrayValues,
 	setNotStepperValue,
 	setStepperValue,

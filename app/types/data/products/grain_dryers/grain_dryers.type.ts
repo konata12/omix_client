@@ -1,8 +1,15 @@
-import { FormImageInputType, NotStepperValue } from "@/app/types/data/form.type";
+import { NotStepperValue } from "@/app/types/data/form.type";
+import {
+	ProductImages,
+	ProductImagesValuesEnum,
+	ProductImagesValuesType,
+	ProductImageValuesEnum,
+	ProductImageValuesType,
+} from "@/app/types/data/products/product.type";
 import { ErrorsResponses, Status } from "@/app/types/data/response.type";
 import { AsFromInputError } from "@/app/types/generic.type";
 
-export interface GrainDryer {
+export interface GrainDryer extends ProductImages {
 	id: string;
 	// GENERAL
 	[GrainDryerStringValuesEnum.TITLE]: string;
@@ -35,24 +42,37 @@ export interface GrainDryer {
 	[GrainDryerStepperValuesEnum.LOADING_TANK_ROTARY_LEVEL_SENSORS_COUNT]: number;
 	[GrainDryerStepperValuesEnum.DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT]: number;
 	[GrainDryerStepperValuesEnum.WARRANTY_YEARS_COUNT]: number;
+	// RECOMENDED HEAT GENERATORS
+	[GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS]: string[];
 	// GRAPHIC INFO
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: string;
-	[GrainDryerImageValuesEnum.CARD_IMAGE]: FormImageInputType;
-	[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]: FormImageInputType[];
+}
+export interface GrainDryerListData {
+	id: string;
+	[GrainDryerStringValuesEnum.TITLE]: string;
 }
 export interface GrainDryerData {
-	grain_dryers: GrainDryer[];
+	grain_dryers: GrainDryerListData[];
 	grain_dryers_modal_is_open: boolean[];
 	error: ErrorsResponses;
 	status: Status;
 }
 
+// FETCHING
+export interface GrainDryerResponseData
+	extends Omit<GrainDryer, GrainDryerStringValuesEnum.YOUTUBE_REVIEW> {
+	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]?: string;
+	[ProductImageValuesEnum.CARD_IMAGE]: string;
+	[ProductImagesValuesEnum.PRODUCT_IMAGES]: string[];
+}
+
 // FORMS
-export interface GrainDryerCheckboxes {
+export interface GrainDryerCheckboxes extends Record<string, boolean> {
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: boolean;
 }
 export type GrainDryerFormErrors = AsFromInputError<Omit<GrainDryer, "id">>;
-export interface GrainDryerFormState extends Omit<GrainDryer, "id"> {
+export interface GrainDryerFormState {
+	data: Omit<GrainDryer, "id">;
 	checkboxes: GrainDryerCheckboxes;
 	error: GrainDryerFormErrors;
 }
@@ -104,20 +124,18 @@ export enum GrainDryerStepperValuesEnum {
 	DRYER_TOP_SECTION_ROTARY_LEVEL_SENSORS_COUNT = "dryer_top_section_rotary_level_sensors_count",
 	WARRANTY_YEARS_COUNT = "warranty_years_count",
 }
-// images enums
-export enum GrainDryerImageValuesEnum {
-	CARD_IMAGE = "card_image",
-}
-export enum GrainDryerImagesValuesEnum {
-	PRODUCT_IMAGES = "product_images",
+// array enums
+export enum GrainDryerStringArrayValuesEnum {
+	RECOMENDED_HEAT_GENERATORS = "recomended_heat_generators",
 }
 
 // ENUM TYPES
 export type GrainDryerValuesEnumType =
 	| GrainDryerNumberValuesEnumType
 	| GrainDryerStringValuesEnumType
-	| GrainDryerImageValuesType
-	| GrainDryerImagesValuesType;
+	| ProductImageValuesType
+	| ProductImagesValuesType
+	| GrainDryerStringArrayValuesType;
 export type GrainDryerStringValuesEnumType = `${GrainDryerStringValuesEnum}`;
 // number
 export type GrainDryerNumberValuesEnumType =
@@ -125,9 +143,9 @@ export type GrainDryerNumberValuesEnumType =
 	| GrainDryerStepperValuesType;
 export type GrainDryerNotStepperValuesType = `${GrainDryerNotStepperValuesEnum}`;
 export type GrainDryerStepperValuesType = `${GrainDryerStepperValuesEnum}`;
-// graphic
-export type GrainDryerImageValuesType = `${GrainDryerImageValuesEnum}`;
-export type GrainDryerImagesValuesType = `${GrainDryerImagesValuesEnum}`;
+// array
+export type GrainDryerArrayValuesType = GrainDryerStringArrayValuesType;
+export type GrainDryerStringArrayValuesType = `${GrainDryerStringArrayValuesEnum}`;
 
 // OTHER TYPES
 export type GrainDryerCheckboxesType = GrainDryerStringValuesEnum.YOUTUBE_REVIEW;

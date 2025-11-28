@@ -1,5 +1,10 @@
+import { createGrainDryerFormData } from "@/app/services/admin/products/grain_dryers.service";
 import { reduxSerializeError } from "@/app/services/admin/response.service";
-import { GrainDryer, GrainDryerData } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
+import {
+	GrainDryer,
+	GrainDryerData,
+	GrainDryerListData,
+} from "@/app/types/data/products/grain_dryers/grain_dryers.type";
 import { ErrorResponse } from "@/app/types/data/response.type";
 import axiosInstance from "@/app/utils/axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -27,7 +32,7 @@ export const getGrainDryer = createAsyncThunk(
 	"grainDryer/getGrainDryer",
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.get(`${baseUrl}/grainDryer`);
+			const response = await axiosInstance.get<GrainDryerListData[]>(`${baseUrl}/grainDryer`);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));
@@ -37,9 +42,14 @@ export const getGrainDryer = createAsyncThunk(
 
 export const createGrainDryer = createAsyncThunk(
 	"grainDryer/createGrainDryer",
-	async (data: Omit<GrainDryer, "id">, { rejectWithValue }) => {
+	async (data: Partial<Omit<GrainDryer, "id">>, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.post(`${baseUrl}/grainDryer`, data);
+			const formData = await createGrainDryerFormData(data, "create");
+			console.log("formData: ", Array.from(formData));
+			const response = await axiosInstance.post<GrainDryerListData[]>(
+				`${baseUrl}/grainDryer`,
+				data,
+			);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(reduxSerializeError(error));
@@ -47,19 +57,19 @@ export const createGrainDryer = createAsyncThunk(
 	},
 );
 
-// export const updateGrainDryer = createAsyncThunk<GrainDryer, GrainDryer, { rejectValue: ErrorResponse }>(
-// 	"grainDryer/updateGrainDryer",
-// 	async (data: GrainDryer, { rejectWithValue }) => {
-// 		try {
-// 			const { id, ...otherData } = data;
-// 			await axiosInstance.put(`${baseUrl}/grainDryer/${id}`, otherData);
-// 			return data;
-// 		} catch (error) {
-// 			return rejectWithValue(reduxSerializeError(error));
-// 		}
-// 	},
-// );
-//
+export const updateGrainDryer = createAsyncThunk(
+	"grainDryer/updateGrainDryer",
+	async (props: Partial<Omit<GrainDryer, "id">> & { id: string }, { rejectWithValue }) => {
+		try {
+			const { id, ...otherData } = props;
+			await axiosInstance.put(`${baseUrl}/grainDryer/${id}`, otherData);
+			return props;
+		} catch (error) {
+			return rejectWithValue(reduxSerializeError(error));
+		}
+	},
+);
+
 export const deleteGrainDryer = createAsyncThunk<string, string, { rejectValue: ErrorResponse }>(
 	"grainDryer/deleteGrainDryer",
 	async (id: string, { rejectWithValue }) => {
@@ -96,7 +106,7 @@ export const grainDryerSlice = createSlice({
 				state.status.getAll = "loading";
 				state.error.getAll = null;
 			})
-			.addCase(getGrainDryer.fulfilled, (state, action: PayloadAction<GrainDryer[]>) => {
+			.addCase(getGrainDryer.fulfilled, (state, action) => {
 				state.status.getAll = "succeeded";
 				state.grain_dryers = action.payload;
 				state.grain_dryers_modal_is_open = new Array(state.grain_dryers.length).fill(false);
@@ -113,7 +123,7 @@ export const grainDryerSlice = createSlice({
 				state.status.create = "loading";
 				state.error.create = null;
 			})
-			.addCase(createGrainDryer.fulfilled, (state, action: PayloadAction<GrainDryer[]>) => {
+			.addCase(createGrainDryer.fulfilled, (state, action) => {
 				state.status.create = "succeeded";
 				state.grain_dryers = action.payload;
 				state.grain_dryers_modal_is_open = new Array(state.grain_dryers.length).fill(false);
@@ -123,8 +133,8 @@ export const grainDryerSlice = createSlice({
 				state.status.create = "failed";
 				state.error.create = action.payload as ErrorResponse;
 			})
-			//
-			// // UPDATE
+
+			// UPDATE
 			// .addCase(updateGrainDryer.pending, (state) => {
 			// 	state.status.update = "loading";
 			// 	state.error.update = null;
@@ -140,7 +150,7 @@ export const grainDryerSlice = createSlice({
 			// 	state.status.update = "failed";
 			// 	state.error.update = action.payload as ErrorResponse;
 			// })
-			//
+
 			// DELETE
 			.addCase(deleteGrainDryer.pending, (state, action: PayloadAction<string | undefined>) => {
 				state.status.delete = "loading";
@@ -154,7 +164,6 @@ export const grainDryerSlice = createSlice({
 			.addCase(deleteGrainDryer.fulfilled, (state, action: PayloadAction<string>) => {
 				state.status.delete = "succeeded";
 				const index = state.grain_dryers.findIndex((grain_dryer) => {
-					console.log("state.grainDryers", state.grain_dryers);
 					return grain_dryer.id === action.payload;
 				});
 				if (index !== -1) {

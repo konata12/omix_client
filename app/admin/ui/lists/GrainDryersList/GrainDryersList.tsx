@@ -37,7 +37,7 @@ export default function GrainDryersList() {
 	};
 
 	return (
-		<ListCardsContainer titles={["Питання", "Дії"]}>
+		<ListCardsContainer titles={["Назва моделі", "Дії"]}>
 			<ListCard>
 				<h4>Індивідуальне замовлення зерносушильного комплексу</h4>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import FormShowSelectList from "@/app/admin/ui/lists/FormShowSelectList/FormShowSelectList";
 import InputBlock from "@/app/admin/ui/sections/InputBlock/InputBlock";
 import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import { ImageInputCarouselPreviewFromIndexedDB } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputCarouselPreviewFromIndexedDB/ImageInputCarouselPreviewFromIndexedDB";
@@ -8,16 +9,17 @@ import { ImageInputPreviewFromIndexedDB } from "@/app/common_ui/form_components/
 import InputContainer from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
 import InputContainerWithCheckbox from "@/app/common_ui/form_components/inputs/InputContainerWithCheckbox/InputContainerWithCheckbox";
 import Stepper from "@/app/common_ui/form_components/inputs/Stepper/Stepper";
+import SelectWithSearchBar from "@/app/common_ui/form_components/selects/SelectWithSearchBar/SelectWithSearchBar";
 import Title from "@/app/common_ui/titles/Title";
 import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
-	GrainDryerImagesValuesEnum,
-	GrainDryerImageValuesEnum,
 	GrainDryerNotStepperValuesEnum,
 	GrainDryerStepperValuesEnum,
+	GrainDryerStringArrayValuesEnum,
 	GrainDryerStringValuesEnum,
 } from "@/app/types/data/products/grain_dryers/grain_dryers.type";
+import { ProductImagesValuesEnum, ProductImageValuesEnum } from "@/app/types/data/products/product.type";
 import { useGrainDryersForm } from "@/app/utils/hooks/admin/products/grain_dryers/useGrainDryersForm";
 import { useAppSelector } from "@/app/utils/redux/hooks";
 import { RootState } from "@/app/utils/redux/store";
@@ -98,8 +100,11 @@ const configurationInputsArrays = [
 ];
 
 export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
-	const { error, checkboxes, ...data } = useAppSelector(
+	const { error, checkboxes, data } = useAppSelector(
 		(state: RootState) => state.grainDryerForms[formType],
+	);
+	const { error: heatGeneratorsError, heat_generators } = useAppSelector(
+		(state: RootState) => state.heatGenerator.industrial,
 	);
 	const requestError = useAppSelector((state: RootState) => state.grainDryer.error);
 
@@ -108,19 +113,17 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 		handleStringInputChange,
 		handleNumberInputChange,
 		handleStepperChange,
+		handleStringArrayPush,
+		handleDeleteArrayValue,
 		handleImageInputChange,
 		handleImageCarouselInputChange,
 		handleImageCarouselDelete,
 		handleCheckbox,
+		handleSubmit,
 	} = useGrainDryersForm(formType, store);
 
-	console.log(data);
-
 	return (
-		<form
-			className={`section admin container df fdc gap_24`}
-			// onSubmit={(e) => handleSubmit(e, data)}
-		>
+		<form className={`section admin container df fdc gap_24`} onSubmit={handleSubmit}>
 			<Title
 				title={"Технічні характеристики"}
 				description={"Введіть усі технічні параметри моделі"}
@@ -278,7 +281,37 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 						</div>
 					</InputBlock>
 					{/*	RECOMMENDED HEAT GENERATORS */}
-					{/*	TODO ADD HEAT GENERATORS SEARCHBAR */}
+					<InputBlock title={"Рекомендовані теплогенератори"}>
+						<SelectWithSearchBar
+							label={`Рекомендовані теплогенератори`}
+							inputId={GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS}
+							options={heat_generators}
+							error={error[GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS]}
+							handleSelect={(value: string) => {
+								handleStringArrayPush(
+									value,
+									GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS,
+								);
+							}}
+							className={{ inputContainer: "flex_full" }}
+						/>
+						<FormShowSelectList
+							titles={["Назва моделі рекомендованого теплогенератора", "Дії"]}
+							defaultRow={"Індивідуальне замовлення промислового теплогенератора"}
+							data={heat_generators.filter((heat_generator) =>
+								data[GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS].some(
+									(selected_heat_generator) =>
+										selected_heat_generator === heat_generator.id,
+								),
+							)}
+							handleDelete={(index: number) =>
+								handleDeleteArrayValue(
+									index,
+									GrainDryerStringArrayValuesEnum.RECOMENDED_HEAT_GENERATORS,
+								)
+							}
+						/>
+					</InputBlock>
 				</div>
 				{/* GRAPHIC INFO */}
 				<div className={`df fdc gap_48`}>
@@ -309,35 +342,35 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 					<div className={`df fdc gap_80`}>
 						<InputBlock title={"Фотокартка (фотографія картки)"}>
 							<ImageInputContainer
-								inputId={GrainDryerImageValuesEnum.CARD_IMAGE}
+								inputId={ProductImageValuesEnum.CARD_IMAGE}
 								changeEvent={(e) => {
-									handleImageInputChange(e, GrainDryerImageValuesEnum.CARD_IMAGE);
+									handleImageInputChange(e, ProductImageValuesEnum.CARD_IMAGE);
 								}}
 							>
 								<ImageInputPreviewFromIndexedDB
-									inputId={GrainDryerImageValuesEnum.CARD_IMAGE}
+									inputId={ProductImageValuesEnum.CARD_IMAGE}
 									store={store}
-									imageName={data[GrainDryerImageValuesEnum.CARD_IMAGE]}
-									error={error[GrainDryerImageValuesEnum.CARD_IMAGE]}
+									imageName={data[ProductImageValuesEnum.CARD_IMAGE]}
+									error={error[ProductImageValuesEnum.CARD_IMAGE]}
 								/>
 							</ImageInputContainer>
 						</InputBlock>
 						<InputBlock title={"Фотоколаж (фотографії продукту)"}>
 							<ImageInputContainer
-								inputId={GrainDryerImagesValuesEnum.PRODUCT_IMAGES}
+								inputId={ProductImagesValuesEnum.PRODUCT_IMAGES}
 								multiple={true}
 								changeEvent={(e) => {
 									handleImageCarouselInputChange(
 										e,
-										GrainDryerImagesValuesEnum.PRODUCT_IMAGES,
+										ProductImagesValuesEnum.PRODUCT_IMAGES,
 									);
 								}}
 							>
 								<ImageInputCarouselPreviewFromIndexedDB
-									inputId={GrainDryerImagesValuesEnum.PRODUCT_IMAGES}
+									inputId={ProductImagesValuesEnum.PRODUCT_IMAGES}
 									store={store}
-									imageNames={data[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]}
-									error={error[GrainDryerImagesValuesEnum.PRODUCT_IMAGES]}
+									imageNames={data[ProductImagesValuesEnum.PRODUCT_IMAGES]}
+									error={error[ProductImagesValuesEnum.PRODUCT_IMAGES]}
 									handleDelete={handleImageCarouselDelete}
 								/>
 							</ImageInputContainer>
@@ -350,7 +383,7 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 				error={requestError[formType]}
 				id={"submit_error"}
 			/>
-			<button className={`btn blue t4 ${styles.submit}`} type="submit">
+			<button className={`btn blue t4`} type="submit">
 				{formType === "create" ? "Створити " : "Зберегти зміни"}
 			</button>
 			<p className={`t1 ${styles.bottom_text}`}>
