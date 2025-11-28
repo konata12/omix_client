@@ -1,8 +1,8 @@
-import AutoResizingTextarea from "@/app/common_ui/form_components/textareas/AutoResizingTextarea/AutoResizingTextarea";
 import BasicInputContainer, {
 	BasicInputContainerProps,
 } from "@/app/common_ui/form_components/BasicInputContainer/BasicInputContainer";
 import { InputContainerStyles } from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
+import AutoResizingTextarea from "@/app/common_ui/form_components/textareas/AutoResizingTextarea/AutoResizingTextarea";
 import {
 	InputContainerWithChangeEventProps,
 	InputOptionalProps,
@@ -13,6 +13,7 @@ export interface TextareaContainerProps
 		InputOptionalProps,
 		InputContainerWithChangeEventProps<HTMLTextAreaElement> {
 	value: string;
+	minRows?: number;
 	className?: InputContainerStyles;
 }
 
@@ -22,6 +23,7 @@ export default function TextareaContainer({
 	error,
 	changeEvent,
 	value = "",
+	minRows = 1,
 	placeholder,
 	className,
 }: TextareaContainerProps) {
@@ -33,7 +35,7 @@ export default function TextareaContainer({
 				onChange={changeEvent}
 				value={value}
 				placeholder={placeholder}
-				minRows={4}
+				minRows={minRows}
 			/>
 		</BasicInputContainer>
 	);
