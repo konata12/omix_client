@@ -4,7 +4,7 @@ import { ImageInputPreviewCarouselBasic } from "@/app/common_ui/form_components/
 import { FormImageInputType, FormInputError } from "@/app/types/data/form.type";
 import useEmblaCarousel from "embla-carousel-react";
 import { UseStore } from "idb-keyval";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./ImageInputCarouselPreviewFromIndexedDB.module.scss";
 
 interface ImageInputPreviewFromIndexedDBStyles {
@@ -31,8 +31,9 @@ export function ImageInputCarouselPreviewFromIndexedDB<T extends string>({
 	handleDelete,
 	className,
 }: ImageInputCarouselPreviewFromIndexedDBProps<T>) {
-	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [selectedIndex, setSelectedIndex] = useState(0); // need this state to rerender when trigger onSelect event from embla
 	const [emblaRef, emblaApi] = useEmblaCarousel();
+	const l = useRef(0); // need this to not break scroll bar when deletinng last element
 
 	useEffect(() => {
 		if (!emblaApi) return;
@@ -49,6 +50,9 @@ export function ImageInputCarouselPreviewFromIndexedDB<T extends string>({
 			emblaApi.off("select", onSelect);
 		};
 	}, [emblaApi]);
+	useEffect(() => {
+		l.current = imageNames.length;
+	}, [imageNames]);
 
 	// BUTTONS
 	const scrollPrev = useCallback(() => {
@@ -59,9 +63,17 @@ export function ImageInputCarouselPreviewFromIndexedDB<T extends string>({
 		if (emblaApi) emblaApi.scrollNext();
 	}, [emblaApi]);
 
+	// todo try to understand why this function doesn't use new values of imageNames, when imageNames is changed
+	const deleteImage = async (index: number) => {
+		if (index + 1 >= l.current) emblaApi?.scrollPrev();
+		await handleDelete(index, inputId);
+	};
+
 	const scrollStyles: React.CSSProperties = {
 		width: imageNames.length > 1 ? `calc(100% / ${imageNames.length})` : 0,
-		left: selectedIndex ? `calc(100% / ${imageNames.length} * ${selectedIndex})` : 0,
+		left: emblaApi?.selectedScrollSnap()
+			? `calc(100% / ${imageNames.length} * ${emblaApi?.selectedScrollSnap()})`
+			: 0,
 	};
 
 	return (
@@ -82,7 +94,7 @@ export function ImageInputCarouselPreviewFromIndexedDB<T extends string>({
 								<ImageInputPreviewCarouselBasic
 									imageName={image}
 									store={store}
-									handleDelete={() => handleDelete(index, inputId)}
+									handleDelete={() => deleteImage(index)}
 									className={{ imageContainer: styles.embla_slide }}
 									key={index}
 								/>

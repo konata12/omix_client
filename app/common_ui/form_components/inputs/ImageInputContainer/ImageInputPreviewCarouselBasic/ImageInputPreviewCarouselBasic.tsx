@@ -28,7 +28,6 @@ export function ImageInputPreviewCarouselBasic({
 	const deleteImage = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 			e.preventDefault();
-			console.log("zxc");
 
 			if (handleDelete) handleDelete();
 		},
