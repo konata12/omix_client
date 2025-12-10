@@ -10,7 +10,6 @@ export interface GeneralDataValues {
 	[GeneralDataOptionalValuesEnum.FACEBOOK]: string;
 	[GeneralDataOptionalValuesEnum.INSTAGRAM]: string;
 }
-// TODO TRY TO MAKE THIS TYPE PARTIAL
 export interface GeneralDataResponseValues
 	extends Omit<GeneralDataValues, GeneralDataOptionalValuesEnumType> {
 	[GeneralDataOptionalValuesEnum.YOUTUBE]?: string;
