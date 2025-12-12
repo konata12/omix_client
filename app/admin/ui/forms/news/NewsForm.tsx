@@ -6,6 +6,7 @@ import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import { ImageInputContainer } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputContainer";
 import { ImageInputPreviewFromIndexedDB } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputPreviewFromIndexedDB/ImageInputPreviewFromIndexedDB";
 import InputContainer from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
+import RedactorInstructions from "@/app/common_ui/form_components/redactor/RedactorInstructions/RedactorInstructions";
 import TextareaContainer from "@/app/common_ui/form_components/textareas/TextareaContainer/TextareaContainer";
 import Title from "@/app/common_ui/titles/Title";
 import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
@@ -60,10 +61,13 @@ export default function NewsForm({ formType }: NewsFormProps) {
 					description={"Заповніть весь текст новини у наступних формах:"}
 					type={"h3"}
 				/>
-				{/* REDACTOR INSTRUCTIONS */}
-				<Accordeon title={"Як заповнювати текстову форму? (Довідник)"}>123</Accordeon>
-				{/* TEXT */}
 				<InputBlock>
+					{/* REDACTOR INSTRUCTIONS */}
+					<Accordeon title={"Як заповнювати текстову форму? (Довідник)"}>
+						<RedactorInstructions />
+					</Accordeon>
+
+					{/* TEXT */}
 					<InputContainer
 						label={"Назва новини"}
 						inputId={NewsStringValuesEnum.TITLE}
