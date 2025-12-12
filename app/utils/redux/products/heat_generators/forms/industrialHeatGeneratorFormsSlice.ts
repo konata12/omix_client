@@ -8,7 +8,7 @@ import {
 } from "@/app/types/data/products/heat_generators/heat_generators.type";
 import { ErrorResponse } from "@/app/types/data/response.type";
 import axiosInstance from "@/app/utils/axios";
-import { heatGeneratorCommonReducers } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsReducers";
+import { heatGeneratorCommonReducers } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsForms.reducers";
 import { heatGeneratorsFormsInitialState } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
 import { baseUrlHeatGenerators } from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";

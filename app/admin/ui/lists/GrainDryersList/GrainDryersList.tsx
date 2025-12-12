@@ -47,7 +47,7 @@ export default function GrainDryersList() {
 					Редагувати
 				</Link>
 			</ListCard>
-			{grain_dryers.length && !error.getAll ? (
+			{!error.getAll ? (
 				grain_dryers.map((grain_dryer, i) => (
 					<ListCard key={grain_dryer.id}>
 						<h4>{grain_dryer[GrainDryerStringValuesEnum.TITLE]}</h4>

@@ -2,7 +2,7 @@ import GrainDryerForm from "@/app/admin/ui/forms/products/grainDryer/GrainDryerF
 import HeroSection from "@/app/common_ui/sections/HeroSection/HeroSection";
 import Link from "next/link";
 
-export default function FaqCreate() {
+export default function GrainDryerCreate() {
 	return (
 		<>
 			<HeroSection

@@ -51,7 +51,7 @@ export default function HeatGeneratorsList({ type }: { type: HeatGeneratorsTypes
 					Редагувати
 				</Link>
 			</ListCard>
-			{heat_generators.length && !error.getAll ? (
+			{!error.getAll ? (
 				heat_generators.map((heat_generator, i) => (
 					<ListCard key={heat_generator.id}>
 						<h4>{heat_generator[HeatGeneratorStringValuesEnum.TITLE]}</h4>
