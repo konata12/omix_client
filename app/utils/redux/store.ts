@@ -3,11 +3,13 @@ import faqFormsSlice from "@/app/utils/redux/general_data/faq/faqFormsSlice";
 import faqSlice from "@/app/utils/redux/general_data/faq/faqSlice";
 import generalDataSlice from "@/app/utils/redux/general_data/generalSlice";
 import navigationSlice from "@/app/utils/redux/navigation/navigationSlice";
+import newsFormsSlice from "@/app/utils/redux/news/newsFormsSlice";
+import newsSlice from "@/app/utils/redux/news/newsSlice";
 import grainDryerFormsSlice from "@/app/utils/redux/products/grain_dryers/grainDryerFormsSlice";
 import grainDryerSlice from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
-import heatGeneratorSlice from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import householdHeatGeneratorFormsSlice from "@/app/utils/redux/products/heat_generators/forms/householdHeatGeneratorFormsSlice";
 import industrialHeatGeneratorFormsSlice from "@/app/utils/redux/products/heat_generators/forms/industrialHeatGeneratorFormsSlice";
+import heatGeneratorSlice from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import {
@@ -35,11 +37,13 @@ const rootReducer = combineReducers({
 	// API
 	auth: authSlice,
 	faq: faqSlice,
+	news: newsSlice,
 	grainDryer: grainDryerSlice,
 	heatGenerator: heatGeneratorSlice,
 
 	// FORM DATA
 	faqForms: faqFormsSlice,
+	newsForms: newsFormsSlice,
 	grainDryerForms: grainDryerFormsSlice,
 	householdHeatGeneratorForms: householdHeatGeneratorFormsSlice,
 	industrialHeatGeneratorForms: industrialHeatGeneratorFormsSlice,

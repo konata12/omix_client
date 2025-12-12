@@ -2,7 +2,12 @@ import { FormTypes } from "@/app/types/data/form.type";
 import { IDBPDatabase, openDB } from "idb";
 import { createStore } from "idb-keyval";
 
-const tableGroups = ["household_heat_generators", "industrial_heat_generators", "grain_dryers"] as const;
+const tableGroups = [
+	"household_heat_generators",
+	"industrial_heat_generators",
+	"grain_dryers",
+	"news",
+] as const;
 const tableSuffixes = ["create_images", "update_images"] as const;
 
 type AppDBSchema = {
@@ -13,7 +18,7 @@ type AppDBSchema = {
 };
 
 const DB_NAME = "omix_admin";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 let dbInstance: Promise<IDBPDatabase<AppDBSchema>> | null = null;
 
