@@ -8,7 +8,7 @@ import {
 	ProductImageValuesType,
 } from "@/app/types/data/products/product.type";
 import { ErrorResponse, ErrorsResponses, Status, StatusType } from "@/app/types/data/response.type";
-import { AsFromInputError } from "@/app/types/generic.type";
+import { AsFormInputError } from "@/app/types/generic.type";
 
 export interface GrainDryer extends ProductImages {
 	id: string;
@@ -71,7 +71,7 @@ export interface GrainDryerResponseData
 export interface GrainDryerCheckboxes extends Record<string, boolean> {
 	[GrainDryerStringValuesEnum.YOUTUBE_REVIEW]: boolean;
 }
-export type GrainDryerFormErrors = AsFromInputError<Omit<GrainDryer, "id">>;
+export type GrainDryerFormErrors = AsFormInputError<Omit<GrainDryer, "id">>;
 export interface GrainDryerFormState {
 	data: Omit<GrainDryer, "id">;
 	checkboxes: GrainDryerCheckboxes;

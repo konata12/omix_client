@@ -1,5 +1,5 @@
 import { ErrorResponse, ErrorsResponses, Status, StatusType } from "@/app/types/data/response.type";
-import { AsFromInputError } from "@/app/types/generic.type";
+import { AsFormInputError } from "@/app/types/generic.type";
 
 export interface Faq {
 	id: string;
@@ -16,7 +16,7 @@ export interface FaqData {
 
 // FORMS
 export interface FaqFormState extends Omit<Faq, "id"> {
-	error: AsFromInputError<Omit<Faq, "id">>;
+	error: AsFormInputError<Omit<Faq, "id">>;
 }
 export interface FaqFormsState {
 	create: FaqFormState;

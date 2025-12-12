@@ -7,7 +7,7 @@ import {
 	ProductImageValuesType,
 } from "@/app/types/data/products/product.type";
 import { ErrorResponse, ErrorsResponses, Status, StatusType } from "@/app/types/data/response.type";
-import { AsFromInputError } from "@/app/types/generic.type";
+import { AsFormInputError } from "@/app/types/generic.type";
 
 export type HeatGeneratorsTypes = "household" | "industrial";
 
@@ -80,7 +80,7 @@ export interface HeatGeneratorsCreateData extends Partial<Omit<HeatGenerator, "i
 export interface HeatGeneratorCheckboxes extends Record<string, boolean> {
 	[HeatGeneratorStringValuesEnum.YOUTUBE_REVIEW]: boolean;
 }
-export type HeatGeneratorFormErrors = AsFromInputError<Omit<HeatGenerator, "id">>;
+export type HeatGeneratorFormErrors = AsFormInputError<Omit<HeatGenerator, "id">>;
 export interface HeatGeneratorFormState {
 	data: Omit<HeatGenerator, "id">;
 	checkboxes: HeatGeneratorCheckboxes;
