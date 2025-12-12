@@ -17,7 +17,12 @@ export default function Accordeon({ title, children }: AccordeonProps) {
 				<h4 className={styles.title}>{title}</h4>
 				<ArrowDropdown directionTop={open} handleFunc={() => setOpen(!open)} />
 			</div>
-			<AnimatePresenceWithDynamicHeight childrenIsRendered={open}>
+			<AnimatePresenceWithDynamicHeight
+				childrenIsRendered={open}
+				className={{
+					absoluteContainer: styles.content,
+				}}
+			>
 				{children}
 			</AnimatePresenceWithDynamicHeight>
 		</div>
