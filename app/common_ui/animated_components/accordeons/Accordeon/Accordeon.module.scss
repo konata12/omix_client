@@ -1,0 +1,28 @@
+@use '../../../../styles/variables/variables' as *;
+
+.accordeon {
+	padding: 36px;
+
+	background-color: $card-fill-color;
+	border: 1px solid $card-stroke-color;
+	box-shadow: $card-shadow;
+
+	&:hover {
+		.title_container {
+			.title {
+				color: $text-primary-color;
+			}
+		}
+	}
+
+	.title_container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.title {
+			color: $text-body-unactive-primary-color;
+			transition: $anim;
+		}
+	}
+}
