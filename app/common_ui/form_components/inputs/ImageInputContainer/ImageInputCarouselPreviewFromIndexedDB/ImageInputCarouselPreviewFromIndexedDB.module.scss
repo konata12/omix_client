@@ -1,4 +1,4 @@
-@use '../../../../../styles/variables/variables' as *;
+@use "../../../../../styles/variables/variables" as *;
 
 .imagePreview {
 	position: relative;
@@ -35,7 +35,7 @@
 				position: relative;
 				height: 8px;
 				width: 164px;
-				background-color: #D3D8DD;
+				background-color: #d3d8dd;
 
 				.bar {
 					position: absolute;
@@ -43,7 +43,10 @@
 					left: 0;
 					height: 100%;
 					background-color: $secondary-color;
-					filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.21)) drop-shadow(0 3px 3px rgba(0, 0, 0, 0.15)) drop-shadow(0 6px 4px rgba(0, 0, 0, 0.10)) drop-shadow(0 11px 4px rgba(0, 0, 0, 0.02));
+					filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.21))
+						drop-shadow(0 3px 3px rgba(0, 0, 0, 0.15))
+						drop-shadow(0 6px 4px rgba(0, 0, 0, 0.1))
+						drop-shadow(0 11px 4px rgba(0, 0, 0, 0.02));
 					transition: $anim;
 				}
 			}

@@ -1,16 +1,18 @@
-@use '../../../../styles/variables/variables' as *;
-@use '../../../../styles/mixins/mixins' as *;
+@use "../../../../styles/variables/variables" as *;
+@use "../../../../styles/mixins/mixins" as *;
 
 .container {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 
-	p, li {
+	p,
+	li {
 		@include t5;
 	}
 
-	ol, ul {
+	ol,
+	ul {
 		padding-left: 4px;
 		list-style-position: inside;
 
@@ -21,7 +23,7 @@
 }
 
 .red {
-	color: $accent-color
+	color: $accent-color;
 }
 
 .link {
