@@ -107,6 +107,6 @@ export const heatGeneratorsInitFormData: HeatGeneratorFormState = {
 	},
 };
 export const heatGeneratorsFormsInitialState: HeatGeneratorFormsState = {
-	create: _.cloneDeep(heatGeneratorsInitFormData),
-	update: _.cloneDeep(heatGeneratorsInitFormData),
+	create: structuredClone(heatGeneratorsInitFormData),
+	update: structuredClone(heatGeneratorsInitFormData),
 };

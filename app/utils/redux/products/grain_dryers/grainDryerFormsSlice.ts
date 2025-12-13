@@ -146,8 +146,8 @@ const initFormData: GrainDryerFormState = {
 };
 
 export const initialState: GrainDryerFormsState = {
-	create: _.cloneDeep(initFormData),
-	update: _.cloneDeep(initFormData),
+	create: structuredClone(initFormData),
+	update: structuredClone(initFormData),
 };
 
 export const getGrainDryer = createAsyncThunk(

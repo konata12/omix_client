@@ -33,7 +33,7 @@ const emptyHeatGeneratorData: HeatGeneratorData = {
 };
 
 export const initialState: HeatGeneratorSliceData = Object.fromEntries(
-	HEAT_GENERATOR_TYPES.map((type) => [type, _.cloneDeep(emptyHeatGeneratorData)]),
+	HEAT_GENERATOR_TYPES.map((type) => [type, structuredClone(emptyHeatGeneratorData)]),
 ) as HeatGeneratorSliceData;
 
 export const baseUrlHeatGenerators = "heat-generators";

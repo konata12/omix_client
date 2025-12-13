@@ -12,9 +12,8 @@ import { heatGeneratorCommonReducers } from "@/app/utils/redux/products/heat_gen
 import { heatGeneratorsFormsInitialState } from "@/app/utils/redux/products/heat_generators/forms/heatGeneratorsFormsState";
 import { baseUrlHeatGenerators } from "@/app/utils/redux/products/heat_generators/heatGeneratorsSlice";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import _ from "lodash";
 
-export const initialState: HeatGeneratorFormsState = _.cloneDeep(heatGeneratorsFormsInitialState);
+export const initialState: HeatGeneratorFormsState = structuredClone(heatGeneratorsFormsInitialState);
 
 export const getHeatGenerator = createAsyncThunk(
 	"householdHeatGeneratorForms/getHeatGenerator",

@@ -20,7 +20,6 @@ import {
 import axiosInstance from "@/app/utils/axios";
 import { baseUrlGrainDryers } from "@/app/utils/redux/products/grain_dryers/grainDryersSlice";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import _ from "lodash";
 
 const initError: NewsFormErrors = {
 	[NewsImageValuesEnum.IMAGE]: { message: "" },
@@ -47,8 +46,8 @@ const initFormData: NewsFormState = {
 };
 
 export const initialState: NewsFormsState = {
-	create: _.cloneDeep(initFormData),
-	update: _.cloneDeep(initFormData),
+	create: structuredClone(initFormData),
+	update: structuredClone(initFormData),
 };
 
 export const getNews = createAsyncThunk("newsForms/getNews", async (id: string, { rejectWithValue }) => {
