@@ -11,7 +11,7 @@ import InputContainerWithCheckbox from "@/app/common_ui/form_components/inputs/I
 import Stepper from "@/app/common_ui/form_components/inputs/Stepper/Stepper";
 import SelectWithSearchBar from "@/app/common_ui/form_components/selects/SelectWithSearchBar/SelectWithSearchBar";
 import Title from "@/app/common_ui/titles/Title";
-import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
+import { getIndexedDBStoreForForm } from "@/app/services/admin/indexedDB.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
 	GrainDryerNotStepperValuesEnum,
@@ -108,7 +108,7 @@ export default function GrainDryerForm({ formType }: GrainDryerFormProps) {
 	);
 	const requestError = useAppSelector((state: RootState) => state.grainDryer.error);
 
-	const store = getIndexedDBForForm("grain_dryers", formType);
+	const store = getIndexedDBStoreForForm("grain_dryers", formType);
 	const {
 		handleStringInputChange,
 		handleNumberInputChange,

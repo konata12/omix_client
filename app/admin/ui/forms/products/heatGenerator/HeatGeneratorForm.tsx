@@ -15,7 +15,7 @@ import Stepper from "@/app/common_ui/form_components/inputs/Stepper/Stepper";
 import SelectContainer from "@/app/common_ui/form_components/selects/SelectContainer/SelectContainer";
 import TextareaContainer from "@/app/common_ui/form_components/textareas/TextareaContainer/TextareaContainer";
 import Title from "@/app/common_ui/titles/Title";
-import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
+import { getIndexedDBStoreForForm } from "@/app/services/admin/indexedDB.service";
 import { FormTypes } from "@/app/types/data/form.type";
 import {
 	HeatGeneratorNotStepperValuesEnum,
@@ -89,7 +89,7 @@ export default function HeatGeneratorForm({ formType, heatGeneratorType }: HeatG
 		(state: RootState) => state.heatGenerator[heatGeneratorType].error,
 	);
 
-	const store = getIndexedDBForForm(`${heatGeneratorType}_heat_generators`, formType);
+	const store = getIndexedDBStoreForForm(`${heatGeneratorType}_heat_generators`, formType);
 	const {
 		handleStringInputChange,
 		handleSelectChange,
