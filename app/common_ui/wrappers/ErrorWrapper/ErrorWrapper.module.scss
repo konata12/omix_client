@@ -1,0 +1,11 @@
+@use "../../../styles/variables/variables" as *;
+@use "../../../styles/mixins/mixins" as *;
+
+.wrapper {
+	//display: contents;
+	width: 100%;
+
+	&.error {
+		outline: 2px solid $accent-color;
+	}
+}
