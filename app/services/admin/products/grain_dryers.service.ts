@@ -1,4 +1,4 @@
-import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
+import { getIndexedDBStoreForForm } from "@/app/services/admin/indexedDB.service";
 import { getFileFromSignedURLAndSaveFileInIndexedDB } from "@/app/services/admin/response.service";
 import { FormImageInputType, FormTypes } from "@/app/types/data/form.type";
 import {
@@ -16,7 +16,7 @@ export const createGrainDryerFormData = async (
 	data: Partial<Omit<GrainDryer, "id">>,
 	formType: FormTypes,
 ) => {
-	const store = getIndexedDBForForm(`grain_dryers`, formType);
+	const store = getIndexedDBStoreForForm(`grain_dryers`, formType);
 	console.log("data: ", data);
 
 	try {
@@ -73,7 +73,7 @@ export async function parseGrainDryerResponse(
 	data: GrainDryerResponseData,
 ): Promise<GrainDryerResponseData> {
 	// SAVE IMAGES IN INDEXEDDB
-	const store = getIndexedDBForForm(`grain_dryers`, "update");
+	const store = getIndexedDBStoreForForm(`grain_dryers`, "update");
 	await clear(store);
 	return {
 		...data,

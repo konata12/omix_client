@@ -1,4 +1,4 @@
-import { getIndexedDBForForm } from "@/app/services/admin/indexedDB.service";
+import { getIndexedDBStoreForForm } from "@/app/services/admin/indexedDB.service";
 import { getFileFromSignedURLAndSaveFileInIndexedDB } from "@/app/services/admin/response.service";
 import { FormImageInputType, FormTypes } from "@/app/types/data/form.type";
 import {
@@ -20,7 +20,7 @@ export const createHeatGeneratorFormData = async (
 	data: HeatGeneratorsCreateData,
 	formType: FormTypes,
 ) => {
-	const store = getIndexedDBForForm(`${data.type}_heat_generators`, formType);
+	const store = getIndexedDBStoreForForm(`${data.type}_heat_generators`, formType);
 	console.log("data: ", data);
 
 	try {
@@ -71,7 +71,7 @@ export async function parseHeatGeneratorResponse(
 	data: HeatGeneratorResponseData,
 ): Promise<HeatGeneratorResponseData> {
 	// SAVE IMAGES IN INDEXEDDB
-	const store = getIndexedDBForForm(`${type}_heat_generators`, "update");
+	const store = getIndexedDBStoreForForm(`${type}_heat_generators`, "update");
 	await clear(store);
 	return {
 		...data,

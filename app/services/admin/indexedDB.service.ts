@@ -69,9 +69,12 @@ export const getIndexedDB = async (): Promise<IDBPDatabase<AppDBSchema>> => {
 	return dbInstance;
 };
 
-export const getIndexedDBForForm = (name: string, type: FormTypes) => {
+export const getIndexedDBStore = (name: string) => {
+	return createStore(DB_NAME, name);
+};
+export const getIndexedDBStoreForForm = (name: string, type: FormTypes) => {
 	const storeName = `${name}_${type}_images`;
-	return createStore(DB_NAME, storeName);
+	return getIndexedDBStore(storeName);
 };
 // export async function transferImageBetweenIndexDBStores(
 // 	image: string,
