@@ -28,6 +28,21 @@ export default function RedactorInstructions() {
 				<span className={styles.link}>■</span>). Зручно для переліків без обов’язкової
 				послідовності.
 			</p>
+
+			<ol>
+				<li>
+					<span className={"semibold"}>↲ Enter</span> – створює новий пункт списку;
+				</li>
+				<li>
+					<span className={"semibold"}>↑ Shift + ↲ Enter</span> – переносить текст на наступний
+					рядок пункту списку (корисно для розбиття пункту списку на кілька рядків);
+				</li>
+				<li>
+					<span className={"semibold"}>← Backspace – видаляє текст</span>, а якщо поле порожнє
+					– видаляє увесь пункт списку;
+				</li>
+			</ol>
+
 			<p>
 				<span className={"semibold"}>Гіперпосилання</span> – спосіб переслати на будь-яку адресу
 				сайту з необхідного тексту:
@@ -71,25 +86,29 @@ export default function RedactorInstructions() {
 
 			<ol>
 				<li>
-					<span className={"semibold"}>↲ Enter</span> – створює новий рядок або новий пункт
-					списку;
+					<span className={"semibold"}>↹ Tab</span> – для того щоб сфокусуватись на наступному
+					елементі редактора при роботі з одним з елементів редактора. При зажатій клавіші{" "}
+					<span className={"semibold"}>↑ Shift</span> фокусується на попередній елемент;
 				</li>
 				<li>
-					<span className={"semibold"}>↑ Shift + ↲ Enter</span> – переносить текст на наступний
-					рядок, але в межах того ж блоку (корисно для розбиття абзацу на кілька рядків);
+					<span className={"semibold"}>↲ Enter</span> – всюди крім списку переносить текст у
+					наступний рядок;
 				</li>
 				<li>
-					<span className={"semibold"}>← Backspace – видаляє текст</span>, а якщо поле порожнє
-					– видаляє увесь блок;
-				</li>
-				<li>
-					<span className={"semibold"}>― Пробіл</span> – видаляє пункт списку;
+					<span className={"semibold"}>Кнопки вище робочої зони редактора</span> – створюють
+					відповідні до назви елементи;
 				</li>
 				<li>
 					<span className={"semibold"}>
 						<span className={styles.red}>×</span> (хрестик зліва від блоку тексту)
 					</span>{" "}
 					– одразу видаляє весь блок разом із його вмістом;
+				</li>
+				<li>
+					<span className={"semibold"}>Для зміни порядку компонентів редактора</span> –
+					наведіться на компонент, затисніть ЛКМ і перетягніть на бажане місце (працює тільки в
+					межах редактора по вертикалі; не працює між пунктами списку та із фото і описом до
+					фото, бо вони рахуються як один компонент);
 				</li>
 			</ol>
 

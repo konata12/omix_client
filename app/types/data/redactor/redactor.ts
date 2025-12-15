@@ -1,12 +1,9 @@
-export interface DraggableComponent {
-	orderId: string;
-}
-
-// REDACTOR  DATA
-
-// REDACTOR FORM DATA
+import { DraggableComponent } from "@/app/common_ui/animated_components/redactor/RedactorDraggableContainer/RedactorDraggableContainer"; // REDACTOR FORM DATA
 import { FormImageInputType, FormInputError } from "@/app/types/data/form.type";
 
+export type RedactorSlicesNamesType = "newsForms";
+
+// REDACTOR  DATA
 export interface RedactorFormElementBasicType extends DraggableComponent {}
 
 // form data

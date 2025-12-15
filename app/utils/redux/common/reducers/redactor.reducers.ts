@@ -1,3 +1,13 @@
+interface RedactorInState {
+	create: {
+		data: RedactorFormComponentsData;
+	};
+	update: {
+		data: RedactorFormComponentsData;
+	};
+}
+
+import { FormTypes } from "@/app/types/data/form.type";
 import {
 	RedactorFormComponentsData,
 	RedactorFormComponentsType,
@@ -6,22 +16,26 @@ import {
 } from "@/app/types/data/redactor/redactor";
 
 export const redactorReducers = {
-	addDetailsComponent(
-		state: RedactorFormComponentsData,
+	addRedactorComponent(
+		state: RedactorInState,
 		action: {
-			payload: RedactorFormComponentsType;
+			payload: { data: RedactorFormComponentsType; form: FormTypes };
 		},
 	) {
-		state[ReductorInFormEnum.REDACTOR].push(action.payload);
+		const { data, form } = action.payload;
+		state[form].data[ReductorInFormEnum.REDACTOR].push(data);
 	},
-	removeDetailsComponent(
-		state: RedactorFormComponentsData,
+	removeRedactorComponent(
+		state: RedactorInState,
 		action: {
-			payload: string;
+			payload: { orderId: string; form: FormTypes };
 		},
 	) {
-		state[ReductorInFormEnum.REDACTOR] = state[ReductorInFormEnum.REDACTOR].filter((component) => {
-			return component.data.orderId !== action.payload;
+		const { orderId, form } = action.payload;
+		state[form].data[ReductorInFormEnum.REDACTOR] = state[form].data[
+			ReductorInFormEnum.REDACTOR
+		].filter((component) => {
+			return component.data.orderId !== orderId;
 		});
 	},
 	updateDetailsComponent(

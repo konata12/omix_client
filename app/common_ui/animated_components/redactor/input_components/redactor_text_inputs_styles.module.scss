@@ -1,0 +1,44 @@
+@use "../../../../styles/variables/variables" as *;
+@use "../../../../styles/mixins/mixins" as *;
+
+.input {
+	width: 100%;
+	background-color: transparent;
+	border: none;
+	outline: none;
+
+	&.title {
+		color: $text-primary-color;
+		font-weight: $title-weight;
+		@include h4;
+	}
+
+	&.text {
+		color: $text-body-active-primary-color;
+		font-family: $text-font;
+		@include t1;
+	}
+}
+
+.list {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+
+	.option {
+		display: flex;
+		gap: 8px;
+
+		@include t1;
+
+		span {
+			color: $hyperlink-color;
+
+			&.not_numbered {
+				position: relative;
+				top: -2px;
+			}
+		}
+	}
+}

@@ -1,0 +1,40 @@
+@use '../../../styles/variables/variables' as *;
+@use '../../../styles/mixins/mixins' as *;
+
+.btn {
+	position: relative;
+	cursor: pointer;
+	padding: 24px 32px;
+	background-color: transparent;
+	border: none;
+	outline: none;
+
+	color: $text-body-unactive-primary-color;
+	@include t4();
+	font-weight: $text-weight-bold;
+
+	&::after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		height: 4px;
+		width: 100%;
+	}
+
+	&:hover {
+		color: $text-primary-color;
+
+		&::after {
+			background-color: $primary-unable-color;
+		}
+	}
+
+	&.click {
+		color: $primary-color;
+
+		&::after {
+			background-color: $primary-color;
+		}
+	}
+}
