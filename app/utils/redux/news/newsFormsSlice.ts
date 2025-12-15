@@ -100,8 +100,11 @@ export const newsFormsSlice = createSlice({
 				payload: { data: RedactorFormComponentsType; form: FormTypes };
 			},
 		) {
-			const { data, form } = action.payload;
-			state[form].data[ReductorInFormEnum.REDACTOR].push(data);
+			console.log(2);
+			{
+				const { data, form } = action.payload;
+				state[form].data[ReductorInFormEnum.REDACTOR].push(data);
+			}
 		},
 		removeRedactorComponent(
 			state,
