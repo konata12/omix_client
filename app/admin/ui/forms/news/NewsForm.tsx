@@ -7,7 +7,7 @@ import ErrorBlock from "@/app/common_ui/ErrorBlock/ErrorBlock";
 import { ImageInputContainer } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputContainer";
 import { ImageInputPreviewFromIndexedDB } from "@/app/common_ui/form_components/inputs/ImageInputContainer/ImageInputPreviewFromIndexedDB/ImageInputPreviewFromIndexedDB";
 import InputContainer from "@/app/common_ui/form_components/inputs/InputContainer/InputContainer";
-import RedactorInstructions from "@/app/common_ui/form_components/redactor/RedactorInstructions/RedactorInstructions";
+import RedactorInstructions from "@/app/common_ui/animated_components/redactor/RedactorInstructions/RedactorInstructions";
 import TextareaContainer from "@/app/common_ui/form_components/textareas/TextareaContainer/TextareaContainer";
 import Title from "@/app/common_ui/titles/Title";
 import { getIndexedDBStoreForForm } from "@/app/services/admin/indexedDB.service";

@@ -1,6 +1,7 @@
 "use client";
 
 import { DraggableAreaContainerForRedactor } from "@/app/common_ui/animated_components/redactor/DraggableAreaContainerForRedactor";
+import RedactorImageInput from "@/app/common_ui/animated_components/redactor/input_components/RedactorImageInput/RedactorImageInput";
 import RedactorListInput from "@/app/common_ui/animated_components/redactor/input_components/RedactorListInput/RedactorListInput";
 import RedactorParagraphInput from "@/app/common_ui/animated_components/redactor/input_components/RedactorParagraphInput/RedactorParagraphInput";
 import RedactorTitleInput from "@/app/common_ui/animated_components/redactor/input_components/RedactorTitleInput/RedactorTitleInput";
@@ -108,6 +109,18 @@ export default function Redactor({ sliceName, allovedComponents, storeName, form
 											key={key}
 											sliceName={sliceName}
 											data={component}
+											index={index}
+											form={formType}
+										/>
+									);
+
+								case RedactorDataEnum.IMAGES:
+									return (
+										<RedactorImageInput
+											key={key}
+											sliceName={sliceName}
+											data={component}
+											store={store}
 											index={index}
 											form={formType}
 										/>
